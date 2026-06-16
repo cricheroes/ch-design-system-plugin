@@ -1,0 +1,9 @@
+.DS_Store
+*.log
+node_modules/
+
+# Internal sync config (claude.ai/design project pins) — never publish
+.design-sync/
+
+# Source design bundle from the design team — not published; extract assets into the skill instead
+*.zip

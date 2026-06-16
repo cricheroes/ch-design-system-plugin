@@ -1,0 +1,20 @@
+<!-- @dsCard group="Components" name="Inputs" subtitle="Text field, focus ring, error state" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inputs — CricHeroes</title><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body{margin:0;background:var(--bg-secondary);font-family:var(--font-sans);color:var(--label-1);padding:24px}
+.card{background:var(--bg-primary);border:var(--border);border-radius:var(--r-12);box-shadow:var(--shadow-1);padding:24px;max-width:520px;margin:0 auto}
+h1{font-weight:600;font-size:18px;margin:0 0 4px;color:var(--label-1)}
+.sub{color:var(--label-2);font-size:13px;margin:0 0 20px}
+label{display:block;font-size:13px;font-weight:500;margin:14px 0 6px;color:var(--label-1)}
+input{width:100%;box-sizing:border-box;font-family:var(--font-sans);font-size:15px;padding:12px 14px;border:var(--border);border-radius:var(--r-8);background:#fff;color:var(--label-1);transition:box-shadow var(--duration-fast) var(--ease-standard),border-color var(--duration-fast)}
+input::placeholder{color:var(--label-3)}
+input:focus{outline:none;border-color:var(--ch-teal);box-shadow:var(--focus-ring)}
+.err input{border-color:var(--ch-red)}
+.hint{font-size:12px;margin-top:6px;color:var(--label-2)}
+.err .hint{color:var(--ch-red)}
+</style></head><body><div class="card">
+<h1>Inputs</h1><p class="sub">8px corners. Teal focus ring. Errors borrow red — identity, not action.</p>
+<label for="t">Team name</label><input id="t" placeholder="e.g. Andheri Strikers" value="Andheri Strikers">
+<div class="err"><label for="o">Overs</label><input id="o" value="0"><div class="hint">Enter at least 1 over.</div></div>
+</div></body></html>

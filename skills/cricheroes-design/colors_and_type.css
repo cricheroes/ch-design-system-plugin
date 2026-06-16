@@ -1,0 +1,242 @@
+/* =============================================================
+   CricHeroes Design System — Core foundations
+   Extracted from Figma file "iCricHeroes Design System"
+   ============================================================= */
+
+/* Ubuntu Sans is the primary brand typeface. Variable font, weight 100→800, width 75→100. */
+@font-face {
+  font-family: "Ubuntu Sans";
+  src: url("fonts/UbuntuSans-VariableFont_wdth_wght.ttf") format("truetype-variations"),
+       url("fonts/UbuntuSans-VariableFont_wdth_wght.ttf") format("truetype");
+  font-weight: 100 800;
+  font-stretch: 75% 100%;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Ubuntu Sans";
+  src: url("fonts/UbuntuSans-Italic-VariableFont_wdth_wght.ttf") format("truetype-variations"),
+       url("fonts/UbuntuSans-Italic-VariableFont_wdth_wght.ttf") format("truetype");
+  font-weight: 100 800;
+  font-stretch: 75% 100%;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Barlow — the scorecard typeface (tabular figures for scores/stats). Static weights from Google Fonts. */
+@font-face { font-family: "Barlow"; src: url("fonts/Barlow-Regular.ttf")  format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url("fonts/Barlow-Medium.ttf")   format("truetype"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url("fonts/Barlow-SemiBold.ttf") format("truetype"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Barlow"; src: url("fonts/Barlow-Bold.ttf")     format("truetype"); font-weight: 700; font-style: normal; font-display: swap; }
+
+:root {
+  /* -------------------------------------------------------------
+     1. PRIMITIVE COLORS — straight from Figma variables
+     ------------------------------------------------------------- */
+
+  /* Brand Red — the identity color (logo, brand mark, destructive). */
+  --ch-red:           rgb(226, 28, 40);   /* brand-primary    */
+  --ch-red-light:     rgb(242, 100, 114); /* brand-primary30  */
+  --ch-red-lighter:   rgb(255, 233, 238); /* brand-primary10  */
+  --ch-red-dark:      rgb(127, 23, 25);   /* brand-primary70  */
+  --ch-red-darker:    rgb(90, 18, 16);    /* brand-primary80  */
+
+  /* Brand Teal — the primary INTERACTIVE color (buttons, PRO, links). */
+  --ch-teal:          rgb(24, 149, 143);  /* brand-secondary    */
+  --ch-teal-light:    rgb(67, 219, 211);  /* brand-secondary30  */
+  --ch-teal-lighter:  rgb(225, 255, 254); /* brand-secondary10  */
+  --ch-teal-dark:     rgb(23, 85, 82);    /* brand-secondary60  */
+  --ch-teal-darker:   rgb(12, 41, 40);    /* brand-secondary80  */
+
+  /* Neutrals — iOS-style greys, near-true black/white. */
+  --ch-black:  rgb(11, 11, 11);
+  --ch-white:  rgb(254, 255, 255);
+  --ch-grey:   rgb(142, 142, 147);   /* grey */
+  --ch-grey2:  rgb(174, 174, 178);
+  --ch-grey3:  rgb(199, 199, 204);
+  --ch-grey4:  rgb(209, 209, 214);
+  --ch-grey5:  rgb(229, 229, 234);
+  --ch-grey6:  rgb(242, 242, 247);
+
+  /* -------------------------------------------------------------
+     2. SEMANTIC COLORS — what designers should actually use
+     ------------------------------------------------------------- */
+
+  /* Backgrounds */
+  --bg-primary:    var(--ch-white);            /* main screen */
+  --bg-secondary:  rgb(243, 243, 243);         /* grouped lists, cards on white */
+  --bg-tertiary:   var(--ch-white);
+
+  /* Text labels */
+  --label-1:       var(--ch-black);            /* high  — headlines, body */
+  --label-2:       rgba(11, 11, 11, 0.60);     /* medium — secondary text */
+  --label-3:       rgba(11, 11, 11, 0.30);     /* low — disabled / timestamps */
+  --label-muted:   rgba(11, 11, 11, 0.18);
+
+  /* Static labels (on photos / colored fills) */
+  --label-on-color: var(--ch-white);
+  --label-on-color-medium: rgba(254, 255, 255, 0.60);
+
+  /* Fills (translucent overlays — for chips, hover states) */
+  --fill-grey:     rgba(142, 142, 147, 0.16);
+  --fill-grey-low: rgba(142, 142, 147, 0.08);
+  --fill-red:      rgba(226, 28, 40, 0.14);    /* destructive bg */
+  --fill-teal:     rgba(24, 149, 143, 0.16);   /* primary action bg */
+
+  /* Buttons */
+  --btn-primary-bg:        var(--ch-teal);
+  --btn-primary-label:     var(--ch-white);
+  --btn-primary-bg-soft:   var(--fill-teal);
+  --btn-primary-label-soft:var(--ch-teal);
+
+  --btn-destructive-bg:        var(--ch-red);
+  --btn-destructive-label:     var(--ch-white);
+  --btn-destructive-bg-soft:   var(--fill-red);
+  --btn-destructive-label-soft:var(--ch-red);
+
+  --btn-neutral-bg:    var(--fill-grey);
+  --btn-neutral-label: var(--ch-black);
+
+  /* Icons */
+  --icon-1: var(--ch-black);
+  --icon-2: var(--ch-grey);
+  --icon-3: var(--ch-grey3);
+  --icon-primary:   var(--ch-red);   /* brand-tinted icons */
+  --icon-secondary: var(--ch-teal);  /* action-tinted icons */
+
+  /* Dividers / borders */
+  --divider:       rgba(11, 11, 11, 0.10);
+  --divider-strong:rgba(11, 11, 11, 0.18);
+
+  /* Status colors (system-standard iOS palette) */
+  --status-success: rgb(52, 199, 89);
+  --status-warning: rgb(255, 149, 0);
+  --status-error:   var(--ch-red);
+  --status-info:    rgb(0, 122, 255);
+
+  /* -------------------------------------------------------------
+     3. SPACING — 4px base. Use only these stops.
+     ------------------------------------------------------------- */
+  --space-0:  0;
+  --space-1:  2px;
+  --space-2:  4px;
+  --space-3:  8px;
+  --space-4:  12px;
+  --space-5:  16px;
+  --space-6:  20px;
+  --space-7:  24px;
+  --space-8:  32px;
+  --space-9:  40px;
+  --space-10: 48px;
+  --space-11: 64px;
+  --space-12: 80px;
+  --space-13: 96px;
+
+  /* -------------------------------------------------------------
+     4. RADII — pills + soft squircle
+     ------------------------------------------------------------- */
+  --r-2:   2px;
+  --r-4:   4px;
+  --r-8:   8px;
+  --r-12:  12px;   /* cards, sheets */
+  --r-16:  16px;   /* large cards */
+  --r-20:  20px;
+  --r-24:  24px;
+  --r-32:  32px;
+  --r-pill: 999px; /* buttons, chips, FAB */
+
+  /* -------------------------------------------------------------
+     5. ELEVATION — flat by default; subtle ambient shadow on cards.
+     ------------------------------------------------------------- */
+  --shadow-0: none;
+  --shadow-1: 0 1px 2px rgba(11, 11, 11, 0.06);
+  --shadow-2: 0 2px 8px rgba(11, 11, 11, 0.08);
+  --shadow-3: 0 8px 24px rgba(11, 11, 11, 0.12);
+  --shadow-sticky: 0 -2px 12px rgba(11, 11, 11, 0.08); /* bottom sheets */
+
+  /* -------------------------------------------------------------
+     6. TYPOGRAPHY — Ubuntu Sans, geometric / friendly humanist
+     ------------------------------------------------------------- */
+  --font-sans: "Ubuntu Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text",
+               "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* Scorecard typeface — Barlow, tabular figures. Use for scores/stats only. */
+  --ch-font-scorecard: "Barlow", var(--font-sans);
+
+  /* Weights — Ubuntu Sans provides 100–800 */
+  --w-regular:  400; /* @kind font */
+  --w-medium:   500; /* @kind font */
+  --w-semibold: 600; /* @kind font */
+  --w-bold:     700; /* @kind font */
+
+  /* Type scale — iOS / Material derived, suitable for mobile + slides */
+  --t-display-lg:  44px;
+  --t-display:     34px;
+  --t-display-sm:  28px;
+  --t-title-lg:    24px;
+  --t-title:       20px;
+  --t-title-sm:    17px;
+  --t-headline:    17px;
+  --t-body:        15px;
+  --t-callout:     14px;
+  --t-subhead:     13px;
+  --t-footnote:    12px;
+  --t-caption:     11px;
+
+  /* -------------------------------------------------------------
+     7. BRAND-PLAYBOOK EXTRAS — from the Brand Playbook, not in the
+        Figma export. Use sparingly.
+     ------------------------------------------------------------- */
+  --ch-gold:        rgb(203, 142, 64);          /* Khaki Gold — awards / premium */
+  --ch-gold-fill:   rgba(203, 142, 64, 0.16);
+  --border:         1px solid var(--ch-grey5);  /* default 1px border */
+  --focus-ring:     0 0 0 2px var(--ch-teal);   /* teal focus ring */
+  /* The two approved gradients — hero visuals only, never buttons/cards. */
+  --ch-gradient-red:  linear-gradient(135deg, var(--ch-red-dark), var(--ch-red));
+  --ch-gradient-teal: linear-gradient(135deg, var(--ch-teal), var(--ch-teal-dark));
+
+  /* Motion — fast & functional. Spring only for toasts / success moments. */
+  --duration-fast: 150ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0.2, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Respect reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =============================================================
+   Semantic text styles — apply directly to elements
+   ============================================================= */
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv01";
+  color: var(--label-1);
+  background: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ch-display-lg { font: var(--w-bold)     var(--t-display-lg)/1.05 var(--font-sans); letter-spacing:-0.02em; }
+.ch-display    { font: var(--w-bold)     var(--t-display)/1.1  var(--font-sans); letter-spacing:-0.015em; }
+.ch-display-sm { font: var(--w-bold)     var(--t-display-sm)/1.15 var(--font-sans); letter-spacing:-0.01em; }
+.ch-title-lg   { font: var(--w-bold)     var(--t-title-lg)/1.2  var(--font-sans); letter-spacing:-0.005em; }
+.ch-title      { font: var(--w-semibold) var(--t-title)/1.25 var(--font-sans); }
+.ch-title-sm   { font: var(--w-semibold) var(--t-title-sm)/1.3 var(--font-sans); }
+.ch-headline   { font: var(--w-semibold) var(--t-headline)/1.35 var(--font-sans); }
+.ch-body       { font: var(--w-regular)  var(--t-body)/1.45 var(--font-sans); }
+.ch-body-em    { font: var(--w-semibold) var(--t-body)/1.45 var(--font-sans); }
+.ch-callout    { font: var(--w-medium)   var(--t-callout)/1.4 var(--font-sans); }
+.ch-subhead    { font: var(--w-medium)   var(--t-subhead)/1.4 var(--font-sans); }
+.ch-footnote   { font: var(--w-regular)  var(--t-footnote)/1.35 var(--font-sans); color: var(--label-2); }
+.ch-caption    { font: var(--w-medium)   var(--t-caption)/1.3 var(--font-sans); color: var(--label-2); text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* Buttons stamp their label with Bold (Android) / Medium (iOS); use the Bold one as primary */
+.ch-btn-label    { font: var(--w-bold) var(--t-callout)/1 var(--font-sans); }
+.ch-btn-label-sm { font: var(--w-bold) var(--t-footnote)/1 var(--font-sans); }

@@ -1,0 +1,34 @@
+CricHeroes Design System License
+
+Copyright (c) 2026 CricHeroes. All rights reserved.
+
+This repository contains the CricHeroes Design System and related tooling
+(the "Materials"): design tokens, component references, documentation, brand
+voice guidance, and CricHeroes brand assets including logos, names, and marks.
+
+1. Permitted use
+   The Materials are provided for use by CricHeroes and its employees,
+   contractors, and authorized partners ("CricHeroes Users") to design and build
+   CricHeroes products and experiences. CricHeroes Users may use, copy, modify,
+   and internally distribute the Materials for that purpose.
+
+2. Restrictions
+   The Materials, and in particular the CricHeroes brand assets, names, and
+   marks, are proprietary to CricHeroes. Except as allowed in Section 1, no right
+   or license is granted to any person or organization to use, reproduce,
+   distribute, publicly display, or create derivative works from the Materials,
+   or to use the CricHeroes name, logos, or marks, without the prior written
+   permission of CricHeroes. The public visibility of this repository does not
+   grant any such rights.
+
+3. Third-party components
+   Bundled fonts (for example, Ubuntu Sans and Barlow) and any other third-party
+   assets are licensed under their own respective licenses, which continue to
+   apply to those components. See skills/cricheroes-design/fonts/NOTICE.txt.
+
+4. No warranty
+   The Materials are provided "AS IS", without warranty of any kind, express or
+   implied. CricHeroes shall not be liable for any claim or damages arising from
+   the use of the Materials.
+
+For permissions beyond this license, contact CricHeroes.

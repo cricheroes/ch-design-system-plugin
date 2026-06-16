@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/brand-lint.mjs\"",
+            "description": "Advisory CricHeroes brand-lint on edited style/markup files (never blocks)"
+          }
+        ]
+      }
+    ]
+  }
+}

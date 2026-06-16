@@ -1,0 +1,16 @@
+Third-party fonts — licensed under their own terms
+
+The fonts in this directory are third-party open fonts. They retain their
+original licenses; the repository LICENSE does not override them. Refer to each
+project for the authoritative license text.
+
+Ubuntu Sans
+  UbuntuSans-VariableFont_wdth_wght.ttf
+  UbuntuSans-Italic-VariableFont_wdth_wght.ttf
+  (c) Canonical Ltd. Distributed under its open font license.
+  Source: https://github.com/canonical/Ubuntu-Sans-fonts
+
+Barlow (scorecard face)
+  Barlow-Regular.ttf, Barlow-Medium.ttf, Barlow-SemiBold.ttf, Barlow-Bold.ttf
+  (c) The Barlow Project Authors. SIL Open Font License 1.1.
+  Source: https://github.com/jpt/barlow

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <!-- Decorative: a ball in flight (energy on a curved path). Use on hero visuals only. -->
+  <path d="M-40 560 Q500 -120 1240 360" stroke="#E21C28" stroke-width="2" fill="none" opacity="0.18" stroke-dasharray="10 10"/>
+  <circle cx="1180" cy="320" r="220" fill="#E21C28" opacity="0.06"/>
+  <circle cx="120" cy="540" r="160" fill="#18958F" opacity="0.06"/>
+  <circle cx="1108" cy="372" r="22" fill="#E21C28" opacity="0.9"/>
+</svg>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CricHeroes — Web Kit</title>
+<!-- Starting shell for the marketing site + organiser dashboard, built on the design tokens.
+     Hero uses an approved gradient; cards/buttons never do. -->
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--font-sans);color:var(--label-1);background:var(--bg-primary)}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15px;padding:12px 22px;border:none;border-radius:var(--r-8);cursor:pointer;transition:background var(--duration-fast) var(--ease-standard)}
+  .btn-primary{background:var(--ch-teal);color:#fff}.btn-primary:hover{background:var(--ch-teal-dark)}
+  .btn-onred{background:#fff;color:var(--ch-teal-dark)}.btn-onred:hover{background:var(--ch-teal-lighter)}
+  .btn-ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.5)}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border-bottom:var(--border)}
+  nav .wrap{display:flex;align-items:center;gap:28px;height:64px}
+  nav img{height:30px}
+  .navlinks{display:flex;gap:24px;margin-left:8px;font-weight:500;font-size:14px;color:var(--label-1)}
+  .navlinks a:hover{color:var(--ch-teal)}
+  nav .spacer{flex:1}
+
+  /* hero */
+  .hero{position:relative;overflow:hidden;background:var(--ch-gradient-red);color:#fff}
+  .hero .ball{position:absolute;border-radius:50%}
+  .b1{width:520px;height:520px;background:rgba(255,255,255,.07);right:-160px;top:-120px}
+  .b2{width:280px;height:280px;background:rgba(255,255,255,.06);left:-90px;bottom:-110px}
+  .hero .wrap{position:relative;padding:96px 24px 110px;max-width:760px;margin:0 auto;text-align:center}
+  .hero h1{font-weight:600;font-size:clamp(36px,6vw,64px);line-height:1.05;margin:0 0 18px;letter-spacing:-.5px}
+  .hero p{font-size:clamp(16px,2.4vw,20px);opacity:.92;margin:0 auto 32px;max-width:560px;font-weight:400}
+  .hero .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .seam{position:absolute;left:0;right:0;bottom:0;height:80px}
+
+  /* stats strip */
+  .strip{background:var(--label-1);color:#fff}
+  .strip .wrap{display:flex;flex-wrap:wrap;gap:40px;justify-content:center;padding:28px 24px}
+  .strip .n{font-weight:600;font-size:30px;font-variant-numeric:tabular-nums}
+  .strip .l{font-size:13px;opacity:.7}
+
+  /* features */
+  section.feat{padding:80px 0}
+  .feat h2{font-weight:600;font-size:32px;text-align:center;color:var(--label-1);margin:0 0 8px}
+  .feat .lede{text-align:center;color:var(--label-2);font-size:16px;margin:0 0 44px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+  .fcard{background:#fff;border:var(--border);border-radius:var(--r-12);box-shadow:var(--shadow-1);padding:24px}
+  .fcard .ic{width:44px;height:44px;border-radius:12px;background:var(--fill-teal);color:var(--ch-teal-dark);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .fcard h3{font-weight:600;font-size:17px;color:var(--label-1);margin:0 0 6px}
+  .fcard p{font-size:14px;color:var(--label-2);margin:0;line-height:1.5}
+
+  /* dashboard */
+  .dash{background:var(--bg-secondary);padding:80px 0}
+  .dash h2{font-weight:600;font-size:28px;color:var(--label-1);margin:0 0 4px}
+  .dash .lede{color:var(--label-2);font-size:15px;margin:0 0 28px}
+  .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+  .tab{padding:8px 16px;border-radius:var(--r-pill);font-weight:600;font-size:13px;background:transparent;color:var(--label-2);border:1px solid var(--divider-strong);cursor:pointer}
+  .tab.on{background:var(--ch-teal);color:#fff;border-color:var(--ch-teal)}
+  .dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+  .stat{background:#fff;border:var(--border);border-radius:var(--r-12);box-shadow:var(--shadow-1);padding:18px}
+  .stat .k{font-size:13px;color:var(--label-2)}
+  .stat .v{font-weight:600;font-size:26px;color:var(--label-1);font-variant-numeric:tabular-nums;margin-top:4px}
+  .stat .d{font-size:12px;color:var(--ch-teal-dark);margin-top:2px}
+  .panel{background:#fff;border:var(--border);border-radius:var(--r-12);box-shadow:var(--shadow-1);overflow:hidden}
+  .panel .ph{display:flex;align-items:center;padding:16px 20px;border-bottom:var(--border)}
+  .panel .ph h3{font-weight:600;font-size:16px;color:var(--label-1);margin:0;flex:1}
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:13px 20px;font-size:14px;border-bottom:1px solid var(--divider)}
+  th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--label-2);font-weight:600}
+  td.num{font-variant-numeric:tabular-nums;text-align:right}
+  tr:last-child td{border-bottom:none}
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:var(--r-pill);font-weight:700;font-size:11px}
+  .badge.live{background:var(--ch-red);color:#fff}.badge.done{background:rgba(142,142,147,.16);color:var(--label-2)}
+  .dot{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+  footer{background:var(--label-1);color:rgba(255,255,255,.75);padding:40px 0;font-size:13px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+  footer .spacer{flex:1}
+
+  @media(max-width:720px){.navlinks{display:none}.dgrid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <img src="../../assets/logos/cricheroes-horizontal.png" alt="CricHeroes">
+  <div class="navlinks"><a>Product</a><a>Pro</a><a>Live</a><a>Store</a></div>
+  <div class="spacer"></div>
+  <button class="btn btn-primary">Get the app</button>
+</div></nav>
+
+<header class="hero">
+  <div class="ball b1"></div><div class="ball b2"></div>
+  <div class="wrap">
+    <h1>Your cricket matters.</h1>
+    <p>Free scoring, live stats, tournaments and teams — the home of grassroots cricket.</p>
+    <div class="cta"><button class="btn btn-onred"><span data-icon="play" data-icon-size="18"></span> Start scoring</button><button class="btn btn-ghost">Watch live</button></div>
+  </div>
+  <svg class="seam" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 80 Q600 0 1200 80 L1200 80 L0 80 Z" fill="#ffffff"/></svg>
+</header>
+
+<div class="strip"><div class="wrap">
+  <div><div class="n">100M+</div><div class="l">matches scored</div></div>
+  <div><div class="n">20M+</div><div class="l">players</div></div>
+  <div><div class="n">300K+</div><div class="l">tournaments</div></div>
+  <div><div class="n">5M+</div><div class="l">teams</div></div>
+</div></div>
+
+<section class="feat"><div class="wrap">
+  <h2>Everything a local cricketer needs</h2>
+  <p class="lede">Built to feel like a dependable team captain — calm, credible, inclusive.</p>
+  <div class="cards">
+    <div class="fcard"><div class="ic"><span data-icon="bat" data-icon-size="24"></span></div><h3>Free scoring</h3><p>Ball-by-ball scoring with live commentary, wagon wheels and manhattan charts.</p></div>
+    <div class="fcard"><div class="ic"><span data-icon="trophy" data-icon-size="24"></span></div><h3>Tournaments</h3><p>Run leagues and knockouts with fixtures, points tables and leaderboards.</p></div>
+    <div class="fcard"><div class="ic"><span data-icon="stats" data-icon-size="24"></span></div><h3>Career stats</h3><p>A permanent record of every innings, spell and milestone you play.</p></div>
+    <div class="fcard"><div class="ic"><span data-icon="live" data-icon-size="24"></span></div><h3>Live streaming</h3><p>Smart cameras and CricHeroes Pro bring highlights, DRS and live video.</p></div>
+  </div>
+</div></section>
+
+<section class="dash"><div class="wrap">
+  <h2>Organiser dashboard</h2>
+  <p class="lede">Run the tournament from one place.</p>
+  <div class="tabs"><button class="tab on">Overview</button><button class="tab">Fixtures</button><button class="tab">Teams</button><button class="tab">Leaderboard</button></div>
+  <div class="dgrid">
+    <div class="stat"><div class="k">Matches</div><div class="v">48</div><div class="d">12 completed</div></div>
+    <div class="stat"><div class="k">Teams</div><div class="v">16</div><div class="d">288 players</div></div>
+    <div class="stat"><div class="k">Live now</div><div class="v">2</div><div class="d">streaming</div></div>
+    <div class="stat"><div class="k">Sixes</div><div class="v">214</div><div class="d">this round</div></div>
+  </div>
+  <div class="panel">
+    <div class="ph"><h3>Today's matches</h3><button class="btn btn-primary" style="padding:8px 14px;font-size:13px">Add fixture</button></div>
+    <table>
+      <thead><tr><th>Match</th><th>Venue</th><th class="num">Overs</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Strikers vs Blasters</td><td>Oval Maidan</td><td class="num">20</td><td><span class="badge live"><span class="dot"></span>LIVE</span></td></tr>
+        <tr><td>Titans vs Lions</td><td>Shivaji Park</td><td class="num">10</td><td><span class="badge done">Upcoming</span></td></tr>
+        <tr><td>Mavericks vs Strikers</td><td>Cross Maidan</td><td class="num">20</td><td><span class="badge done">Result</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span style="font-weight:800;font-size:20px;color:#fff;letter-spacing:-.3px">cricheroes</span>
+  <div class="spacer"></div>
+  <span>Your cricket matters.</span>
+</div></footer>
+
+<script src="../../assets/icons.js"></script>
+<script>CH.icons.hydrate(document)</script>
+</body>
+</html>

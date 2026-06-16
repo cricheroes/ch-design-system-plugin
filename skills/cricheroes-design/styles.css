@@ -1,0 +1,3 @@
+/* CricHeroes design system — entry stylesheet.
+   Designs receive this file's @import closure, so the tokens reach every render. */
+@import "colors_and_type.css";
