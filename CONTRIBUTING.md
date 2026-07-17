@@ -45,3 +45,4 @@ em-dashes (use colons or commas). Always write CricHeroes as one word, two capit
   legacy, awaiting a Phase-B web port. Build new work from `reference/AI-CONTEXT.md`.
 - Brand assets (logos, marks) are CricHeroes trademarks; see `LICENSE`. Bundled fonts
   keep their own licences (see `skills/cricheroes-design/fonts/NOTICE.txt`).
+- Questions or access requests: support@cricheroes.in.

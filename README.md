@@ -115,3 +115,7 @@ focus rings, tabs.
 Proprietary, for CricHeroes use. See [LICENSE](LICENSE). CricHeroes logos, names,
 and marks are trademarks of CricHeroes. Bundled fonts keep their own licenses
 (see [`skills/cricheroes-design/fonts/NOTICE.txt`](skills/cricheroes-design/fonts/NOTICE.txt)).
+
+## Support
+
+Questions, permissions, or issues with the plugin: support@cricheroes.in.
