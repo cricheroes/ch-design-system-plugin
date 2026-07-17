@@ -23,6 +23,38 @@ You get the `cricheroes-design` skill, the `/cricheroes-design` and
 `/cricheroes-audit` commands, and a brand-lint hook that flags hard violations
 (emoji in UI, red used as a button fill, off-brand gradients).
 
+### claude.ai chat (skill upload)
+
+The skill (tokens, component specs, brand voice, audit checklist) also works in
+the claude.ai web and mobile apps. Slash commands and the brand-lint hook are
+Claude Code features and do not run there.
+
+1. Zip the skill folder so `cricheroes-design/` (with `SKILL.md` at its root)
+   is the top-level entry of the archive:
+
+   ```
+   cd skills && zip -r cricheroes-design.zip cricheroes-design
+   ```
+
+2. In claude.ai go to Settings, then Customize, then Skills, click the plus
+   button, and upload the zip.
+3. Toggle the skill on. Claude then applies the CricHeroes system whenever a
+   chat involves building or reviewing UI.
+
+Requirements: a Pro, Max, Team, or Enterprise plan with "Code execution and
+file creation" enabled. On Team and Enterprise an org owner or admin must first
+enable Skills under Organization settings. Skill zips are limited to 200 files;
+this skill ships about 54, so it fits comfortably.
+
+### Cowork (Claude desktop app)
+
+Skills uploaded to claude.ai do not sync to Cowork automatically. Either:
+
+- upload the same zip in Cowork under Customize, then Skills, or
+- install the full plugin in Cowork from this marketplace (Cowork supports
+  plugin marketplaces by URL), which bundles the skill; hooks and slash
+  commands still run only in Claude Code.
+
 ### Codex and other agents that read `AGENTS.md`
 
 Clone the repo into (or beside) your project; the agent picks up
