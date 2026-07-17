@@ -1,4 +1,4 @@
-// CricHeroes mobile — screens
+// CricHeroes mobile, screens
 // Loaded after components.jsx. Each screen returns a column that fills
 // the iOS frame body. Screens get `nav({to})` for navigation.
 
@@ -41,7 +41,7 @@ const PLAYERS = [
 ];
 
 // ──────────────────────────────────────────────────────────────
-// HOME — feed of live + upcoming + your matches
+// HOME, feed of live + upcoming + your matches
 // ──────────────────────────────────────────────────────────────
 function ScreenHome({ nav }) {
   return (
@@ -120,7 +120,7 @@ function ScreenHome({ nav }) {
 }
 
 // ──────────────────────────────────────────────────────────────
-// MATCH DETAIL — live scoring view
+// MATCH DETAIL, live scoring view
 // ──────────────────────────────────────────────────────────────
 function abbr(name = '') {
   return name.split(' ').map(w => w[0]).join('').slice(0, 3).toUpperCase();
@@ -236,7 +236,7 @@ function ScreenMatch({ nav, match = MATCHES[0] }) {
 }
 
 // ──────────────────────────────────────────────────────────────
-// PROFILE — player career
+// PROFILE, player career
 // ──────────────────────────────────────────────────────────────
 function ScreenProfile({ nav, player = PLAYERS[0] }) {
   const stats = [
@@ -336,7 +336,7 @@ function ScreenProfile({ nav, player = PLAYERS[0] }) {
 }
 
 // ──────────────────────────────────────────────────────────────
-// LOOKING — find opponents / players / teams
+// LOOKING, find opponents / players / teams
 // ──────────────────────────────────────────────────────────────
 function ScreenLooking({ nav }) {
   const looking = [

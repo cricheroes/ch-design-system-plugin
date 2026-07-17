@@ -173,12 +173,12 @@
   .prod .price { display: flex; align-items: baseline; gap: var(--sp-8); margin-top: var(--sp-8); flex-wrap: wrap; }
   .prod .cur { font-variant-numeric: tabular-nums; font-weight: var(--ch-weight-bold); color: var(--label-grey-high); }
   .prod .was { font-variant-numeric: tabular-nums; color: var(--label-grey-medium); text-decoration: line-through; }
-  .prod .off { font-weight: var(--ch-weight-bold); color: var(--label-primary-high); }
+  .prod .off { font-weight: var(--ch-weight-bold); color: var(--label-secondary-high); }
 
   /* ── squad tiles ── */
   .squad { display: flex; gap: var(--sp-12); overflow-x: auto; padding-bottom: var(--sp-12); }
   .sq { flex: 0 0 112px; position: relative; text-align: center; background: transparent; border: 0; box-shadow: none; padding: 0; cursor: pointer; }
-  .sq .ph { aspect-ratio: 1 / 1; border-radius: var(--radius-md); background: var(--fill-primary-prominent); color: var(--label-static-white-high); display: flex; align-items: center; justify-content: center; font-weight: var(--ch-weight-bold); font-size: var(--ch-font-title-lg); font-variant-numeric: tabular-nums; }
+  .sq .ph { aspect-ratio: 1 / 1; border-radius: var(--radius-md); background: var(--fill-grey-prominent); color: var(--label-static-white-high); display: flex; align-items: center; justify-content: center; font-weight: var(--ch-weight-bold); font-size: var(--ch-font-title-lg); font-variant-numeric: tabular-nums; }
   .sq .nm { margin-top: var(--sp-8); font-weight: var(--ch-weight-medium); color: var(--label-grey-high); }
   .sq .rl { color: var(--label-grey-medium); }
   .sq .pin { position: absolute; top: var(--sp-8); right: var(--sp-8); width: 24px; height: 24px; border-radius: var(--radius-full); background: var(--fill-secondary-prominent); color: var(--label-static-white-high); display: flex; align-items: center; justify-content: center; box-shadow: var(--elevation-2); }
@@ -450,7 +450,7 @@
     <div class="sec-head"><span class="eyebrow ch-overline">Commerce and team</span><h2 id="s-store" class="ch-headline-small">Shop and squad</h2></div>
 
     <div class="cell" style="margin-bottom: var(--sp-24)">
-      <p class="cap ch-label-medium"><b>Store product card</b> 3:4 image, brand, name, price · red discount · horizontal scroll</p>
+      <p class="cap ch-label-medium"><b>Store product card</b> 3:4 image, brand, name, price · teal discount · horizontal scroll</p>
       <div class="scroller">
         <a class="prod focusable" href="#" aria-label="SG Cobra Xtreme bat, 4,499 rupees, 25 percent off"><div class="img" aria-hidden="true"><span data-icon="bat" data-icon-size="40"></span></div><div class="brand ch-label-small">SG</div><div class="nm ch-body-small">Cobra Xtreme bat</div><div class="price"><span class="cur ch-body-medium">&#8377;4,499</span><span class="was ch-label-small">&#8377;5,999</span><span class="off ch-label-small">25% off</span></div></a>
         <a class="prod focusable" href="#" aria-label="SS Menace leather ball, 1,299 rupees, 13 percent off"><div class="img" aria-hidden="true"><span data-icon="ball" data-icon-size="40"></span></div><div class="brand ch-label-small">SS</div><div class="nm ch-body-small">Menace leather ball</div><div class="price"><span class="cur ch-body-medium">&#8377;1,299</span><span class="was ch-label-small">&#8377;1,499</span><span class="off ch-label-small">13% off</span></div></a>

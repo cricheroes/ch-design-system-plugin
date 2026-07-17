@@ -1,4 +1,4 @@
-// CricHeroes — shared icon SVGs (1.5 px stroke, 24×24).
+// CricHeroes, shared icon SVGs (1.5 px stroke, 24×24).
 // Cricket-specific glyphs are hand-drawn to match the original Figma stroke style.
 // Generic glyphs (Home, Search, Settings…) lean on Lucide-style outlines.
 
