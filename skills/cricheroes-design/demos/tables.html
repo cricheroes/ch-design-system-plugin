@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CricHeroes design system: stat tables</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  :root { --page: 1000px; }
+  body { background: var(--bg-secondary); }
+  .wrap { max-width: var(--page); margin: 0 auto; padding: var(--sp-32) var(--sp-20) var(--sp-80); }
+
+  /* ── Editorial hero ────────────────────────────────────────── */
+  .hero { padding: var(--sp-24) 0 var(--sp-32); border-bottom: 1px solid var(--fill-grey-low); }
+  .hero .eyebrow { color: var(--brand-secondary-60); }
+  .hero h1 { margin: var(--sp-8) 0 var(--sp-12); max-width: 18ch; }
+  .hero .lead { color: var(--label-grey-medium); max-width: 56ch; }
+  .hero .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-12); margin-top: var(--sp-24); }
+  .jumps { display: flex; flex-wrap: wrap; gap: var(--sp-8); flex: 1 1 auto; }
+  .jump { display: inline-flex; align-items: center; gap: var(--sp-4); height: 44px; padding: 0 var(--sp-16);
+          border-radius: var(--radius-full); background: var(--fill-grey-low); color: var(--brand-secondary-60);
+          transition: background var(--duration-fast) var(--ease-standard); }
+  .jump:hover { background: var(--fill-secondary-muted); }
+  .jump:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-8);
+         height: 44px; padding: 0 var(--sp-20); border: 0; border-radius: var(--radius-sm); cursor: pointer;
+         transition: filter var(--duration-fast) var(--ease-standard); }
+  .btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .btn-primary { background: var(--btn-bg-primary-prominent); color: var(--btn-label-primary-prominent); }
+  .btn-primary:hover { filter: brightness(0.94); }
+  .icon-btn { width: 44px; height: 44px; border: 0; border-radius: var(--radius-full); cursor: pointer;
+              background: var(--fill-grey-low); color: var(--icon-grey-prominent);
+              display: inline-flex; align-items: center; justify-content: center;
+              transition: background var(--duration-fast) var(--ease-standard); }
+  .icon-btn:hover { background: var(--fill-grey-medium); }
+  .icon-btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+  /* ── Section + card shells (vary by surface, not a uniform grid) ── */
+  section { margin-top: var(--sp-40); }
+  .sec-head { margin-bottom: var(--sp-16); }
+  .sec-head .eyebrow { color: var(--brand-secondary-60); }
+  .sec-head h2 { margin-top: var(--sp-4); }
+  .sec-head p { color: var(--label-grey-medium); max-width: 60ch; margin-top: var(--sp-8); }
+
+  .card { background: var(--bg-primary); border-radius: var(--radius-lg); box-shadow: var(--elevation-2);
+          padding: var(--sp-20); margin-top: var(--sp-20); }
+  .card-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--sp-16);
+               flex-wrap: wrap; margin-bottom: var(--sp-16); }
+  .card-head .eyebrow { color: var(--label-grey-medium); }
+  .card-head h3 { margin-top: var(--sp-2); }
+  .card-head .sub { color: var(--label-grey-medium); margin-top: var(--sp-4); }
+  .card-head .meta { display: flex; align-items: center; gap: var(--sp-8); }
+
+  .view-all { display: inline-flex; align-items: center; gap: var(--sp-4); height: 44px; padding: 0 var(--sp-12);
+              border-radius: var(--radius-sm); color: var(--brand-secondary-60);
+              transition: background var(--duration-fast) var(--ease-standard); }
+  .view-all:hover { background: var(--fill-secondary-muted); }
+  .view-all:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .view-all [data-icon] { display: inline-flex; }
+
+  .live-chip { display: inline-flex; align-items: center; gap: var(--sp-8); height: 28px; padding: 0 var(--sp-12);
+               border-radius: var(--radius-full); background: var(--fill-primary-medium); color: var(--label-primary-high); }
+  .live-chip .dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
+
+  /* ═══════════════════════════════════════════════════════════════
+     THE StatTable PRIMITIVE: one class, every table below reuses it.
+     Variants change columns + a thin set of modifiers, never the base.
+     ═══════════════════════════════════════════════════════════════ */
+  .stat-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius-md); }
+  .stat-wrap:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+  .stat-table { width: 100%; border-collapse: separate; border-spacing: 0;
+                font-size: var(--ch-font-body-sm); color: var(--label-grey-high); }
+  .stat-table th, .stat-table td { padding: var(--sp-12) var(--sp-16); text-align: right; white-space: nowrap;
+                                    border-bottom: 1px solid var(--fill-grey-low); }
+  /* emphasised, sticky first column: the label/identity column */
+  .stat-table th:first-child, .stat-table td:first-child { text-align: left; position: sticky; left: 0;
+                                    min-width: 168px; border-right: 1px solid var(--fill-grey-low); }
+  /* header band: fill-grey-muted · uppercase · 700 · tracking · grey-medium */
+  .stat-table thead th { background: var(--fill-grey-muted); color: var(--label-grey-medium);
+                         font-weight: var(--ch-weight-bold); font-size: var(--ch-font-label-sm);
+                         letter-spacing: 0.04em; text-transform: uppercase; }
+  /* sticky cells need an opaque backing so scrolled columns don't bleed through */
+  .stat-table thead th:first-child { background: var(--bg-secondary); }
+  .stat-table tbody td:first-child { background: var(--bg-primary); }
+  .stat-table tbody tr:last-child td { border-bottom: 0; }
+  /* designed row state */
+  .stat-table tbody tr { transition: background var(--duration-fast) var(--ease-standard); }
+  .stat-table tbody tr:hover td { background: var(--fill-grey-muted); }
+  /* pinned first column must stay OPAQUE in hover/qualified states: composite tint over the card colour so scrolled columns can't bleed through */
+  .stat-table tbody tr:hover td:first-child { background: linear-gradient(var(--fill-grey-muted), var(--fill-grey-muted)), var(--bg-primary); }
+
+  /* numeric cells carry .ch-display-numeric (tabular) in the markup; alignment is inherited from the base */
+  .num-strong { font-weight: var(--ch-weight-bold); color: var(--label-grey-high); }
+  .col-emph { background: var(--fill-grey-low); }              /* emphasised column tint (e.g. Pts, Total) */
+
+  /* identity-column building blocks (shared by every variant) */
+  .idcell { display: flex; align-items: center; gap: var(--sp-12); }
+  .rank { min-width: 20px; color: var(--label-grey-medium); font-variant-numeric: tabular-nums; text-align: center; }
+  .mono { flex: none; width: 32px; height: 32px; border-radius: var(--radius-full); background: var(--fill-grey-low);
+          color: var(--label-grey-high); display: inline-flex; align-items: center; justify-content: center;
+          font-weight: var(--ch-weight-bold); letter-spacing: 0.02em; }
+  .player-link { color: var(--brand-secondary-60); font-weight: var(--ch-weight-medium); border-radius: var(--radius-xs); }
+  .player-link:hover { text-decoration: underline; }
+  .player-link:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .captain::after { content: " (C)"; color: var(--label-grey-medium); font-weight: var(--ch-weight-regular); }
+  .active-mark { color: var(--brand-secondary-60); font-weight: var(--ch-weight-bold); }
+  .sub-team { color: var(--label-grey-medium); }
+  .dismissal { display: block; margin-top: var(--sp-2); white-space: normal;
+               color: var(--label-grey-medium); font-size: var(--ch-font-label-sm); font-weight: var(--ch-weight-regular); }
+  .trophy-gold { color: var(--ch-gold); display: inline-flex; }
+
+  /* footer rows (extras / total): part of the primitive */
+  .stat-table tfoot td { background: var(--fill-grey-muted); font-weight: var(--ch-weight-medium);
+                         border-top: 1px solid var(--fill-grey-low); border-bottom: 0; }
+  .stat-table tfoot td:first-child { background: var(--bg-secondary); }
+  .foot-detail { text-align: left; white-space: normal; color: var(--label-grey-medium); font-weight: var(--ch-weight-regular); }
+
+  /* qualification band (points table top 2): placed after base so it wins on tie */
+  .stat-table tbody tr.qualified td { background: var(--fill-secondary-muted); }
+  .stat-table tbody tr.qualified td:first-child { background: linear-gradient(var(--fill-secondary-muted), var(--fill-secondary-muted)), var(--bg-primary); box-shadow: inset 3px 0 0 var(--fill-secondary-prominent); }
+  .stat-table tbody tr.qualified:hover td { background: var(--fill-secondary-low); }
+  .stat-table tbody tr.qualified:hover td:first-child { background: linear-gradient(var(--fill-secondary-low), var(--fill-secondary-low)), var(--bg-primary); box-shadow: inset 3px 0 0 var(--fill-secondary-prominent); }
+  .q-mark { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px;
+            padding: 0 var(--sp-4); margin-left: var(--sp-8); border-radius: var(--radius-full);
+            background: var(--fill-secondary-prominent); color: var(--label-static-white-high);
+            font-size: var(--ch-font-label-sm); font-weight: var(--ch-weight-bold); }
+
+  .table-note { color: var(--label-grey-medium); margin-top: var(--sp-12); }
+  .legend { display: flex; align-items: center; gap: var(--sp-8); margin-top: var(--sp-12); color: var(--label-grey-medium); }
+
+  /* annotated primitive spec list */
+  .spec { list-style: none; margin-top: var(--sp-16); display: grid; gap: var(--sp-8); }
+  .spec li { display: flex; align-items: flex-start; gap: var(--sp-8); color: var(--label-grey-medium); }
+  .spec b { color: var(--label-grey-high); font-weight: var(--ch-weight-medium); }
+  .spec .tick { color: var(--label-secondary-high); flex: none; }
+
+  @media (max-width: 600px) {
+    .wrap { padding: var(--sp-20) var(--sp-16) var(--sp-64); }
+    .card { padding: var(--sp-16); }
+    .stat-table th:first-child, .stat-table td:first-child { min-width: 148px; }
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <!-- ── Editorial hero ─────────────────────────────────────────── -->
+  <header class="hero">
+    <p class="eyebrow ch-overline">CricHeroes · design system</p>
+    <h1>Stat tables, built on one primitive</h1>
+    <p class="lead ch-body-large">Five cricket tables: a batting scorecard, a bowling scorecard, fall of wickets, the
+      MVP leaderboard and a points table. Every one is the same StatTable. Only the columns change.</p>
+    <div class="toolbar">
+      <nav class="jumps" aria-label="Jump to a table">
+        <a class="jump ch-label-medium" href="#batting">Batting</a>
+        <a class="jump ch-label-medium" href="#bowling">Bowling</a>
+        <a class="jump ch-label-medium" href="#fow">Fall of wickets</a>
+        <a class="jump ch-label-medium" href="#mvp">MVP</a>
+        <a class="jump ch-label-medium" href="#points">Points table</a>
+      </nav>
+      <button class="icon-btn" aria-label="Share this page"><span data-icon="share" aria-hidden="true"></span></button>
+      <button class="btn btn-primary ch-button-label-md"><span data-icon="play" aria-hidden="true"></span>Open live match</button>
+    </div>
+  </header>
+
+  <!-- ── The primitive, shown once ──────────────────────────────── -->
+  <section aria-labelledby="prim-h">
+    <div class="sec-head">
+      <p class="eyebrow ch-overline">The primitive</p>
+      <h2 id="prim-h">One StatTable, many configs</h2>
+      <p class="ch-body-medium">This is the shared base. Numeric cells are right-aligned and tabular, the first column
+        is sticky and emphasised, and the whole table sits in an <code>overflow-x</code> wrapper so it scrolls on
+        narrow screens without breaking the page. The variants below add only columns and a few modifiers.</p>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow ch-overline">Anatomy</p>
+          <h3 class="ch-title-medium-emphasized">Base structure</h3>
+        </div>
+      </div>
+      <div class="stat-wrap" tabindex="0" role="region" aria-label="Primitive example table, scroll horizontally">
+        <table class="stat-table">
+          <thead>
+            <tr><th scope="col">Player</th><th scope="col">Mat</th><th scope="col">Runs</th><th scope="col">Avg</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><a class="player-link" href="#">V Patel</a></td><td class="ch-display-numeric">42</td><td class="ch-display-numeric">1,864</td><td class="ch-display-numeric">48.6</td></tr>
+            <tr><td><a class="player-link" href="#">R Sharma</a></td><td class="ch-display-numeric">39</td><td class="ch-display-numeric">1,502</td><td class="ch-display-numeric">41.7</td></tr>
+            <tr><td><a class="player-link" href="#">H Trivedi</a></td><td class="ch-display-numeric">44</td><td class="ch-display-numeric">1,377</td><td class="ch-display-numeric">36.2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="spec ch-body-small">
+        <li><span class="tick" data-icon="check" data-icon-size="18" aria-hidden="true"></span><span><b>Sticky, emphasised first column</b> holds the player, team or label while stats scroll.</span></li>
+        <li><span class="tick" data-icon="check" data-icon-size="18" aria-hidden="true"></span><span><b>Right-aligned tabular numerics</b> via <code>.ch-display-numeric</code> so digits line up column to column.</span></li>
+        <li><span class="tick" data-icon="check" data-icon-size="18" aria-hidden="true"></span><span><b>Header band</b> in uppercase label-small, plus 1px row dividers from a single token.</span></li>
+        <li><span class="tick" data-icon="check" data-icon-size="18" aria-hidden="true"></span><span><b>Designed states:</b> row hover tint, teal focus ring on the scroll region and every link.</span></li>
+        <li><span class="tick" data-icon="check" data-icon-size="18" aria-hidden="true"></span><span><b>Modifiers only:</b> <code>.col-emph</code>, <code>.num-strong</code>, <code>.qualified</code>, footer rows. No per-table CSS.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Variant 1 · Batting scorecard (T1 + extras/total footer) ── -->
+  <section id="batting" aria-labelledby="batting-h">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow ch-overline">Variant · batting scorecard</p>
+          <h3 id="batting-h" class="ch-title-medium-emphasized">Royal Chargers innings</h3>
+          <p class="sub ch-label-medium">168/4 · 18.3 overs · run rate 9.14</p>
+        </div>
+        <div class="meta">
+          <span class="live-chip ch-label-small-emphasized"><span class="dot"></span>Live</span>
+          <a class="view-all ch-label-medium" href="#">Full scorecard <span data-icon="chevron" data-icon-size="16" aria-hidden="true"></span></a>
+        </div>
+      </div>
+      <div class="stat-wrap" tabindex="0" role="region" aria-labelledby="batting-h">
+        <table class="stat-table">
+          <thead>
+            <tr>
+              <th scope="col">Batter</th><th scope="col">R</th><th scope="col">B</th>
+              <th scope="col">4s</th><th scope="col">6s</th><th scope="col">SR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="player-link" href="#">A Deshpande</a><span class="dismissal">c &amp; b A Rane</span></td>
+              <td class="ch-display-numeric">9</td><td class="ch-display-numeric">8</td>
+              <td class="ch-display-numeric">1</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric">112.5</td>
+            </tr>
+            <tr>
+              <td><a class="player-link" href="#">V Patel</a> <span class="active-mark" aria-label="on strike">*</span><span class="dismissal">not out</span></td>
+              <td class="ch-display-numeric num-strong">42</td><td class="ch-display-numeric">28</td>
+              <td class="ch-display-numeric">3</td><td class="ch-display-numeric">2</td><td class="ch-display-numeric">150.0</td>
+            </tr>
+            <tr>
+              <td><a class="player-link captain" href="#">K Iyer</a><span class="dismissal">b A Rane</span></td>
+              <td class="ch-display-numeric">18</td><td class="ch-display-numeric">14</td>
+              <td class="ch-display-numeric">2</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric">128.5</td>
+            </tr>
+            <tr>
+              <td><a class="player-link" href="#">H Trivedi</a><span class="dismissal">c S Nair b R Sharma</span></td>
+              <td class="ch-display-numeric">55</td><td class="ch-display-numeric">39</td>
+              <td class="ch-display-numeric">5</td><td class="ch-display-numeric">1</td><td class="ch-display-numeric">141.0</td>
+            </tr>
+            <tr>
+              <td><a class="player-link" href="#">Rohit M</a><span class="dismissal">lbw b R Sharma</span></td>
+              <td class="ch-display-numeric">31</td><td class="ch-display-numeric">25</td>
+              <td class="ch-display-numeric">3</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric">124.0</td>
+            </tr>
+            <tr>
+              <td><a class="player-link" href="#">S Kelkar</a><span class="dismissal">not out</span></td>
+              <td class="ch-display-numeric">3</td><td class="ch-display-numeric">2</td>
+              <td class="ch-display-numeric">0</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric">150.0</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Extras</td>
+              <td class="foot-detail" colspan="4">b 1 · lb 2 · wd 9 · nb 2</td>
+              <td class="ch-display-numeric">14</td>
+            </tr>
+            <tr>
+              <td>Total</td>
+              <td class="foot-detail" colspan="4">4 wkts · 18.3 overs · run rate 9.14</td>
+              <td class="ch-display-numeric num-strong">168</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <p class="table-note ch-body-small">Yet to bat: D Kulkarni, M Shaikh, P Joshi</p>
+    </div>
+  </section>
+
+  <!-- ── Variant 2 · Bowling scorecard (T2, wide → scrolls) ──────── -->
+  <section id="bowling" aria-labelledby="bowling-h">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow ch-overline">Variant · bowling scorecard</p>
+          <h3 id="bowling-h" class="ch-title-medium-emphasized">Mohali Strikers bowling</h3>
+          <p class="sub ch-label-medium">Wide table · scroll sideways, the bowler column stays put</p>
+        </div>
+        <a class="view-all ch-label-medium" href="#">Full scorecard <span data-icon="chevron" data-icon-size="16" aria-hidden="true"></span></a>
+      </div>
+      <div class="stat-wrap" tabindex="0" role="region" aria-labelledby="bowling-h">
+        <table class="stat-table">
+          <thead>
+            <tr>
+              <th scope="col">Bowler</th><th scope="col">O</th><th scope="col">M</th><th scope="col">R</th>
+              <th scope="col">W</th><th scope="col">0s</th><th scope="col">4s</th><th scope="col">6s</th>
+              <th scope="col">WD</th><th scope="col">NB</th><th scope="col">Eco</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="player-link" href="#">R Sharma</a></td>
+              <td class="ch-display-numeric">4.0</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric">28</td>
+              <td class="ch-display-numeric num-strong">2</td><td class="ch-display-numeric">12</td><td class="ch-display-numeric">3</td>
+              <td class="ch-display-numeric">1</td><td class="ch-display-numeric">4</td><td class="ch-display-numeric">1</td><td class="ch-display-numeric">7.00</td>
+            </tr>
+            <tr>
+              <td><a class="player-link" href="#">A Rane</a> <span class="active-mark" aria-label="bowling this over">*</span></td>
+              <td class="ch-display-numeric">3.3</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric">31</td>
+              <td class="ch-display-numeric num-strong">2</td><td class="ch-display-numeric">8</td><td class="ch-display-numeric">4</td>
+              <td class="ch-display-numeric">2</td><td class="ch-display-numeric">2</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric">8.86</td>
+            </tr>
+            <tr>
+              <td><a class="player-link" href="#">S Nair</a></td>
+              <td class="ch-display-numeric">3.0</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric">22</td>
+              <td class="ch-display-numeric num-strong">0</td><td class="ch-display-numeric">10</td><td class="ch-display-numeric">2</td>
+              <td class="ch-display-numeric">0</td><td class="ch-display-numeric">1</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric">7.33</td>
+            </tr>
+            <tr>
+              <td><a class="player-link" href="#">D Kulkarni</a></td>
+              <td class="ch-display-numeric">4.0</td><td class="ch-display-numeric">1</td><td class="ch-display-numeric">34</td>
+              <td class="ch-display-numeric num-strong">0</td><td class="ch-display-numeric">9</td><td class="ch-display-numeric">5</td>
+              <td class="ch-display-numeric">1</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric">1</td><td class="ch-display-numeric">8.50</td>
+            </tr>
+            <tr>
+              <td><a class="player-link" href="#">M Shaikh</a></td>
+              <td class="ch-display-numeric">4.0</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric">41</td>
+              <td class="ch-display-numeric num-strong">0</td><td class="ch-display-numeric">6</td><td class="ch-display-numeric">6</td>
+              <td class="ch-display-numeric">2</td><td class="ch-display-numeric">1</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric">10.25</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Variant 3 · Fall of wickets (T5 as a table config) ─────── -->
+  <section id="fow" aria-labelledby="fow-h">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow ch-overline">Variant · fall of wickets</p>
+          <h3 id="fow-h" class="ch-title-medium-emphasized">Royal Chargers · fall of wickets</h3>
+          <p class="sub ch-label-medium">Same primitive, four compact columns</p>
+        </div>
+      </div>
+      <div class="stat-wrap" tabindex="0" role="region" aria-labelledby="fow-h">
+        <table class="stat-table">
+          <thead>
+            <tr><th scope="col">Batter out</th><th scope="col">Wkt</th><th scope="col">Score</th><th scope="col">Over</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><a class="player-link" href="#">A Deshpande</a></td><td class="ch-display-numeric num-strong">1</td><td class="ch-display-numeric">11</td><td class="ch-display-numeric">2.3</td></tr>
+            <tr><td><a class="player-link captain" href="#">K Iyer</a></td><td class="ch-display-numeric num-strong">2</td><td class="ch-display-numeric">66</td><td class="ch-display-numeric">8.1</td></tr>
+            <tr><td><a class="player-link" href="#">H Trivedi</a></td><td class="ch-display-numeric num-strong">3</td><td class="ch-display-numeric">121</td><td class="ch-display-numeric">14.5</td></tr>
+            <tr><td><a class="player-link" href="#">Rohit M</a></td><td class="ch-display-numeric num-strong">4</td><td class="ch-display-numeric">160</td><td class="ch-display-numeric">17.6</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Variant 4 · MVP leaderboard (T7, grouped metrics + trophy) ─ -->
+  <section id="mvp" aria-labelledby="mvp-h">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow ch-overline">Variant · MVP leaderboard</p>
+          <h3 id="mvp-h" class="ch-title-medium-emphasized">Mohali Premier League · MVP</h3>
+          <p class="sub ch-label-medium">Batting, bowling and fielding points · total emphasised</p>
+        </div>
+        <a class="view-all ch-label-medium" href="#">Full leaderboard <span data-icon="chevron" data-icon-size="16" aria-hidden="true"></span></a>
+      </div>
+      <div class="stat-wrap" tabindex="0" role="region" aria-labelledby="mvp-h">
+        <table class="stat-table">
+          <thead>
+            <tr>
+              <th scope="col">Player</th><th scope="col">Bat</th><th scope="col">Bowl</th>
+              <th scope="col">Field</th><th scope="col" class="col-emph">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="idcell">
+                  <span class="trophy-gold" data-icon="trophy" data-icon-size="20" aria-label="tournament leader"></span>
+                  <span class="mono ch-label-small">RS</span>
+                  <span><a class="player-link" href="#">R Sharma</a><span class="dismissal sub-team">Mohali Strikers</span></span>
+                </div>
+              </td>
+              <td class="ch-display-numeric">96</td><td class="ch-display-numeric">268</td>
+              <td class="ch-display-numeric">64</td><td class="ch-display-numeric num-strong col-emph">428</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="idcell">
+                  <span class="rank ch-label-medium">2</span>
+                  <span class="mono ch-label-small">VP</span>
+                  <span><a class="player-link" href="#">V Patel</a><span class="dismissal sub-team">Royal Chargers</span></span>
+                </div>
+              </td>
+              <td class="ch-display-numeric">324</td><td class="ch-display-numeric">33</td>
+              <td class="ch-display-numeric">60</td><td class="ch-display-numeric num-strong col-emph">417</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="idcell">
+                  <span class="rank ch-label-medium">3</span>
+                  <span class="mono ch-label-small">HT</span>
+                  <span><a class="player-link" href="#">H Trivedi</a><span class="dismissal sub-team">Andheri Strikers</span></span>
+                </div>
+              </td>
+              <td class="ch-display-numeric">251</td><td class="ch-display-numeric">78</td>
+              <td class="ch-display-numeric">60</td><td class="ch-display-numeric num-strong col-emph">389</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="idcell">
+                  <span class="rank ch-label-medium">4</span>
+                  <span class="mono ch-label-small">SN</span>
+                  <span><a class="player-link" href="#">S Nair</a><span class="dismissal sub-team">Mohali Strikers</span></span>
+                </div>
+              </td>
+              <td class="ch-display-numeric">180</td><td class="ch-display-numeric">96</td>
+              <td class="ch-display-numeric">80</td><td class="ch-display-numeric num-strong col-emph">356</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="idcell">
+                  <span class="rank ch-label-medium">5</span>
+                  <span class="mono ch-label-small">AR</span>
+                  <span><a class="player-link" href="#">A Rane</a><span class="dismissal sub-team">Andheri Strikers</span></span>
+                </div>
+              </td>
+              <td class="ch-display-numeric">60</td><td class="ch-display-numeric">242</td>
+              <td class="ch-display-numeric">40</td><td class="ch-display-numeric num-strong col-emph">342</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Variant 5 · ICC-style points table (T8) ────────────────── -->
+  <section id="points" aria-labelledby="points-h">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow ch-overline">Variant · points table</p>
+          <h3 id="points-h" class="ch-title-medium-emphasized">Mohali Premier League · standings</h3>
+          <p class="sub ch-label-medium">Top two qualify · points emphasised · net run rate breaks ties</p>
+        </div>
+        <a class="view-all ch-label-medium" href="#">Full table <span data-icon="chevron" data-icon-size="16" aria-hidden="true"></span></a>
+      </div>
+      <div class="stat-wrap" tabindex="0" role="region" aria-labelledby="points-h">
+        <table class="stat-table">
+          <thead>
+            <tr>
+              <th scope="col">Team</th><th scope="col">P</th><th scope="col">W</th><th scope="col">L</th>
+              <th scope="col">T</th><th scope="col">N/R</th><th scope="col" class="col-emph">Pts</th><th scope="col">NRR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="qualified">
+              <td><div class="idcell"><span class="rank ch-label-medium">1</span><span class="mono ch-label-small">MS</span><span><a class="player-link" href="#">Mohali Strikers</a></span><span class="q-mark" aria-label="Qualified for the playoffs">Q</span></div></td>
+              <td class="ch-display-numeric">8</td><td class="ch-display-numeric">7</td><td class="ch-display-numeric">1</td>
+              <td class="ch-display-numeric">0</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric num-strong col-emph">14</td><td class="ch-display-numeric">+1.284</td>
+            </tr>
+            <tr class="qualified">
+              <td><div class="idcell"><span class="rank ch-label-medium">2</span><span class="mono ch-label-small">RC</span><span><a class="player-link" href="#">Royal Chargers</a></span><span class="q-mark" aria-label="Qualified for the playoffs">Q</span></div></td>
+              <td class="ch-display-numeric">8</td><td class="ch-display-numeric">6</td><td class="ch-display-numeric">2</td>
+              <td class="ch-display-numeric">0</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric num-strong col-emph">12</td><td class="ch-display-numeric">+0.912</td>
+            </tr>
+            <tr>
+              <td><div class="idcell"><span class="rank ch-label-medium">3</span><span class="mono ch-label-small">AS</span><span><a class="player-link" href="#">Andheri Strikers</a></span></div></td>
+              <td class="ch-display-numeric">8</td><td class="ch-display-numeric">5</td><td class="ch-display-numeric">3</td>
+              <td class="ch-display-numeric">0</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric num-strong col-emph">10</td><td class="ch-display-numeric">+0.451</td>
+            </tr>
+            <tr>
+              <td><div class="idcell"><span class="rank ch-label-medium">4</span><span class="mono ch-label-small">DG</span><span><a class="player-link" href="#">Deccan Gladiators</a></span></div></td>
+              <td class="ch-display-numeric">8</td><td class="ch-display-numeric">4</td><td class="ch-display-numeric">3</td>
+              <td class="ch-display-numeric">0</td><td class="ch-display-numeric">1</td><td class="ch-display-numeric num-strong col-emph">9</td><td class="ch-display-numeric">+0.108</td>
+            </tr>
+            <tr>
+              <td><div class="idcell"><span class="rank ch-label-medium">5</span><span class="mono ch-label-small">BB</span><span><a class="player-link" href="#">Bandra Blasters</a></span></div></td>
+              <td class="ch-display-numeric">8</td><td class="ch-display-numeric">4</td><td class="ch-display-numeric">4</td>
+              <td class="ch-display-numeric">0</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric num-strong col-emph">8</td><td class="ch-display-numeric">-0.045</td>
+            </tr>
+            <tr>
+              <td><div class="idcell"><span class="rank ch-label-medium">6</span><span class="mono ch-label-small">PP</span><span><a class="player-link" href="#">Powai Panthers</a></span></div></td>
+              <td class="ch-display-numeric">8</td><td class="ch-display-numeric">3</td><td class="ch-display-numeric">5</td>
+              <td class="ch-display-numeric">0</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric num-strong col-emph">6</td><td class="ch-display-numeric">-0.372</td>
+            </tr>
+            <tr>
+              <td><div class="idcell"><span class="rank ch-label-medium">7</span><span class="mono ch-label-small">TT</span><span><a class="player-link" href="#">Thane Titans</a></span></div></td>
+              <td class="ch-display-numeric">8</td><td class="ch-display-numeric">2</td><td class="ch-display-numeric">6</td>
+              <td class="ch-display-numeric">0</td><td class="ch-display-numeric">0</td><td class="ch-display-numeric num-strong col-emph">4</td><td class="ch-display-numeric">-0.884</td>
+            </tr>
+            <tr>
+              <td><div class="idcell"><span class="rank ch-label-medium">8</span><span class="mono ch-label-small">CK</span><span><a class="player-link" href="#">Colaba Kings</a></span></div></td>
+              <td class="ch-display-numeric">8</td><td class="ch-display-numeric">1</td><td class="ch-display-numeric">6</td>
+              <td class="ch-display-numeric">0</td><td class="ch-display-numeric">1</td><td class="ch-display-numeric num-strong col-emph">3</td><td class="ch-display-numeric">-1.156</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend ch-body-small"><span class="q-mark" aria-hidden="true" style="margin-left:0">Q</span> Qualified for the playoffs · P played · N/R no result · NRR net run rate</p>
+    </div>
+  </section>
+
+</main>
+<script src="../assets/icons.js"></script>
+<script>if (window.CH && CH.icons) CH.icons.hydrate(document);</script>
+</body>
+</html>

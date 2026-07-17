@@ -1,5 +1,5 @@
 /* =============================================================
-   CricHeroes Design System — Core foundations
+   CricHeroes Design System: Core foundations
    Official web tokens. Mirrors the source of truth:
      - cricheroes-design-guidelines.html  :root  (colour / spacing / radius / elevation)
      - typography.css                     (15 M3 roles x Regular + Emphasized)
@@ -56,7 +56,7 @@
   --brand-black:   #0B0B0B;
   --brand-white:   #FEFFFF;
 
-  /* RGB triplets — power opacity-based semantic tokens */
+  /* RGB triplets: power opacity-based semantic tokens */
   --rgb-primary:        226 28 40;
   --rgb-secondary:      24 149 143;
   --rgb-secondary-30:   116 191 188;
@@ -68,30 +68,30 @@
   /* ─── TIER 2 · SEMANTIC TOKENS ───
      The only tokens components should consume. */
 
-  /* Screen Background — solid surfaces only (no opacity) */
+  /* Screen Background: solid surfaces only (no opacity) */
   --bg-primary:   #FEFFFF;
   --bg-secondary: #F3F3F3;
   --bg-tertiary:  #FEFFFF;
 
-  /* Labels / Primary — branded red text. Only -high and -medium are text-safe. */
+  /* Labels / Primary: branded red text. Only -high and -medium are text-safe. */
   --label-primary-high:    rgb(var(--rgb-primary));
   --label-primary-medium:  rgb(var(--rgb-primary) / 0.52);
   --label-primary-low:     rgb(var(--rgb-primary) / 0.30);
   --label-primary-muted:   rgb(var(--rgb-primary) / 0.14);
 
-  /* Labels / Secondary — interaction teal text */
+  /* Labels / Secondary: interaction teal text */
   --label-secondary-high:   rgb(var(--rgb-secondary));
   --label-secondary-medium: rgb(var(--rgb-secondary) / 0.54);
   --label-secondary-low:    rgb(var(--rgb-secondary) / 0.30);
   --label-secondary-muted:  rgb(var(--rgb-secondary) / 0.18);
 
-  /* Labels / Grey — primary body-text hierarchy. -low / -muted are NOT text-safe. */
+  /* Labels / Grey: primary body-text hierarchy. -low / -muted are NOT text-safe. */
   --label-grey-high:    rgb(var(--rgb-black));
   --label-grey-medium:  rgb(var(--rgb-black) / 0.60);
   --label-grey-low:     rgb(var(--rgb-black) / 0.30);
   --label-grey-muted:   rgb(var(--rgb-black) / 0.18);
 
-  /* Labels / Static — fixed tone for coloured / image surfaces */
+  /* Labels / Static: fixed tone for coloured / image surfaces */
   --label-static-black-high:    rgb(var(--rgb-black));
   --label-static-black-medium:  rgb(var(--rgb-black) / 0.60);
   --label-static-black-low:     rgb(var(--rgb-black) / 0.30);
@@ -101,21 +101,21 @@
   --label-static-white-low:     rgb(var(--rgb-white) / 0.30);
   --label-static-white-muted:   rgb(var(--rgb-white) / 0.16);
 
-  /* Fill / Grey — neutral surfaces, dividers, hover, disabled */
+  /* Fill / Grey: neutral surfaces, dividers, hover, disabled */
   --fill-grey-prominent: rgb(var(--rgb-grey));
   --fill-grey-high:      rgb(var(--rgb-grey) / 0.20);
   --fill-grey-medium:    rgb(var(--rgb-grey) / 0.16);
   --fill-grey-low:       rgb(var(--rgb-grey) / 0.12);
   --fill-grey-muted:     rgb(var(--rgb-grey) / 0.08);
 
-  /* Fill / Primary — branded surfaces, live / urgent moments */
+  /* Fill / Primary: branded surfaces, live / urgent moments */
   --fill-primary-prominent: rgb(var(--rgb-primary));
   --fill-primary-high:      rgb(var(--rgb-primary) / 0.20);
   --fill-primary-medium:    rgb(var(--rgb-primary) / 0.16);
   --fill-primary-low:       rgb(var(--rgb-primary) / 0.12);
   --fill-primary-muted:     rgb(var(--rgb-primary) / 0.08);
 
-  /* Fill / Secondary — interaction surfaces, selected, focus tint */
+  /* Fill / Secondary: interaction surfaces, selected, focus tint */
   --fill-secondary-prominent: rgb(var(--rgb-secondary));
   --fill-secondary-high:      rgb(var(--rgb-secondary) / 0.20);
   --fill-secondary-medium:    rgb(var(--rgb-secondary) / 0.16);
@@ -128,9 +128,9 @@
      Note: --btn-*-secondary-* is the RED / destructive button (legacy name). */
 
   /* Buttons / Background */
-  --btn-bg-primary-prominent:   rgb(var(--rgb-secondary));            /* Main CTA — Teal */
+  --btn-bg-primary-prominent:   rgb(var(--rgb-secondary));            /* Main CTA: Teal */
   --btn-bg-primary-disable:     rgb(var(--rgb-secondary) / 0.20);
-  --btn-bg-secondary-prominent: rgb(var(--rgb-primary));              /* Brand / destructive CTA — Red */
+  --btn-bg-secondary-prominent: rgb(var(--rgb-primary));              /* Brand / destructive CTA: Red */
   --btn-bg-secondary-disable:   rgb(var(--rgb-primary) / 0.14);
   --btn-bg-grey-prominent:      rgb(var(--rgb-grey) / 0.12);
   --btn-bg-grey-disable:        rgb(var(--rgb-grey) / 0.12);
@@ -213,7 +213,7 @@
   --ch-button-label-lg-weight:   500;
   --ch-button-label-lg-tracking: 0.01em;
 
-  /* ─── Spacing (4pt) — 12 foundation tokens ───
+  /* ─── Spacing (4pt): 12 foundation tokens ───
      Retired (do not reintroduce): --sp-6 · --sp-10 · --sp-96 */
   --sp-2:  2px;  --sp-4:  4px;  --sp-8:  8px;   --sp-12: 12px;
   --sp-16: 16px; --sp-20: 20px; --sp-24: 24px;  --sp-32: 32px;
@@ -249,11 +249,38 @@
   /* ─── CricHeroes extensions ───
      NOT in the official web export. Brand-playbook values, use sparingly.
      Flagged for the design team to fold in or drop. */
-  --ch-gold:      #CB8E40;                        /* Khaki Gold — awards / premium */
+  --ch-gold:      #CB8E40;                        /* Khaki Gold: awards / premium */
   --ch-gold-fill: rgb(203 142 64 / 0.16);
   --duration-fast: 150ms;
   --ease-standard: cubic-bezier(0.2, 0, 0.2, 1);
   --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Chart / data-viz palette (Phase B, CricHeroes extension, not in the official export).
+     The brand is essentially two hues, so charts need a dedicated palette. Red is
+     reserved for wicket / out / negative only. Always pair colour with a non-colour
+     encoding (pattern, label, marker) and offer a data-table fallback. */
+  --chart-seq-1: rgb(var(--rgb-secondary) / 0.18);   /* ordered magnitude: teal ramp, light to dark */
+  --chart-seq-2: rgb(var(--rgb-secondary) / 0.34);
+  --chart-seq-3: rgb(var(--rgb-secondary) / 0.52);
+  --chart-seq-4: rgb(var(--rgb-secondary) / 0.70);
+  --chart-seq-5: rgb(var(--rgb-secondary) / 0.88);
+  --chart-seq-6: var(--brand-secondary-60);
+  --chart-cat-1: var(--brand-secondary);             /* distinct series: teal */
+  --chart-cat-2: var(--ch-gold);                     /* gold */
+  --chart-cat-3: var(--brand-secondary-60);          /* deep teal */
+  --chart-cat-4: var(--brand-grey);                  /* grey */
+  --chart-cat-5: var(--brand-secondary-30);          /* light teal */
+  --chart-cat-6: rgb(203 142 64 / 0.55);             /* light gold */
+  --chart-wicket: var(--brand-primary);              /* red: wicket / out / negative ONLY */
+  --chart-grid:   rgb(var(--rgb-grey) / 0.20);
+  --chart-axis:   var(--label-grey-medium);
+
+  /* Layout / grid (Phase B, derived from AI-CONTEXT section 6 prose, pending design confirmation). */
+  --bp-medium: 600px; --bp-expanded: 840px; --bp-large: 1200px; --bp-xl: 1600px;
+  --container-narrow: 640px; --container-reading: 720px; --container-standard: 1040px;
+  --container-wide: 1240px; --container-full: 1440px;
+  --nav-height: 72px;        /* resolved to the components-spec value; section 6 prose says 56, confirm with design */
+  --sidebar-width: 280px;    /* 240 to 280 range */
 }
 
 /* ═══════════════════════════════════════════════════
@@ -274,7 +301,7 @@ a { text-decoration: none; color: inherit; }
 button { font-family: inherit; }
 
 /* ═══════════════════════════════════════════════════
-   TYPE ROLE CLASSES — 15 M3 roles x Regular + Emphasized
+   TYPE ROLE CLASSES: 15 M3 roles x Regular + Emphasized
    Emphasized = same size / line-height / tracking, weight stepped up.
    ═══════════════════════════════════════════════════ */
 
@@ -411,7 +438,7 @@ button { font-family: inherit; }
 
 .ch-label-small, .ch-label-small-emphasized {
   font-family: var(--ch-font-plain);
-  font-size: 0.75rem;           /* 12 — system floor */
+  font-size: 0.75rem;           /* 12: system floor */
   line-height: 1rem;            /* 16 */
   letter-spacing: 0.04em;
 }
@@ -457,7 +484,7 @@ button { font-family: inherit; }
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-/* Numeric display for scores / stats — tabular Ubuntu Sans (this replaces the old Barlow scorecard face). */
+/* Numeric display for scores / stats: tabular Ubuntu Sans (this replaces the old Barlow scorecard face). */
 .ch-display-numeric { font-weight: var(--ch-weight-light-numeric); font-variant-numeric: tabular-nums; }
 
 /* ---------- SEMANTIC HTML MAPPING ---------- */

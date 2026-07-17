@@ -39,6 +39,8 @@ Colour by job (pick by meaning, never by looks):
 
 Import via `styles.css` (it `@import`s `colors_and_type.css`). Components consume Tier 2 and Tier 3 only. Opacity is preserved end to end as `rgb(var(--rgb-*) / <alpha>)`: never flatten an alpha colour into a pre-blended hex. Exhaustive list in `colors_and_type.css` and AI-CONTEXT section 2.
 
+Two integration notes. `colors_and_type.css` also ships an opinionated base (a reset, a `body` rule, and an h1 to h6 mapping) so plain markup renders on-brand; if you only want tokens inside an existing app, import just its `:root`. And teal text clears WCAG AA only at large or emphasised sizes: for small teal links use `--brand-secondary-60`, and always pair a teal link with a non-colour affordance (underline or icon).
+
 | Tier | Tokens | Rule |
 |---|---|---|
 | 1 · Foundations (reference only) | `--brand-primary` / `--brand-secondary` / `--brand-grey`…`--brand-grey-6` / `--brand-black` / `--brand-white` (plus tints such as `--brand-secondary-60`) and the `--rgb-*` triplets | Never consumed directly by components; they exist to compose Tier 2. The one sanctioned reach-in is the teal hover value `--brand-secondary-60`. |
@@ -53,6 +55,8 @@ Non-colour foundations:
 | Radius | `--radius-{none,xs,sm,md,lg,xl,full}` (0/4/8/12/16/28/9999). Card default `--radius-md` (12). |
 | Elevation | `--elevation-0`…`--elevation-5`. A surface uses border OR shadow, never both. Card rest is `--elevation-2`. |
 | Motion | `--duration-fast` (150ms), `--ease-standard`, `--ease-spring`. Always respect `prefers-reduced-motion`. |
+| Charts (Phase B extension) | `--chart-seq-1..6` (teal ramp for ordered magnitude), `--chart-cat-1..6` (distinct series), `--chart-wicket` (red, wicket/out only), `--chart-grid`, `--chart-axis`. Pair colour with labels/markers and offer a data-table fallback. |
+| Layout (Phase B extension) | `--bp-{medium,expanded,large,xl}`, `--container-{narrow,reading,standard,wide,full}`, `--nav-height` (72), `--sidebar-width`. Derived from the spec prose; pending design confirmation. |
 
 ## Type
 
@@ -79,7 +83,7 @@ Short, clear, warm. State the facts, acknowledge the effort, move on. A captain,
 2. Build components and patterns from the specs in `reference/AI-CONTEXT.md`: 8 buttons (section 10), chips (11), 15 cards (12), 8 tables (13), the 17 interactive components (14), grid and density (6), and the 6 page archetypes (section 1). Reach through tokens for every value.
 3. Icons: `assets/icons.js`, an inline SVG set. Add `<span data-icon="bat"></span>` placeholders and call `CH.icons.hydrate(document)` once. 5-step size scale `icon-xs`…`icon-xl` (16/20/24/32/48).
 4. Assets: official SVG logos in `assets/logos/official/` (horizontal and vertical, plus PRO), with a `white/` set for red/teal/dark/photo surfaces; parabolas in `assets/parabolas/` (red/green/white; max one per page, never 100% opacity); dismissal illustrations in `assets/illustrations/`.
-5. Live demos in `demos/` (being built): a foundations showcase, a live match scorecard, and a tournament landing.
+5. Live galleries in `demos/`: `foundations` (tokens), `match-centre` and `tournament` (page archetypes), plus the Phase B references `components`, `cards`, `tables` and `charts`.
 
 ## Audit mode
 
@@ -93,4 +97,5 @@ Scan the target's CSS, markup and copy; report findings by severity as
 ## Known gaps
 
 - Standalone logomark SVG is still missing (needed for favicon, apple-touch, PWA icons, and the collapsed sidenav); extract it from `horizontal-logo.svg`.
-- Full component previews land in Phase B. The mobile App-Kit source in `reference/mobile/` is a legacy port awaiting that web work.
+- Component, card, table and chart galleries ship in `demos/` (Phase B). The mobile App-Kit source in `reference/mobile/` is a legacy port; a full mobile (iOS/Android) system is a separate deliverable.
+- The chart palette and layout/grid tokens are CricHeroes extensions derived for Phase B (not in the official web export); the nav height is set to 72px (section-6 prose says 56). Confirm both with the design team.

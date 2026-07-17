@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CricHeroes: match analytics charts</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  :root { --page: 1160px; }
+  body { background: var(--bg-secondary); }
+  .wrap { max-width: var(--page); margin: 0 auto; padding: 0 var(--sp-20) var(--sp-80); }
+
+  /* ---- top bar ---- */
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between; gap: var(--sp-16);
+    padding: var(--sp-12) var(--sp-20);
+    background: rgb(var(--rgb-white) / 0.88);
+    backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid var(--fill-grey-low);
+  }
+  .topbar img { height: 26px; display: block; }
+  .topbar .tag { color: var(--label-grey-medium); }
+
+  /* ---- chips ---- */
+  .chip { display: inline-flex; align-items: center; gap: var(--sp-8); height: 28px; padding: 0 var(--sp-12); border-radius: var(--radius-full); }
+  .chip .dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
+  .chip-live { background: var(--fill-primary-muted); color: var(--label-primary-high); }
+  .chip-scope { background: var(--fill-grey-muted); color: var(--label-grey-high); }
+
+  /* ---- hero match header ---- */
+  .hero { background: var(--bg-primary); border-radius: var(--radius-lg); box-shadow: var(--elevation-2); border-left: 3px solid var(--brand-primary); padding: var(--sp-24); margin-top: var(--sp-24); }
+  .hero-top { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-16); }
+  .hero .eyebrow { color: var(--label-primary-high); }
+  .teams { display: flex; align-items: flex-end; gap: var(--sp-24); margin-top: var(--sp-16); flex-wrap: wrap; }
+  .team { display: flex; flex-direction: column; gap: var(--sp-2); }
+  .team .name { color: var(--label-grey-medium); }
+  .team .score { color: var(--label-grey-high); font-size: var(--ch-font-headline-md); }
+  .team .score .wkt { font-size: var(--ch-font-title-md); color: var(--label-grey-medium); }
+  .team .om { color: var(--label-grey-medium); }
+  .teams .vs { color: var(--label-grey-low); padding-bottom: var(--sp-12); }
+  .state { margin-top: var(--sp-16); color: var(--label-grey-medium); }
+  .state b { color: var(--label-grey-high); }
+  .hero-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--sp-16); margin-top: var(--sp-20); flex-wrap: wrap; }
+  .hero-foot .eyebrow { color: var(--label-secondary-high); }
+
+  /* ---- buttons ---- */
+  .btn { display: inline-flex; align-items: center; gap: var(--sp-8); border: 0; cursor: pointer; height: 44px; padding: 0 var(--sp-20); border-radius: var(--radius-sm); transition: filter var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard); }
+  .btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .btn-primary { background: var(--btn-bg-primary-prominent); color: var(--btn-label-primary-prominent); }
+  .btn-primary:hover { filter: brightness(0.94); }
+
+  /* ---- scope / filter bar ---- */
+  .scopebar { display: flex; flex-wrap: wrap; gap: var(--sp-8); margin: var(--sp-24) 0 var(--sp-16); }
+  .scope-chip { height: 44px; padding: 0 var(--sp-16); border-radius: var(--radius-full); border: 1px solid var(--fill-grey-low); background: var(--bg-primary); color: var(--label-grey-medium); cursor: pointer; transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard); }
+  .scope-chip:hover { background: var(--fill-grey-muted); color: var(--label-grey-high); }
+  .scope-chip:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .scope-chip.is-active { background: var(--fill-secondary-medium); color: var(--label-secondary-high); border-color: transparent; }
+
+  /* ---- bento grid ---- */
+  .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--sp-16); }
+  .col-12 { grid-column: span 12; }
+  .col-6 { grid-column: span 6; }
+  @media (max-width: 880px) { .col-12, .col-6 { grid-column: 1 / -1; } }
+
+  /* ---- figure (chart) card ---- */
+  .fig { background: var(--bg-primary); border-radius: var(--radius-lg); box-shadow: var(--elevation-2); padding: var(--sp-16); display: flex; flex-direction: column; overflow: hidden; }
+  .fig-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-12); margin-bottom: var(--sp-4); }
+  .fig-head .r { display: inline-flex; align-items: center; gap: var(--sp-8); }
+  .fig-sub { color: var(--label-grey-medium); margin-bottom: var(--sp-12); }
+  .icon-btn { width: 44px; height: 44px; border-radius: var(--radius-full); border: 0; background: transparent; color: var(--icon-grey-high); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard); }
+  .icon-btn:hover { background: var(--fill-grey-muted); color: var(--icon-secondary-high); }
+  .icon-btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+  .plot { background: linear-gradient(180deg, var(--fill-grey-muted), transparent 62%); border-radius: var(--radius-sm); padding: var(--sp-8); }
+  .plot svg { width: 100%; height: auto; display: block; }
+
+  /* full-width cards: chart beside a side rail */
+  .fig-flex { display: flex; gap: var(--sp-24); align-items: stretch; }
+  .fig-flex .plot { flex: 1 1 62%; min-width: 0; }
+  .fig-side { flex: 0 0 250px; display: flex; flex-direction: column; gap: var(--sp-12); justify-content: center; }
+  @media (max-width: 720px) { .fig-flex { flex-direction: column; } .fig-side { flex-basis: auto; } }
+
+  .ptile { border: 1px solid var(--fill-grey-low); border-radius: var(--radius-md); padding: var(--sp-12) var(--sp-16); }
+  .ptile .lab { color: var(--label-grey-medium); }
+  .ptile .big { color: var(--label-grey-high); font-size: var(--ch-font-headline-sm); }
+  .ptile .big .w { font-size: var(--ch-font-title-md); color: var(--label-grey-medium); }
+  .ptile .sub { color: var(--label-secondary-high); }
+
+  .types-flex { display: flex; gap: var(--sp-24); align-items: center; flex-wrap: wrap; }
+  .types-flex .donut { flex: 0 0 260px; }
+  .types-flex .types-right { flex: 1 1 300px; min-width: 260px; }
+
+  /* ---- legend + notes ---- */
+  .legend { display: flex; flex-wrap: wrap; gap: var(--sp-12) var(--sp-16); margin-top: var(--sp-12); }
+  .legend .item { display: inline-flex; align-items: center; gap: var(--sp-8); color: var(--label-grey-medium); }
+  .legend .sw { width: 14px; height: 14px; border-radius: var(--radius-xs); flex: none; }
+  .legend .sw-line { width: 18px; height: 0; border-radius: 0; border-top: 3px solid; }
+  .legend .val { color: var(--label-grey-high); font-variant-numeric: tabular-nums; }
+  .sw-seq2 { background: var(--chart-seq-2); } .sw-seq3 { background: var(--chart-seq-3); }
+  .sw-seq4 { background: var(--chart-seq-4); } .sw-seq5 { background: var(--chart-seq-5); }
+  .sw-seq6 { background: var(--chart-seq-6); }
+  .sw-cat1 { background: var(--chart-cat-1); } .sw-cat2 { background: var(--chart-cat-2); }
+  .sw-cat4 { background: var(--chart-cat-4); } .sw-cat5 { background: var(--chart-cat-5); }
+  .sw-wkt { background: var(--chart-wicket); }
+  .ln-cat1 { border-color: var(--chart-cat-1); }
+  .ln-cat2 { border-color: var(--chart-cat-2); border-top-style: dashed; }
+
+  /* ---- SVG mark tokens (fills/strokes must be CSS, not presentation attrs) ---- */
+  .grid { stroke: var(--chart-grid); stroke-width: 1; }
+  .axis { stroke: var(--chart-axis); stroke-width: 1; }
+  .tx-axis { fill: var(--chart-axis); }
+  .tx-ink { fill: var(--label-grey-high); }
+  .tx-mut { fill: var(--label-grey-medium); }
+  .tx-teal { fill: var(--brand-secondary-60); }
+  .tx-num { fill: var(--label-grey-high); font-variant-numeric: tabular-nums; }
+  .tx-wht { fill: var(--label-static-white-high); }
+  .tx-blk { fill: var(--label-static-black-high); }
+  .tx-red { fill: var(--chart-wicket); }
+  .bar { fill: var(--chart-seq-5); cursor: pointer; transition: fill var(--duration-fast) var(--ease-standard); }
+  .bar:hover { fill: var(--chart-seq-6); }
+  .wkt-tri { fill: var(--chart-wicket); }
+  .wkt-dot { fill: var(--chart-wicket); stroke: var(--bg-primary); stroke-width: 1.5; }
+  .line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .s1 { stroke: var(--chart-cat-1); }
+  .s2 { stroke: var(--chart-cat-2); stroke-dasharray: 6 4; }
+  .dot1 { fill: var(--chart-cat-1); } .dot2 { fill: var(--chart-cat-2); }
+  .f-cat1 { fill: var(--chart-cat-1); } .f-cat2 { fill: var(--chart-cat-2); }
+  .f-cat4 { fill: var(--chart-cat-4); } .f-cat5 { fill: var(--chart-cat-5); }
+  .f-seq2 { fill: var(--chart-seq-2); } .f-seq3 { fill: var(--chart-seq-3); }
+  .f-seq4 { fill: var(--chart-seq-4); } .f-seq5 { fill: var(--chart-seq-5); }
+  .f-seq6 { fill: var(--chart-seq-6); }
+  .seg { cursor: pointer; transition: opacity var(--duration-fast) var(--ease-standard); }
+  .seg:hover { opacity: 0.82; }
+  .slice { cursor: pointer; stroke: var(--bg-primary); stroke-width: 2; transition: opacity var(--duration-fast) var(--ease-standard); }
+  .slice:hover { opacity: 0.82; }
+  .ground { fill: var(--fill-secondary-muted); stroke: var(--chart-grid); stroke-width: 1.5; }
+  .ring { fill: none; stroke: var(--chart-grid); stroke-width: 1; }
+  .divide { stroke: var(--chart-grid); stroke-width: 1; stroke-dasharray: 3 4; }
+  .pitch { fill: var(--fill-grey-medium); }
+  .sp4 { stroke: var(--chart-cat-1); stroke-width: 2.5; stroke-linecap: round; }
+  .sp6 { stroke: var(--chart-cat-2); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 5 3; }
+  .spo { stroke: var(--chart-cat-4); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 1 3; }
+  .end4 { fill: var(--chart-cat-1); } .end6 { fill: var(--chart-cat-2); }
+
+  /* ---- data-table fallback ---- */
+  .data { margin-top: var(--sp-12); border-top: 1px solid var(--fill-grey-low); }
+  .data > summary { list-style: none; cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: var(--sp-8); color: var(--brand-secondary-60); }
+  .data > summary::-webkit-details-marker { display: none; }
+  .data > summary .chev { display: inline-flex; color: var(--icon-secondary-high); transition: transform var(--duration-fast) var(--ease-standard); }
+  .data[open] > summary .chev { transform: rotate(90deg); }
+  .data > summary:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-xs); }
+  .table-scroll { overflow-x: auto; padding-bottom: var(--sp-4); }
+  table.tbl { width: 100%; border-collapse: collapse; font-size: var(--ch-font-body-sm); }
+  table.tbl th, table.tbl td { text-align: right; padding: var(--sp-8) var(--sp-12); white-space: nowrap; }
+  table.tbl th:first-child, table.tbl td:first-child { text-align: left; }
+  table.tbl thead th { color: var(--label-grey-medium); border-bottom: 1px solid var(--fill-grey-low); font-weight: var(--ch-weight-medium); }
+  table.tbl tbody td { border-bottom: 1px solid var(--fill-grey-low); }
+  table.tbl tbody tr:last-child td { border-bottom: 0; }
+  table.tbl .num { font-variant-numeric: tabular-nums; color: var(--label-grey-high); }
+  table.tbl .out { color: var(--label-primary-high); }
+
+  footer { margin-top: var(--sp-48); color: var(--label-grey-medium); text-align: center; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <img src="../assets/logos/official/horizontal-logo.svg" alt="CricHeroes">
+  <span class="chip chip-live ch-label-small-emphasized"><span class="dot"></span>Live</span>
+</header>
+
+<div class="wrap">
+
+  <!-- ===== match header ===== -->
+  <section class="hero" aria-label="Match summary">
+    <div class="hero-top">
+      <div class="eyebrow ch-overline">Mohali Premier League &middot; Final</div>
+      <span class="ch-label-small tag" style="color:var(--label-grey-medium)">Andheri Sports Complex</span>
+    </div>
+    <div class="teams">
+      <div class="team">
+        <span class="name ch-label-medium">Mohali Strikers</span>
+        <span class="score ch-display-numeric">182<span class="wkt">/6</span></span>
+        <span class="om ch-label-small">20.0 ov &middot; CRR 9.10</span>
+      </div>
+      <div class="vs ch-title-large">vs</div>
+      <div class="team">
+        <span class="name ch-label-medium">Royal Chargers</span>
+        <span class="score ch-display-numeric">125<span class="wkt">/4</span></span>
+        <span class="om ch-label-small">14.0 ov &middot; CRR 8.93</span>
+      </div>
+    </div>
+    <p class="state ch-body-small">Royal Chargers need <b>58 runs in 36 balls</b> &middot; required run rate 9.67</p>
+    <div class="hero-foot">
+      <div>
+        <div class="eyebrow ch-overline">Analysis</div>
+        <h1 class="ch-headline-medium-emphasized">Match analytics</h1>
+      </div>
+      <button class="btn btn-primary ch-button-label-md"><span data-icon="share" aria-hidden="true"></span>Share analysis</button>
+    </div>
+  </section>
+
+  <!-- ===== scope filter ===== -->
+  <div class="scopebar" role="group" aria-label="Innings scope">
+    <button class="scope-chip is-active ch-label-medium" aria-pressed="true">1st innings</button>
+    <button class="scope-chip ch-label-medium" aria-pressed="false">2nd innings</button>
+    <button class="scope-chip ch-label-medium" aria-pressed="false">Both innings</button>
+  </div>
+
+  <div class="bento">
+
+    <!-- ===== 1 · MANHATTAN ===== -->
+    <section class="fig col-12">
+      <div class="fig-head">
+        <h2 class="fig-title ch-title-small-emphasized">Manhattan</h2>
+        <div class="r">
+          <span class="chip chip-scope ch-label-small">Mohali Strikers &middot; 1st innings</span>
+          <button class="icon-btn" aria-label="Share Manhattan chart"><span data-icon="share" aria-hidden="true"></span></button>
+        </div>
+      </div>
+      <p class="fig-sub ch-body-small">Runs scored in each over. Red markers show the over a wicket fell.</p>
+      <div class="fig-flex">
+        <div class="plot">
+          <svg viewBox="0 0 560 250" role="img" aria-label="Manhattan chart: Mohali Strikers 182 for 6 across 20 overs, biggest over the 20th with 19 runs, wickets in overs 3, 7, 12, 16, 18 and 20.">
+            <title>Runs per over, Mohali Strikers innings</title>
+            <!-- grid -->
+            <line class="grid" x1="34" y1="222" x2="552" y2="222"/>
+            <line class="grid" x1="34" y1="174" x2="552" y2="174"/>
+            <line class="grid" x1="34" y1="126" x2="552" y2="126"/>
+            <line class="grid" x1="34" y1="78" x2="552" y2="78"/>
+            <line class="grid" x1="34" y1="30" x2="552" y2="30"/>
+            <line class="axis" x1="34" y1="222" x2="552" y2="222"/>
+            <g class="tx-axis" font-size="15" text-anchor="end">
+              <text x="30" y="226">0</text><text x="30" y="178">5</text>
+              <text x="30" y="130">10</text><text x="30" y="82">15</text><text x="30" y="34">20</text>
+            </g>
+            <!-- bars -->
+            <g>
+              <rect class="bar" x="38.5" y="164.4" width="17" height="57.6" rx="3"><title>Over 1: 6 runs</title></rect>
+              <rect class="bar" x="64.4" y="135.6" width="17" height="86.4" rx="3"><title>Over 2: 9 runs</title></rect>
+              <rect class="bar" x="90.3" y="183.6" width="17" height="38.4" rx="3"><title>Over 3: 4 runs, wicket</title></rect>
+              <rect class="bar" x="116.2" y="106.8" width="17" height="115.2" rx="3"><title>Over 4: 12 runs</title></rect>
+              <rect class="bar" x="142" y="145.2" width="17" height="76.8" rx="3"><title>Over 5: 8 runs</title></rect>
+              <rect class="bar" x="168" y="116.4" width="17" height="105.6" rx="3"><title>Over 6: 11 runs</title></rect>
+              <rect class="bar" x="193.8" y="174" width="17" height="48" rx="3"><title>Over 7: 5 runs, wicket</title></rect>
+              <rect class="bar" x="219.7" y="135.6" width="17" height="86.4" rx="3"><title>Over 8: 9 runs</title></rect>
+              <rect class="bar" x="245.7" y="154.8" width="17" height="67.2" rx="3"><title>Over 9: 7 runs</title></rect>
+              <rect class="bar" x="271.6" y="164.4" width="17" height="57.6" rx="3"><title>Over 10: 6 runs</title></rect>
+              <rect class="bar" x="297.5" y="97.2" width="17" height="124.8" rx="3"><title>Over 11: 13 runs</title></rect>
+              <rect class="bar" x="323.3" y="145.2" width="17" height="76.8" rx="3"><title>Over 12: 8 runs, wicket</title></rect>
+              <rect class="bar" x="349.2" y="126" width="17" height="96" rx="3"><title>Over 13: 10 runs</title></rect>
+              <rect class="bar" x="375.2" y="164.4" width="17" height="57.6" rx="3"><title>Over 14: 6 runs</title></rect>
+              <rect class="bar" x="401" y="87.6" width="17" height="134.4" rx="3"><title>Over 15: 14 runs</title></rect>
+              <rect class="bar" x="427" y="154.8" width="17" height="67.2" rx="3"><title>Over 16: 7 runs, wicket</title></rect>
+              <rect class="bar" x="452.9" y="116.4" width="17" height="105.6" rx="3"><title>Over 17: 11 runs</title></rect>
+              <rect class="bar" x="478.7" y="174" width="17" height="48" rx="3"><title>Over 18: 5 runs, wicket</title></rect>
+              <rect class="bar" x="504.7" y="106.8" width="17" height="115.2" rx="3"><title>Over 19: 12 runs</title></rect>
+              <rect class="bar" x="530.6" y="39.6" width="17" height="182.4" rx="3"><title>Over 20: 19 runs, wicket</title></rect>
+            </g>
+            <!-- wicket triangles -->
+            <g class="wkt-tri">
+              <polygon points="94.3,170.6 103.3,170.6 98.8,179.6"/>
+              <polygon points="197.8,161 206.8,161 202.3,170"/>
+              <polygon points="327.3,132.2 336.3,132.2 331.8,141.2"/>
+              <polygon points="431,141.8 440,141.8 435.5,150.8"/>
+              <polygon points="482.7,161 491.7,161 487.2,170"/>
+              <polygon points="534.6,26.6 543.6,26.6 539.1,35.6"/>
+            </g>
+            <!-- selective value labels -->
+            <g class="tx-num" font-size="15" text-anchor="middle" font-weight="700">
+              <text x="124.7" y="100.8">12</text>
+              <text x="306" y="91.2">13</text>
+              <text x="409.5" y="81.6">14</text>
+              <text x="513.2" y="100.8">12</text>
+              <text x="539.1" y="21.6">19</text>
+            </g>
+            <!-- x labels -->
+            <g class="tx-axis" font-size="15" text-anchor="middle">
+              <text x="47" y="240">1</text><text x="150.5" y="240">5</text>
+              <text x="280.1" y="240">10</text><text x="409.5" y="240">15</text><text x="539.1" y="240">20</text>
+            </g>
+          </svg>
+        </div>
+        <div class="fig-side" aria-hidden="false">
+          <div class="ptile">
+            <div class="lab ch-label-small">Powerplay &middot; ov 1-6</div>
+            <div class="big ch-display-numeric">50<span class="w">/2</span></div>
+            <div class="sub ch-label-small">8.33 run rate</div>
+          </div>
+          <div class="ptile">
+            <div class="lab ch-label-small">Middle &middot; ov 7-15</div>
+            <div class="big ch-display-numeric">78<span class="w">/2</span></div>
+            <div class="sub ch-label-small">8.67 run rate</div>
+          </div>
+          <div class="ptile">
+            <div class="lab ch-label-small">Death &middot; ov 16-20</div>
+            <div class="big ch-display-numeric">54<span class="w">/2</span></div>
+            <div class="sub ch-label-small">10.80 run rate</div>
+          </div>
+        </div>
+      </div>
+      <div class="legend">
+        <span class="item ch-label-small"><span class="sw sw-seq5"></span>Runs in the over</span>
+        <span class="item ch-label-small"><span class="sw sw-wkt"></span>&#9660; Wicket fell</span>
+      </div>
+      <details class="data">
+        <summary class="ch-label-medium"><span class="chev" data-icon="chevron" aria-hidden="true"></span>View data table</summary>
+        <div class="table-scroll">
+          <table class="tbl">
+            <thead><tr><th>Over</th><th>Runs</th><th>Wicket</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td class="num">6</td><td></td></tr>
+              <tr><td>2</td><td class="num">9</td><td></td></tr>
+              <tr><td>3</td><td class="num">4</td><td class="out">W</td></tr>
+              <tr><td>4</td><td class="num">12</td><td></td></tr>
+              <tr><td>5</td><td class="num">8</td><td></td></tr>
+              <tr><td>6</td><td class="num">11</td><td></td></tr>
+              <tr><td>7</td><td class="num">5</td><td class="out">W</td></tr>
+              <tr><td>8</td><td class="num">9</td><td></td></tr>
+              <tr><td>9</td><td class="num">7</td><td></td></tr>
+              <tr><td>10</td><td class="num">6</td><td></td></tr>
+              <tr><td>11</td><td class="num">13</td><td></td></tr>
+              <tr><td>12</td><td class="num">8</td><td class="out">W</td></tr>
+              <tr><td>13</td><td class="num">10</td><td></td></tr>
+              <tr><td>14</td><td class="num">6</td><td></td></tr>
+              <tr><td>15</td><td class="num">14</td><td></td></tr>
+              <tr><td>16</td><td class="num">7</td><td class="out">W</td></tr>
+              <tr><td>17</td><td class="num">11</td><td></td></tr>
+              <tr><td>18</td><td class="num">5</td><td class="out">W</td></tr>
+              <tr><td>19</td><td class="num">12</td><td></td></tr>
+              <tr><td>20</td><td class="num">19</td><td class="out">W</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===== 2 · WORM ===== -->
+    <section class="fig col-6">
+      <div class="fig-head">
+        <h2 class="fig-title ch-title-small-emphasized">Worm</h2>
+        <div class="r">
+          <span class="chip chip-scope ch-label-small">Both innings</span>
+          <button class="icon-btn" aria-label="Share Worm chart"><span data-icon="share" aria-hidden="true"></span></button>
+        </div>
+      </div>
+      <p class="fig-sub ch-body-small">Cumulative runs by over. Dashed gold line is the live chase.</p>
+      <div class="plot">
+        <svg viewBox="0 0 500 240" role="img" aria-label="Worm chart: Mohali Strikers reach 182 by over 20; Royal Chargers on 125 for 4 after 14 overs, tracking just below the target line.">
+          <title>Cumulative runs, both innings</title>
+          <line class="grid" x1="32" y1="210" x2="490" y2="210"/>
+          <line class="grid" x1="32" y1="160" x2="490" y2="160"/>
+          <line class="grid" x1="32" y1="110" x2="490" y2="110"/>
+          <line class="grid" x1="32" y1="60" x2="490" y2="60"/>
+          <g class="tx-axis" font-size="15" text-anchor="end">
+            <text x="30" y="214">0</text><text x="30" y="164">50</text>
+            <text x="30" y="114">100</text><text x="30" y="64">150</text>
+          </g>
+          <polyline class="line s1" points="32,210 54.9,204 77.8,195 100.7,191 123.6,179 146.5,171 169.4,160 192.3,155 215.2,146 238.1,139 261,133 283.9,120 306.8,112 329.7,102 352.6,96 375.5,82 398.4,75 421.3,64 444.2,59 467.1,47 490,28"><title>Mohali Strikers: 182 all up</title></polyline>
+          <polyline class="line s2" points="32,210 54.9,201 77.8,189 100.7,181 123.6,166 146.5,159 169.4,146 192.3,137 215.2,131 238.1,120 261,112 283.9,105 306.8,95 329.7,89 352.6,85"><title>Royal Chargers: 125 for 4 after 14 overs</title></polyline>
+          <!-- wicket dots -->
+          <g>
+            <circle class="wkt-dot" cx="100.7" cy="191" r="3.4"><title>MST wicket, over 3</title></circle>
+            <circle class="wkt-dot" cx="192.3" cy="155" r="3.4"><title>MST wicket, over 7</title></circle>
+            <circle class="wkt-dot" cx="306.8" cy="112" r="3.4"><title>MST wicket, over 12</title></circle>
+            <circle class="wkt-dot" cx="398.4" cy="75" r="3.4"><title>MST wicket, over 16</title></circle>
+            <circle class="wkt-dot" cx="444.2" cy="59" r="3.4"><title>MST wicket, over 18</title></circle>
+            <circle class="wkt-dot" cx="490" cy="28" r="3.4"><title>MST wicket, over 20</title></circle>
+            <circle class="wkt-dot" cx="146.5" cy="159" r="3.4"><title>RCH wicket, over 5</title></circle>
+            <circle class="wkt-dot" cx="215.2" cy="131" r="3.4"><title>RCH wicket, over 8</title></circle>
+            <circle class="wkt-dot" cx="306.8" cy="95" r="3.4"><title>RCH wicket, over 12</title></circle>
+            <circle class="wkt-dot" cx="352.6" cy="85" r="3.4"><title>RCH wicket, over 14</title></circle>
+          </g>
+          <!-- end labels -->
+          <g font-size="15" font-weight="700">
+            <text class="tx-num" x="486" y="22" text-anchor="end">182</text>
+            <text class="tx-num" x="358" y="83" text-anchor="start">125/4*</text>
+          </g>
+          <g class="tx-axis" font-size="15" text-anchor="middle">
+            <text x="32" y="228">0</text><text x="146.5" y="228">5</text>
+            <text x="261" y="228">10</text><text x="375.5" y="228">15</text><text x="490" y="228">20</text>
+          </g>
+        </svg>
+      </div>
+      <div class="legend">
+        <span class="item ch-label-small"><span class="sw-line ln-cat1"></span>Mohali Strikers</span>
+        <span class="item ch-label-small"><span class="sw-line ln-cat2"></span>Royal Chargers (live)</span>
+        <span class="item ch-label-small"><span class="sw sw-wkt" style="border-radius:var(--radius-full)"></span>Wicket</span>
+      </div>
+      <details class="data">
+        <summary class="ch-label-medium"><span class="chev" data-icon="chevron" aria-hidden="true"></span>View data table</summary>
+        <div class="table-scroll">
+          <table class="tbl">
+            <thead><tr><th>Over</th><th>MST</th><th>RCH</th></tr></thead>
+            <tbody>
+              <tr><td>3</td><td class="num">19</td><td class="num">29</td></tr>
+              <tr><td>6</td><td class="num">50</td><td class="num">64</td></tr>
+              <tr><td>9</td><td class="num">71</td><td class="num">90</td></tr>
+              <tr><td>12</td><td class="num">98</td><td class="num">115</td></tr>
+              <tr><td>14</td><td class="num">114</td><td class="num">125</td></tr>
+              <tr><td>17</td><td class="num">146</td><td class="num">&mdash;</td></tr>
+              <tr><td>20</td><td class="num">182</td><td class="num">&mdash;</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===== 3 · RUN RATE ===== -->
+    <section class="fig col-6">
+      <div class="fig-head">
+        <h2 class="fig-title ch-title-small-emphasized">Run rate</h2>
+        <div class="r">
+          <span class="chip chip-scope ch-label-small">Royal Chargers &middot; chase</span>
+          <button class="icon-btn" aria-label="Share Run rate chart"><span data-icon="share" aria-hidden="true"></span></button>
+        </div>
+      </div>
+      <p class="fig-sub ch-body-small">Current vs required rate per over. Vertical axis 8-12. They have just crossed.</p>
+      <div class="plot">
+        <svg viewBox="0 0 500 240" role="img" aria-label="Run rate chart: Royal Chargers current run rate has fallen to 8.9 while the required rate has climbed to 9.7 by over 14.">
+          <title>Current and required run rate, chase</title>
+          <line class="grid" x1="34" y1="208" x2="490" y2="208"/>
+          <line class="grid" x1="34" y1="162" x2="490" y2="162"/>
+          <line class="grid" x1="34" y1="116" x2="490" y2="116"/>
+          <line class="grid" x1="34" y1="70" x2="490" y2="70"/>
+          <line class="grid" x1="34" y1="24" x2="490" y2="24"/>
+          <g class="tx-axis" font-size="15" text-anchor="end">
+            <text x="30" y="212">8</text><text x="30" y="166">9</text>
+            <text x="30" y="120">10</text><text x="30" y="74">11</text><text x="30" y="28">12</text>
+          </g>
+          <polyline class="line s1" points="34,162 69.1,93 104.2,129.8 139.2,70 174.3,106.8 209.4,83.8 244.5,97.6 279.5,120.6 314.6,116 349.7,125.2 384.8,139 419.8,134.4 454.9,148.2 490,166.6"><title>Current run rate, over by over</title></polyline>
+          <polyline class="line s2" points="34,152.8 69.1,162 104.2,157.4 139.2,175.8 174.3,171.2 209.4,185 244.5,185 279.5,175.8 314.6,185 349.7,185 384.8,175.8 419.8,185 454.9,166.6 490,129.8"><title>Required run rate to win</title></polyline>
+          <circle class="dot1" cx="490" cy="166.6" r="4.5"><title>Current 8.93</title></circle>
+          <circle class="dot2" cx="490" cy="129.8" r="4.5"><title>Required 9.67</title></circle>
+          <text class="tx-red ch-label-small-emphasized" x="486" y="120" text-anchor="end" font-size="14">need 58 in 36</text>
+          <g class="tx-axis" font-size="15" text-anchor="middle">
+            <text x="69.1" y="226">2</text><text x="139.2" y="226">4</text><text x="209.4" y="226">6</text>
+            <text x="279.5" y="226">8</text><text x="349.7" y="226">10</text><text x="419.8" y="226">12</text><text x="490" y="226">14</text>
+          </g>
+        </svg>
+      </div>
+      <div class="legend">
+        <span class="item ch-label-small"><span class="sw-line ln-cat1"></span>Current run rate</span>
+        <span class="item ch-label-small"><span class="sw-line ln-cat2"></span>Required run rate</span>
+      </div>
+      <details class="data">
+        <summary class="ch-label-medium"><span class="chev" data-icon="chevron" aria-hidden="true"></span>View data table</summary>
+        <div class="table-scroll">
+          <table class="tbl">
+            <thead><tr><th>Over</th><th>Current</th><th>Required</th></tr></thead>
+            <tbody>
+              <tr><td>2</td><td class="num">10.50</td><td class="num">9.00</td></tr>
+              <tr><td>4</td><td class="num">11.00</td><td class="num">8.69</td></tr>
+              <tr><td>6</td><td class="num">10.67</td><td class="num">8.50</td></tr>
+              <tr><td>8</td><td class="num">9.88</td><td class="num">8.67</td></tr>
+              <tr><td>10</td><td class="num">9.80</td><td class="num">8.50</td></tr>
+              <tr><td>12</td><td class="num">9.58</td><td class="num">8.50</td></tr>
+              <tr><td>14</td><td class="num">8.93</td><td class="num">9.67</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===== 4 · PARTNERSHIPS ===== -->
+    <section class="fig col-6">
+      <div class="fig-head">
+        <h2 class="fig-title ch-title-small-emphasized">Partnerships</h2>
+        <div class="r">
+          <span class="chip chip-scope ch-label-small">Mohali Strikers</span>
+          <button class="icon-btn" aria-label="Share Partnerships chart"><span data-icon="share" aria-hidden="true"></span></button>
+        </div>
+      </div>
+      <p class="fig-sub ch-body-small">Runs per wicket stand, split between the two batters. Biggest: 48 for the 3rd.</p>
+      <div class="plot">
+        <svg viewBox="0 0 500 236" role="img" aria-label="Partnerships: the third-wicket stand of 48 between V Patel and S Gill was the largest; seven partnerships totalling 182.">
+          <title>Partnership runs by wicket</title>
+          <!-- vertical grid -->
+          <g class="grid">
+            <line x1="170.8" y1="12" x2="170.8" y2="204"/>
+            <line x1="245.6" y1="12" x2="245.6" y2="204"/>
+            <line x1="320.4" y1="12" x2="320.4" y2="204"/>
+            <line x1="395.2" y1="12" x2="395.2" y2="204"/>
+          </g>
+          <line class="axis" x1="96" y1="204" x2="470" y2="204"/>
+          <!-- rows -->
+          <g class="tx-mut" font-size="14" text-anchor="start">
+            <text x="6" y="31">1st</text><text x="6" y="59">2nd</text><text x="6" y="87">3rd</text>
+            <text x="6" y="115">4th</text><text x="6" y="143">5th</text><text x="6" y="171">6th</text><text x="6" y="199">7th</text>
+          </g>
+          <g>
+            <!-- 1st -->
+            <rect class="seg f-cat1" x="96" y="18" width="82.3" height="18" rx="2"><title>R Sharma 11</title></rect>
+            <rect class="seg f-cat2" x="180.3" y="18" width="59.8" height="18" rx="2"><title>V Patel 8</title></rect>
+            <!-- 2nd -->
+            <rect class="seg f-cat1" x="96" y="46" width="164.6" height="18" rx="2"><title>V Patel 22</title></rect>
+            <rect class="seg f-cat2" x="262.6" y="46" width="67.3" height="18" rx="2"><title>A Rahane 9</title></rect>
+            <!-- 3rd -->
+            <rect class="seg f-cat1" x="96" y="74" width="254.3" height="18" rx="2"><title>V Patel 34</title></rect>
+            <rect class="seg f-cat2" x="352.3" y="74" width="104.7" height="18" rx="2"><title>S Gill 14</title></rect>
+            <!-- 4th -->
+            <rect class="seg f-cat1" x="96" y="102" width="67.3" height="18" rx="2"><title>S Gill 9</title></rect>
+            <rect class="seg f-cat2" x="165.3" y="102" width="97.2" height="18" rx="2"><title>K Iyer 13</title></rect>
+            <!-- 5th -->
+            <rect class="seg f-cat1" x="96" y="130" width="59.8" height="18" rx="2"><title>K Iyer 8</title></rect>
+            <rect class="seg f-cat2" x="157.8" y="130" width="67.3" height="18" rx="2"><title>H Pandya 9</title></rect>
+            <!-- 6th -->
+            <rect class="seg f-cat1" x="96" y="158" width="104.7" height="18" rx="2"><title>H Pandya 14</title></rect>
+            <rect class="seg f-cat2" x="202.7" y="158" width="89.8" height="18" rx="2"><title>R Jadeja 12</title></rect>
+            <!-- 7th -->
+            <rect class="seg f-cat1" x="96" y="186" width="74.8" height="18" rx="2"><title>R Jadeja 10</title></rect>
+            <rect class="seg f-cat2" x="172.8" y="186" width="67.3" height="18" rx="2"><title>B Kumar 9 not out</title></rect>
+          </g>
+          <!-- totals -->
+          <g class="tx-num" font-size="15" font-weight="700" text-anchor="start">
+            <text x="244.1" y="31">19</text>
+            <text x="333.9" y="59">31</text>
+            <text x="461" y="87">48</text>
+            <text x="266.5" y="115">22</text>
+            <text x="229.1" y="143">17</text>
+            <text x="296.5" y="171">26</text>
+            <text x="244.1" y="199">19*</text>
+          </g>
+          <g class="tx-axis" font-size="14" text-anchor="middle">
+            <text x="96" y="222">0</text><text x="170.8" y="222">10</text><text x="245.6" y="222">20</text>
+            <text x="320.4" y="222">30</text><text x="395.2" y="222">40</text><text x="470" y="222">50</text>
+          </g>
+        </svg>
+      </div>
+      <div class="legend">
+        <span class="item ch-label-small"><span class="sw sw-cat1"></span>First batter</span>
+        <span class="item ch-label-small"><span class="sw sw-cat2"></span>Second batter</span>
+        <span class="item ch-label-small">* not out</span>
+      </div>
+      <details class="data">
+        <summary class="ch-label-medium"><span class="chev" data-icon="chevron" aria-hidden="true"></span>View data table</summary>
+        <div class="table-scroll">
+          <table class="tbl">
+            <thead><tr><th>Wicket</th><th>Batters</th><th>Runs</th><th>Fell</th></tr></thead>
+            <tbody>
+              <tr><td>1st</td><td>R Sharma, V Patel</td><td class="num">19</td><td>ov 3</td></tr>
+              <tr><td>2nd</td><td>V Patel, A Rahane</td><td class="num">31</td><td>ov 7</td></tr>
+              <tr><td>3rd</td><td>V Patel, S Gill</td><td class="num">48</td><td>ov 12</td></tr>
+              <tr><td>4th</td><td>S Gill, K Iyer</td><td class="num">22</td><td>ov 16</td></tr>
+              <tr><td>5th</td><td>K Iyer, H Pandya</td><td class="num">17</td><td>ov 18</td></tr>
+              <tr><td>6th</td><td>H Pandya, R Jadeja</td><td class="num">26</td><td>ov 20</td></tr>
+              <tr><td>7th</td><td>R Jadeja, B Kumar</td><td class="num">19*</td><td>not out</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===== 5 · WAGON WHEEL ===== -->
+    <section class="fig col-6">
+      <div class="fig-head">
+        <h2 class="fig-title ch-title-small-emphasized">Wagon wheel</h2>
+        <div class="r">
+          <span class="chip chip-scope ch-label-small">V Patel &middot; 64 (38)</span>
+          <button class="icon-btn" aria-label="Share Wagon wheel chart"><span data-icon="share" aria-hidden="true"></span></button>
+        </div>
+      </div>
+      <p class="fig-sub ch-body-small">Scoring shots by direction, right-hand batter. Solid = four, dashed = six.</p>
+      <div class="plot">
+        <svg viewBox="0 0 300 300" role="img" aria-label="Wagon wheel for V Patel 64 off 38: seven fours and four sixes, scored mostly through the off side and down the ground.">
+          <title>Shot placement, V Patel innings</title>
+          <circle class="ground" cx="150" cy="150" r="120"/>
+          <circle class="ring" cx="150" cy="150" r="66"/>
+          <line class="divide" x1="150" y1="30" x2="150" y2="270"/>
+          <rect class="pitch" x="142" y="150" width="16" height="54" rx="3"/>
+          <!-- spokes -->
+          <g>
+            <line class="sp4" x1="150" y1="150" x2="87.5" y2="49.9"><title>Four through cover</title></line>
+            <line class="sp4" x1="150" y1="150" x2="47.8" y2="91"><title>Four to point</title></line>
+            <line class="sp4" x1="150" y1="150" x2="121.5" y2="35.5"><title>Four past mid-off</title></line>
+            <line class="sp4" x1="150" y1="150" x2="186.5" y2="37.8"><title>Four past mid-on</title></line>
+            <line class="sp4" x1="150" y1="150" x2="39.1" y2="190.4"><title>Four to square leg</title></line>
+            <line class="sp4" x1="150" y1="150" x2="100.1" y2="256.9"><title>Four to fine leg</title></line>
+            <line class="sp4" x1="150" y1="150" x2="205.4" y2="254.2"><title>Four, late cut</title></line>
+            <line class="sp6" x1="150" y1="150" x2="166.7" y2="31.2"><title>Six down the ground</title></line>
+            <line class="sp6" x1="150" y1="150" x2="86.4" y2="251.8"><title>Six over deep midwicket</title></line>
+            <line class="sp6" x1="150" y1="150" x2="109" y2="37.2"><title>Six over long-off</title></line>
+            <line class="sp6" x1="150" y1="150" x2="129.2" y2="268.2"><title>Six over backward square</title></line>
+            <line class="spo" x1="150" y1="150" x2="99.8" y2="136.5"><title>Single</title></line>
+            <line class="spo" x1="150" y1="150" x2="100.9" y2="184.4"><title>Two</title></line>
+            <line class="spo" x1="150" y1="150" x2="182.1" y2="111.7"><title>Single</title></line>
+          </g>
+          <g>
+            <circle class="end6" cx="166.7" cy="31.2" r="4"/>
+            <circle class="end6" cx="86.4" cy="251.8" r="4"/>
+            <circle class="end6" cx="109" cy="37.2" r="4"/>
+            <circle class="end6" cx="129.2" cy="268.2" r="4"/>
+          </g>
+          <circle class="dot1" cx="150" cy="150" r="3.5"/>
+          <g class="tx-mut" font-size="13" text-anchor="middle">
+            <text x="60" y="24">Off side</text><text x="242" y="24">Leg side</text>
+          </g>
+          <g class="tx-ink ch-label-small-emphasized" font-size="13" text-anchor="middle">
+            <text x="171" y="24">6</text><text x="103" y="30">6</text>
+          </g>
+        </svg>
+      </div>
+      <div class="legend">
+        <span class="item ch-label-small"><span class="sw-line ln-cat1"></span>Four (7)</span>
+        <span class="item ch-label-small"><span class="sw-line ln-cat2"></span>Six (4)</span>
+        <span class="item ch-label-small"><span class="sw sw-cat4"></span>Ones &amp; twos</span>
+      </div>
+      <details class="data">
+        <summary class="ch-label-medium"><span class="chev" data-icon="chevron" aria-hidden="true"></span>View data table</summary>
+        <div class="table-scroll">
+          <table class="tbl">
+            <thead><tr><th>Shot type</th><th>Count</th><th>Runs</th></tr></thead>
+            <tbody>
+              <tr><td>Fours</td><td class="num">7</td><td class="num">28</td></tr>
+              <tr><td>Sixes</td><td class="num">4</td><td class="num">24</td></tr>
+              <tr><td>Ones &amp; twos</td><td class="num">&mdash;</td><td class="num">12</td></tr>
+              <tr><td>Total</td><td class="num">38 balls</td><td class="num">64</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===== 6 · TYPES OF RUNS ===== -->
+    <section class="fig col-12">
+      <div class="fig-head">
+        <h2 class="fig-title ch-title-small-emphasized">Types of runs</h2>
+        <div class="r">
+          <span class="chip chip-scope ch-label-small">1st innings</span>
+          <button class="icon-btn" aria-label="Share Types of runs chart"><span data-icon="share" aria-hidden="true"></span></button>
+        </div>
+      </div>
+      <p class="fig-sub ch-body-small">How Mohali Strikers built 182: boundaries carried 98 of it. Stacked bars compare both innings.</p>
+      <div class="types-flex">
+        <div class="donut plot">
+          <svg viewBox="0 0 300 220" role="img" aria-label="Types of runs donut: fours 56 runs (31 percent) and sixes 42 (23 percent) were the biggest sources; singles 45, twos 22, threes 6, extras 11.">
+            <title>Run sources, Mohali Strikers 182</title>
+            <path class="slice f-seq2" d="M150,20 A90,90 0 0 1 240,108.4 L204,109.1 A54,54 0 0 0 150,56 Z"><title>Singles: 45 runs (25%)</title></path>
+            <path class="slice f-seq3" d="M240,108.4 A90,90 0 0 1 216.3,170.8 L189.8,146.5 A54,54 0 0 0 204,109.1 Z"><title>Twos: 22 runs (12%)</title></path>
+            <path class="slice f-seq4" d="M216.3,170.8 A90,90 0 0 1 202.4,183.2 L181.4,153.9 A54,54 0 0 0 189.8,146.5 Z"><title>Threes: 6 runs (3%)</title></path>
+            <path class="slice f-seq5" d="M202.4,183.2 A90,90 0 0 1 63,133 L97.8,123.8 A54,54 0 0 0 181.4,153.9 Z"><title>Fours: 56 runs (31%)</title></path>
+            <path class="slice f-seq6" d="M63,133 A90,90 0 0 1 116.6,26.4 L130,59.8 A54,54 0 0 0 97.8,123.8 Z"><title>Sixes: 42 runs (23%)</title></path>
+            <path class="slice f-cat4" d="M116.6,26.4 A90,90 0 0 1 150,20 L150,56 A54,54 0 0 0 130,59.8 Z"><title>Extras: 11 runs (6%)</title></path>
+            <text class="tx-ink ch-display-numeric" x="150" y="106" text-anchor="middle" font-size="32">182</text>
+            <text class="tx-mut" x="150" y="126" text-anchor="middle" font-size="13">runs / 20 ov</text>
+            <g font-size="14" font-weight="700" text-anchor="middle">
+              <text class="tx-blk" x="200.5" y="63">25%</text>
+              <text class="tx-wht" x="125.6" y="182">31%</text>
+              <text class="tx-wht" x="85.7" y="82">23%</text>
+            </g>
+          </svg>
+        </div>
+        <div class="types-right">
+          <svg viewBox="0 0 308 96" role="img" aria-label="Stacked run composition: Mohali Strikers 182 versus Royal Chargers 125 so far, both boundary-heavy.">
+            <title>Run composition, both innings</title>
+            <text class="tx-mut" x="0" y="10" font-size="13">Mohali Strikers &middot; 182</text>
+            <g>
+              <rect class="seg f-seq2" x="8" y="16" width="72.2" height="20" rx="2"><title>Singles 45</title></rect>
+              <rect class="seg f-seq3" x="80.2" y="16" width="35.3" height="20" rx="2"><title>Twos 22</title></rect>
+              <rect class="seg f-seq4" x="115.5" y="16" width="9.6" height="20" rx="2"><title>Threes 6</title></rect>
+              <rect class="seg f-seq5" x="125.1" y="16" width="89.8" height="20" rx="2"><title>Fours 56</title></rect>
+              <rect class="seg f-seq6" x="214.9" y="16" width="67.4" height="20" rx="2"><title>Sixes 42</title></rect>
+              <rect class="seg f-cat4" x="282.3" y="16" width="17.6" height="20" rx="2"><title>Extras 11</title></rect>
+            </g>
+            <text class="tx-mut" x="0" y="60" font-size="13">Royal Chargers &middot; 125*</text>
+            <g>
+              <rect class="seg f-seq2" x="8" y="66" width="88.8" height="20" rx="2"><title>Singles 38</title></rect>
+              <rect class="seg f-seq3" x="96.8" y="66" width="32.7" height="20" rx="2"><title>Twos 14</title></rect>
+              <rect class="seg f-seq4" x="129.5" y="66" width="7" height="20" rx="2"><title>Threes 3</title></rect>
+              <rect class="seg f-seq5" x="136.5" y="66" width="79.4" height="20" rx="2"><title>Fours 34</title></rect>
+              <rect class="seg f-seq6" x="215.9" y="66" width="56.1" height="20" rx="2"><title>Sixes 24</title></rect>
+              <rect class="seg f-cat4" x="272" y="66" width="28" height="20" rx="2"><title>Extras 12</title></rect>
+            </g>
+          </svg>
+          <div class="legend">
+            <span class="item ch-label-small"><span class="sw sw-seq2"></span>Singles <span class="val">45</span></span>
+            <span class="item ch-label-small"><span class="sw sw-seq3"></span>Twos <span class="val">22</span></span>
+            <span class="item ch-label-small"><span class="sw sw-seq4"></span>Threes <span class="val">6</span></span>
+            <span class="item ch-label-small"><span class="sw sw-seq5"></span>Fours <span class="val">56</span></span>
+            <span class="item ch-label-small"><span class="sw sw-seq6"></span>Sixes <span class="val">42</span></span>
+            <span class="item ch-label-small"><span class="sw sw-cat4"></span>Extras <span class="val">11</span></span>
+          </div>
+        </div>
+      </div>
+      <details class="data">
+        <summary class="ch-label-medium"><span class="chev" data-icon="chevron" aria-hidden="true"></span>View data table</summary>
+        <div class="table-scroll">
+          <table class="tbl">
+            <thead><tr><th>Run type</th><th>MST runs</th><th>MST %</th><th>RCH runs</th></tr></thead>
+            <tbody>
+              <tr><td>Singles</td><td class="num">45</td><td class="num">24.7</td><td class="num">38</td></tr>
+              <tr><td>Twos</td><td class="num">22</td><td class="num">12.1</td><td class="num">14</td></tr>
+              <tr><td>Threes</td><td class="num">6</td><td class="num">3.3</td><td class="num">3</td></tr>
+              <tr><td>Fours</td><td class="num">56</td><td class="num">30.8</td><td class="num">34</td></tr>
+              <tr><td>Sixes</td><td class="num">42</td><td class="num">23.1</td><td class="num">24</td></tr>
+              <tr><td>Extras</td><td class="num">11</td><td class="num">6.0</td><td class="num">12</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+  </div>
+
+  <footer class="ch-body-small">Sample data for demonstration &middot; CricHeroes design system &middot; charts are token-only and colourblind-aware.</footer>
+
+</div>
+
+<script src="../assets/icons.js"></script>
+<script>if (window.CH && CH.icons) CH.icons.hydrate(document);</script>
+</body>
+</html>
