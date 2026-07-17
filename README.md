@@ -15,7 +15,7 @@ The full working guide (tokens, design mode, audit checklist) lives in
 ### Claude Code (plugin)
 
 ```
-/plugin marketplace add cricheroes/ch-design-system-plugin
+/plugin marketplace add cricheroes/design-system
 /plugin install cricheroes-design-system@cricheroes-ds
 ```
 
@@ -72,7 +72,7 @@ Clone the repo into (or beside) your project; the agent picks up
 [`AGENTS.md`](AGENTS.md) automatically.
 
 ```
-git clone https://github.com/cricheroes/ch-design-system-plugin
+git clone https://github.com/cricheroes/design-system
 ```
 
 ### Gemini CLI
