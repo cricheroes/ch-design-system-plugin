@@ -1,6 +1,6 @@
-# CricHeroes Web Design System — AI Context Reference
+# CricHeroes Web Design System: AI Context Reference
 
-> **Purpose of this document.** A complete, exhaustive context dump of the CricHeroes web design system for use by AI agents and developers. Every token, rule, locked decision, anatomy spec, do/don't, and user-stated constraint is captured here so that any AI that loads this file can generate code, mark-up, or design specs that match the system exactly — without re-reading the full HTML guidelines page.
+> **Purpose of this document.** A complete, exhaustive context dump of the CricHeroes web design system for use by AI agents and developers. Every token, rule, locked decision, anatomy spec, do/don't, and user-stated constraint is captured here so that any AI that loads this file can generate code, mark-up, or design specs that match the system exactly, without re-reading the full HTML guidelines page.
 >
 > **Source of truth.** The live guidelines page (`cricheroes-design-guidelines.html`) is the canonical visual reference; this file is its written counterpart. If they ever diverge, the HTML wins on visuals and this file wins on rules.
 >
@@ -18,7 +18,7 @@
 6. [Grid & layout](#6-grid--layout)
 7. [Radius & elevation](#7-radius--elevation)
 8. [Brand & logo](#8-brand--logo)
-9. [Parabola — brand visual identity](#9-parabola--brand-visual-identity)
+9. [Parabola, brand visual identity](#9-parabola--brand-visual-identity)
 10. [Buttons](#10-buttons)
 11. [Chips](#11-chips)
 12. [Cards](#12-cards)
@@ -37,21 +37,21 @@
 ## 1. Top-level philosophy
 
 ### Rule 00 · Foundation, not Prescription
-**This design system is the visual floor, NOT a layout template.** It locks tokens, colour roles, spacing, type scale, radii, elevation, and component anatomies — and ONLY those. Layout, motion, and creative patterns are page-author decisions.
+**This design system is the visual floor, NOT a layout template.** It locks tokens, colour roles, spacing, type scale, radii, elevation, and component anatomies, and ONLY those. Layout, motion, and creative patterns are page-author decisions.
 
 User-stated rule (verbatim):
 > "design sytem just sets the foundation of visual thing creativity is the core of design soo it shoukd be there you're free to explore out different layout strategy patterns as per user experiment and the end goal of the page"
 
 Four sub-rules under Rule 00:
 
-- **A. Layout follows page aim.** Utility / scoring / settings pages lean on the standard card grid (scan-fast, predictable). Informational / landing pages can break into hero sections, asymmetric grids, full-bleed visuals — whatever the story needs.
+- **A. Layout follows page aim.** Utility / scoring / settings pages lean on the standard card grid (scan-fast, predictable). Informational / landing pages can break into hero sections, asymmetric grids, full-bleed visuals, whatever the story needs.
 - **B. Motion is allowed, but must earn its place.** Use it when it makes a state change easier to read (chip pulse, list reorder, sheet slide-in). Skip when it just decorates. Always respect `prefers-reduced-motion`.
-- **C. The system is composable, not a stencil.** Combine cards into new patterns, stack chips into clusters, lean on the chart-card frame for new visualisations. *New patterns are encouraged* — only the tokens are sacred.
+- **C. The system is composable, not a stencil.** Combine cards into new patterns, stack chips into clusters, lean on the chart-card frame for new visualisations. *New patterns are encouraged*, only the tokens are sacred.
 - **D. Token-break → fix the token, don't fork the page.** A genuinely new colour / spacing / motion idiom belongs back in this system so the next page inherits it. Never bury one-off raw values in a component.
 
 ### Pages by aim · how to layer creativity on the base
 
-**The token system is the base layer; creativity sits on top.** Different pages have different aims — the visual approach must adapt without ever breaking the token system underneath. Below are the six page archetypes the CricHeroes web product ships. When generating code / designs, pick the archetype first, then reach for the "Lean into" moves inside that archetype's card. Never treat every page like the settings page.
+**The token system is the base layer; creativity sits on top.** Different pages have different aims, the visual approach must adapt without ever breaking the token system underneath. Below are the six page archetypes the CricHeroes web product ships. When generating code / designs, pick the archetype first, then reach for the "Lean into" moves inside that archetype's card. Never treat every page like the settings page.
 
 User-stated rule (verbatim):
 > "our brand is not just one thing there might be landing pages, very data heavy dasboard, utility ad much more soo you've to adapt as per the context and for what you're building the design soo you can use linear opacity some unique patterns for landing pages- you can use modern layouting in dashboard- you can use linear opacity gradietns charts and much moire creative stuff... this design system is just the base layer you can add your creativity on layer above it soo that it feels live still yet feels like it is of our brand"
@@ -61,33 +61,33 @@ User-stated rule (verbatim):
 | 01 | **Landing / Marketing** | Sell the brand, tell the story, make the visitor care | Hero moments · **linear gradients built from token colours** (e.g. `linear-gradient(var(--fill-secondary-muted), var(--fill-secondary-low))`) · **parabola at Priority tier** (50-60 %) · asymmetric grids · full-bleed sections · Display Large 64 px type ramps · brand photography with 40 % black scrim · one "star" component per section · scroll-driven reveals | Dense data · complex forms · utility chrome · standard card grids |
 | 02 | **Data-heavy Dashboard** | Show a lot, scan fast, drill down (analytics, scorecards, leaderboards) | Dense card grids · sidebar-driven layouts (240-280 filter/nav column) · mini-charts inline (sparklines composed from primitives) · **linear gradients inside chart cards for zone highlighting** (still token-based) · **Dense density** (12 pad · 12-16 gap) · multi-column grids that let DATA breathe not chrome · colour-coded status columns · sticky headers · condensed table typography | Marketing gradients · large radii · hero-scale visuals · giant empty space · animated transitions that block scroll |
 | 03 | **Utility · Forms / Settings / Progress** | Get the user through a task with minimum friction | Single-column focus · generous vertical spacing · card-per-step · clear progress indicators · **Standard density** (16-20 pad) · consistent layout across every utility screen (settings ≈ every other settings page) | Creative flair · gradients · parabola · animated transitions except state-change cues · anything that shifts attention away from the task |
-| 04 | **Profile · Player / Team / Tournament** | Establish identity, showcase stats | Red hero card at top (the one place solid brand-red is native surface) · **red parabola @ Mid opacity 30-40 %** — the ONLY archetype where the red parabola is native · tabbed content shell below the hero · big stat tiles in the hero cluster · avatar-led grids · optional linear gradient overlay on the hero for depth | Marketing-scale gradients · non-brand accent colours · anything that competes with the identity moment |
+| 04 | **Profile · Player / Team / Tournament** | Establish identity, showcase stats | Red hero card at top (the one place solid brand-red is native surface) · **red parabola @ Mid opacity 30-40 %**, the ONLY archetype where the red parabola is native · tabbed content shell below the hero · big stat tiles in the hero cluster · avatar-led grids · optional linear gradient overlay on the hero for depth | Marketing-scale gradients · non-brand accent colours · anything that competes with the identity moment |
 | 05 | **Live · Real-time match view** | Communicate real-time state and give the video priority | Video-first hierarchy · sidebar layout (video + stats side by side) · dark accent panels (`--brand-black` / `--brand-secondary-80`) for score readouts · subtle live-status animations (respecting `prefers-reduced-motion`) · frequent re-renders as data streams · commentary FeedItem variants | Static hero moments · marketing polish · non-essential motion that competes with the video · heavy scroll effects |
 | 06 | **Listing · Discovery** | Browse a set, filter, jump in (`/matches`, `/tournaments`, `/looking-for`, community index) | Card grids with `repeat(auto-fill, minmax(<tile>, 1fr))` · filter chips prominent at top · Standard density · card hover lift L2 → L3 · list-first · empty-state cards when a filter returns nothing | Hero-scale visuals · dense analytics · deep animation · fixed grid columns (always auto-fill) |
 
 ### Dashboard hierarchy rule (locked)
 
-Dashboards must **NOT** flat-light everything at one tint level. The rule is **hierarchy of fill depth** — the eye should read the STORY, not the chrome:
+Dashboards must **NOT** flat-light everything at one tint level. The rule is **hierarchy of fill depth**, the eye should read the STORY, not the chrome:
 
-- `--fill-*-prominent` — reserve for **peaks, anomalies, KPI highlights** (the "look here" moments)
-- `--fill-*-high` / `--fill-*-medium` — **baseline data** (the everyday rows / cells)
-- `--fill-*-low` / `--fill-*-muted` — **supporting metadata / subtle backdrops** (borders, hover, contextual layer under charts)
+- `--fill-*-prominent`, reserve for **peaks, anomalies, KPI highlights** (the "look here" moments)
+- `--fill-*-high` / `--fill-*-medium`: **baseline data** (the everyday rows / cells)
+- `--fill-*-low` / `--fill-*-muted`: **supporting metadata / subtle backdrops** (borders, hover, contextual layer under charts)
 
 Combined with the archetype guidance, dashboards should feel *pleasant instead of overwhelming*: hierarchy of fill depth + gradient-opacity fades on chart edges + translucent-glass filter drawers + subtle grid-pattern backgrounds behind chart clusters (see techniques below).
 
 ### Sanctioned creative techniques (named tools, not guesswork)
 
-Five techniques a senior designer can reach for on top of the token base. Every one composes from tokens — never raw hex, never off-scale values. Use them to make dashboards feel **pleasant instead of overwhelming**, landings feel **alive without shouting**, and profile surfaces feel **native to the brand**. Pick the technique for the moment; don't sprinkle them because they're available.
+Five techniques a senior designer can reach for on top of the token base. Every one composes from tokens, never raw hex, never off-scale values. Use them to make dashboards feel **pleasant instead of overwhelming**, landings feel **alive without shouting**, and profile surfaces feel **native to the brand**. Pick the technique for the moment; don't sprinkle them because they're available.
 
 | # | Technique | Composition | When to reach for it | When to avoid it |
 |---|---|---|---|---|
-| 1 | **Linear gradient** | `linear-gradient(135deg, var(--fill-secondary-muted), var(--fill-secondary-low))` — diagonal / vertical fade between two token colours | Landing hero backdrop · profile-hero depth · chart-card zone highlight · empty-state canvas | Body-text backgrounds · dense table cells · utility screens · anywhere the gradient competes with content |
-| 2 | **Gradient opacity** | `linear-gradient(90deg, rgb(var(--rgb-secondary) / 0), rgb(var(--rgb-secondary) / 0.35))` — one colour fades from 0 % to some alpha across an axis. Softer than colour-to-colour. | Chart edges fading to nothing · table-row highlight on hover · sticky-header fade-to-transparent at scroll edges · long-list bottom mask | Full-opacity accents (use the fill scale) · text nodes (use `--label-*`) · anywhere the fade obscures a required signal |
-| 3 | **Glass-morphism** | `background: rgb(var(--rgb-white) / 0.24); backdrop-filter: blur(12px); border: 1px solid rgb(var(--rgb-white) / 0.32);` — semi-transparent panel with backdrop blur over a coloured or photo backdrop | Floating filter drawer over a dashboard · sticky nav over rich content · overlay panels on profile heroes with parabola / photo backgrounds · modal on top of a rich page | Primary content surfaces · body text areas · pages without a coloured backdrop (blur has nothing to blur) · low-power devices — fall back to a solid tint |
-| 4 | **Grid pattern** | `linear-gradient(rgb(var(--rgb-grey) / 0.08) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--rgb-grey) / 0.08) 1px, transparent 1px)` at `background-size: 16px 16px` — two crossing hairlines at low opacity. **Texture, not decoration.** | Behind chart clusters in dashboards · empty-state canvases · under a "start scoring" placeholder · in the loose backdrop of a data-heavy page section | Content-dense cards (pattern collides with data) · marketing hero backgrounds (use gradient instead) · anywhere at opacity > 10 % |
-| 5 | **Translucent overlay** | `linear-gradient(180deg, rgb(var(--rgb-white) / 0), rgb(var(--rgb-white) / 0.55))` over the source layer — single flat colour at partial opacity, softens the layer beneath without hiding it | Reading text on photo (pair with 40 % black scrim) · profile hero cards that need meta-info legibility · promo cards with a background image · dark-panel headers that need a lift | Layering opacity on top of an already-tonal fill (stacking alpha muddies the surface) · plain white surfaces (there's nothing to soften) |
+| 1 | **Linear gradient** | `linear-gradient(135deg, var(--fill-secondary-muted), var(--fill-secondary-low))`, diagonal / vertical fade between two token colours | Landing hero backdrop · profile-hero depth · chart-card zone highlight · empty-state canvas | Body-text backgrounds · dense table cells · utility screens · anywhere the gradient competes with content |
+| 2 | **Gradient opacity** | `linear-gradient(90deg, rgb(var(--rgb-secondary) / 0), rgb(var(--rgb-secondary) / 0.35))`, one colour fades from 0 % to some alpha across an axis. Softer than colour-to-colour. | Chart edges fading to nothing · table-row highlight on hover · sticky-header fade-to-transparent at scroll edges · long-list bottom mask | Full-opacity accents (use the fill scale) · text nodes (use `--label-*`) · anywhere the fade obscures a required signal |
+| 3 | **Glass-morphism** | `background: rgb(var(--rgb-white) / 0.24); backdrop-filter: blur(12px); border: 1px solid rgb(var(--rgb-white) / 0.32);`, semi-transparent panel with backdrop blur over a coloured or photo backdrop | Floating filter drawer over a dashboard · sticky nav over rich content · overlay panels on profile heroes with parabola / photo backgrounds · modal on top of a rich page | Primary content surfaces · body text areas · pages without a coloured backdrop (blur has nothing to blur) · low-power devices, fall back to a solid tint |
+| 4 | **Grid pattern** | `linear-gradient(rgb(var(--rgb-grey) / 0.08) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--rgb-grey) / 0.08) 1px, transparent 1px)` at `background-size: 16px 16px`, two crossing hairlines at low opacity. **Texture, not decoration.** | Behind chart clusters in dashboards · empty-state canvases · under a "start scoring" placeholder · in the loose backdrop of a data-heavy page section | Content-dense cards (pattern collides with data) · marketing hero backgrounds (use gradient instead) · anywhere at opacity > 10 % |
+| 5 | **Translucent overlay** | `linear-gradient(180deg, rgb(var(--rgb-white) / 0), rgb(var(--rgb-white) / 0.55))` over the source layer, single flat colour at partial opacity, softens the layer beneath without hiding it | Reading text on photo (pair with 40 % black scrim) · profile hero cards that need meta-info legibility · promo cards with a background image · dark-panel headers that need a lift | Layering opacity on top of an already-tonal fill (stacking alpha muddies the surface) · plain white surfaces (there's nothing to soften) |
 
-**Creative techniques still consume tokens — always.** The gradient is `var(--fill-secondary-muted)` → `var(--fill-secondary-low)`, not raw hex. The glass surface is `rgb(var(--rgb-white) / 0.24)`, not `rgba(255, 255, 255, 0.24)`. The grid pattern uses `rgb(var(--rgb-grey) / 0.08)`, not `#EEEEEE`. **The design system is the base layer; senior-designer creativity sits on top, never underneath.** Never invent a new colour for a specific page, never sneak in an off-scale pixel, never break the type scale to be "different". If a page genuinely needs something the tokens don't cover — fix the token, then use it, so the next page inherits it. That's how creativity compounds instead of fragments.
+**Creative techniques still consume tokens, always.** The gradient is `var(--fill-secondary-muted)` → `var(--fill-secondary-low)`, not raw hex. The glass surface is `rgb(var(--rgb-white) / 0.24)`, not `rgba(255, 255, 255, 0.24)`. The grid pattern uses `rgb(var(--rgb-grey) / 0.08)`, not `#EEEEEE`. **The design system is the base layer; senior-designer creativity sits on top, never underneath.** Never invent a new colour for a specific page, never sneak in an off-scale pixel, never break the type scale to be "different". If a page genuinely needs something the tokens don't cover, fix the token, then use it, so the next page inherits it. That's how creativity compounds instead of fragments.
 
 ### The 9 numbered principles (after Rule 00)
 
@@ -99,8 +99,8 @@ Five techniques a senior designer can reach for on top of the token base. Every 
 | 04 | **Solid Layout Surfaces** | Core layout (page, frames, cards) uses `--bg-*`. Opacity is reserved for chips, tints, hover, selected, disabled. |
 | 05 | **One Primary per View** | Every screen has exactly one Primary CTA in teal. Red is brand-accent / destructive only, never an action. |
 | 06 | **No Raw Brand in Components** | `--brand-*` is reference only. Components reach into Semantic and Component tiers only. |
-| 07 | **4pt Discipline** | All spacing values are multiples of 4. No half-pixels, no arbitrary numbers — ever. |
-| 08 | **Accessibility First** | 44 × 44 minimum touch target. Colour is never the sole signal — pair with text or shape on every status indicator. |
+| 07 | **4pt Discipline** | All spacing values are multiples of 4. No half-pixels, no arbitrary numbers, ever. |
+| 08 | **Accessibility First** | 44 × 44 minimum touch target. Colour is never the sole signal, pair with text or shape on every status indicator. |
 | 09 | **Composability** | New features compose from existing primitives. Build a new component only when no combination of existing ones solves the case. |
 
 ### Three-roles colour philosophy
@@ -108,21 +108,21 @@ Five techniques a senior designer can reach for on top of the token base. Every 
 | Role | Colour | Used for |
 |---|---|---|
 | **ACCENT ONLY** | Brand red `#E21C28` | Slight brand impact on important headings, the LIVE pill, an urgent count, brand-accent backgrounds on team / player / tournament profiles. **Never a button, CTA, link, or "Save / Submit" routine.** |
-| **ALL ACTIONS** | Brand teal `#18958F` | Every primary button, CTA card, inline link, active tab, selected chip, focus ring, action icon. The lower-priority secondary button STEPS DOWN to the neutral grey tonal style — not red. |
+| **ALL ACTIONS** | Brand teal `#18958F` | Every primary button, CTA card, inline link, active tab, selected chip, focus ring, action icon. The lower-priority secondary button STEPS DOWN to the neutral grey tonal style, not red. |
 | **EVERYTHING ELSE** | Grey / black / white | Body text, headings, metadata, surfaces, borders, hover states, disabled states, secondary buttons, default UI icons. ~90 % of the interface. |
 
 User-stated DO/DON'T (verbatim):
-> "Make **every button, CTA, CTA card and link teal**. Default text to `--label-grey-high`. Reach for **red only as an accent** — a brand-flavoured heading word, a live signal, or a profile background held back with opacity. Always consume Tier 2 / Tier 3 tokens, never raw hex."
+> "Make **every button, CTA, CTA card and link teal**. Default text to `--label-grey-high`. Reach for **red only as an accent**, a brand-flavoured heading word, a live signal, or a profile background held back with opacity. Always consume Tier 2 / Tier 3 tokens, never raw hex."
 >
-> "Don't paint actions red — no red 'Save', 'Submit' or 'Buy'. Don't use teal for plain body text. Don't let red carry more than a small share of any screen. Don't apply opacity on a text node — pick the right `--label-*` step instead."
+> "Don't paint actions red, no red 'Save', 'Submit' or 'Buy'. Don't use teal for plain body text. Don't let red carry more than a small share of any screen. Don't apply opacity on a text node, pick the right `--label-*` step instead."
 
 ---
 
 ## 2. Token architecture (3-tier contract)
 
-Components NEVER consume brand primitives directly. They consume **semantic tokens**, which in turn reference foundation values. Opacity is preserved end-to-end as `rgb(<triplet> / <alpha>)` — never flattened into a pre-blended hex.
+Components NEVER consume brand primitives directly. They consume **semantic tokens**, which in turn reference foundation values. Opacity is preserved end-to-end as `rgb(<triplet> / <alpha>)`, never flattened into a pre-blended hex.
 
-### Tier 1 · Foundations (brand primitives — reference only)
+### Tier 1 · Foundations (brand primitives, reference only)
 
 ```
 --brand-primary:      #E21C28
@@ -133,7 +133,7 @@ Components NEVER consume brand primitives directly. They consume **semantic toke
 
 --brand-secondary:    #18958F
 --brand-secondary-10: #D1EAE9     /* lightest teal */
---brand-secondary-30: #74BFBC     /* bright accent teal — also used by dark doc-panel */
+--brand-secondary-30: #74BFBC     /* bright accent teal, also used by dark doc-panel */
 --brand-secondary-60: #157975     /* primary-button hover */
 --brand-secondary-80: #104240     /* deepest teal */
 
@@ -161,34 +161,34 @@ Components NEVER consume brand primitives directly. They consume **semantic toke
 
 ### Tier 2 · Semantic tokens (the component contract)
 
-**Screen backgrounds** — solid surfaces only (no opacity):
+**Screen backgrounds**, solid surfaces only (no opacity):
 ```
 --bg-primary:   #FEFFFF      /* white surface · cards, dialogs, dropdowns */
 --bg-secondary: #F3F3F3      /* page surface · body / scroll area */
 --bg-tertiary:  #FEFFFF      /* nested content, currently same as primary */
 ```
 
-**Labels** — text colour hierarchy, every label uses `rgb(<rgb-var> / <alpha>)`.
+**Labels**, text colour hierarchy, every label uses `rgb(<rgb-var> / <alpha>)`.
 
-**⚠ TEXT-SAFE RANGE (LOCKED RULE):** Only `-high` and `-medium` steps are allowed for text. **The `-low` (30 %) and `-muted` (14–18 %) steps are BANNED for text usage** — they fail contrast in real product usage. The tokens are kept in the palette as REFERENCE / mixing values only. Every "quieter text" case (placeholder, disabled, muted metadata, tertiary supporting text) must reach for `--label-*-medium`, not `-low` or `-muted`.
+**TEXT-SAFE RANGE (LOCKED RULE):** Only `-high` and `-medium` steps are allowed for text. **The `-low` (30 %) and `-muted` (14–18 %) steps are BANNED for text usage**, they fail contrast in real product usage. The tokens are kept in the palette as REFERENCE / mixing values only. Every "quieter text" case (placeholder, disabled, muted metadata, tertiary supporting text) must reach for `--label-*-medium`, not `-low` or `-muted`.
 
 User-stated rule (verbatim):
 > "dont use this colors text at all as i've tested this design system and have used this in some cases which has created chaos soo please dint use this in the text at all"
 
 | Token | Resolves to | Text-safe? | Use |
 |---|---|---|---|
-| `--label-primary-high`    | `rgb(--rgb-primary / 1)`     | ✅ Yes | "Live" text, brand callouts (sparingly) |
-| `--label-primary-medium`  | `rgb(--rgb-primary / 0.52)`  | ✅ Yes | **Cancelled chip label** (softer red · was `-low` before the ban) |
-| `--label-primary-low`     | `rgb(--rgb-primary / 0.30)`  | ❌ **BANNED for text** | Reference only |
-| `--label-primary-muted`   | `rgb(--rgb-primary / 0.14)`  | ❌ **BANNED for text** | Reference only · mixing value for tints |
-| `--label-secondary-high`  | `rgb(--rgb-secondary / 1)`   | ✅ Yes | Inline links, active tab text, action icons |
-| `--label-secondary-medium`| `rgb(--rgb-secondary / 0.54)`| ✅ Yes | Secondary action text (rare use) |
-| `--label-secondary-low`   | `rgb(--rgb-secondary / 0.30)`| ❌ **BANNED for text** | Reference only |
-| `--label-secondary-muted` | `rgb(--rgb-secondary / 0.18)`| ❌ **BANNED for text** | Reference only |
-| `--label-grey-high`       | `rgb(--rgb-black / 1)`       | ✅ Yes | **Primary body / headings / card titles** (dominant default) |
-| `--label-grey-medium`     | `rgb(--rgb-black / 0.60)`    | ✅ Yes | Secondary text, descriptions, metadata, **placeholders, disabled text, muted cells, struck-through prices, tertiary rows** |
-| `--label-grey-low`        | `rgb(--rgb-black / 0.30)`    | ❌ **BANNED for text** | Reference only |
-| `--label-grey-muted`      | `rgb(--rgb-black / 0.18)`    | ❌ **BANNED for text** | Reference only · dividers use `--fill-grey-low` instead |
+| `--label-primary-high`    | `rgb(--rgb-primary / 1)`     | Yes | "Live" text, brand callouts (sparingly) |
+| `--label-primary-medium`  | `rgb(--rgb-primary / 0.52)`  | Yes | **Cancelled chip label** (softer red · was `-low` before the ban) |
+| `--label-primary-low`     | `rgb(--rgb-primary / 0.30)`  | **BANNED for text** | Reference only |
+| `--label-primary-muted`   | `rgb(--rgb-primary / 0.14)`  | **BANNED for text** | Reference only · mixing value for tints |
+| `--label-secondary-high`  | `rgb(--rgb-secondary / 1)`   | Yes | Inline links, active tab text, action icons |
+| `--label-secondary-medium`| `rgb(--rgb-secondary / 0.54)`| Yes | Secondary action text (rare use) |
+| `--label-secondary-low`   | `rgb(--rgb-secondary / 0.30)`| **BANNED for text** | Reference only |
+| `--label-secondary-muted` | `rgb(--rgb-secondary / 0.18)`| **BANNED for text** | Reference only |
+| `--label-grey-high`       | `rgb(--rgb-black / 1)`       | Yes | **Primary body / headings / card titles** (dominant default) |
+| `--label-grey-medium`     | `rgb(--rgb-black / 0.60)`    | Yes | Secondary text, descriptions, metadata, **placeholders, disabled text, muted cells, struck-through prices, tertiary rows** |
+| `--label-grey-low`        | `rgb(--rgb-black / 0.30)`    | **BANNED for text** | Reference only |
+| `--label-grey-muted`      | `rgb(--rgb-black / 0.18)`    | **BANNED for text** | Reference only · dividers use `--fill-grey-low` instead |
 | `--label-static-black-{high\|medium\|low\|muted}` | fixed black at 1 / 0.60 / 0.30 / 0.16 | high + medium only | Stays black regardless of theme |
 | `--label-static-white-{high\|medium\|low\|muted}` | fixed white at 1 / 0.60 / 0.30 / 0.16 | high + medium only | Text on brand / dark / photography surfaces |
 
@@ -204,9 +204,9 @@ User-stated rule (verbatim):
 | Menu disabled item label | `--label-grey-medium` (was `-low`) |
 | Product price "was" (strikethrough) | `--label-grey-medium` (was `-low`) |
 | Tertiary supporting text | `--label-grey-medium` (was `-low`) |
-| Anywhere else previously using `-low` or `-muted` for text | `--label-*-medium` — always |
+| Anywhere else previously using `-low` or `-muted` for text | `--label-*-medium`, always |
 
-**Fills** — surface tints, all opacity-based:
+**Fills**, surface tints, all opacity-based:
 
 | Family | Tokens (5 each) | Pattern |
 |---|---|---|
@@ -265,12 +265,12 @@ User-stated rule (verbatim):
 
 | Area | Avoid | Use |
 |---|---|---|
-| Screen backgrounds | Page surfaces using `--fill-*`, hex codes, or opacity-blended values | `--bg-primary` / `--bg-secondary` / `--bg-tertiary` only — always solid |
+| Screen backgrounds | Page surfaces using `--fill-*`, hex codes, or opacity-blended values | `--bg-primary` / `--bg-secondary` / `--bg-tertiary` only, always solid |
 | Text / labels | Hard-coded grey hex, mixing `color` with `opacity` on the element | `--label-{primary\|secondary\|grey\|static}-{high\|medium\|low\|muted}` |
 | Fills / borders / chips | Stacking opacity on opacity, custom rgba inside components | `--fill-{primary\|secondary\|grey}-{prominent\|high\|medium\|low\|muted}` |
-| Buttons | Reaching past button tokens into raw fills or brand colors | `--btn-bg-*` for surfaces, `--btn-label-*` for text — nothing else |
+| Buttons | Reaching past button tokens into raw fills or brand colors | `--btn-bg-*` for surfaces, `--btn-label-*` for text, nothing else |
 | Icons | `currentColor` falling back to a brand primitive | `--icon-{primary\|secondary\|grey\|static}-*` |
-| Opacity model | Flattening `rgba(226 28 40 / 16%)` into `#FBE1E3` | Always preserve alpha — surfaces stay perceptually correct against any background |
+| Opacity model | Flattening `rgba(226 28 40 / 16%)` into `#FBE1E3` | Always preserve alpha, surfaces stay perceptually correct against any background |
 
 ---
 
@@ -278,19 +278,19 @@ User-stated rule (verbatim):
 
 ### Three-roles philosophy (full)
 
-**RED — Brand accent only.** Used rationally to drop a touch of the CricHeroes brand onto a surface. Never the default. Never an instruction to act.
+**RED: Brand accent only.** Used rationally to drop a touch of the CricHeroes brand onto a surface. Never the default. Never an instruction to act.
 - A slight brand impact on an important heading or hero word
-- Live / urgent signals — the "LIVE" pill, an urgent count
+- Live / urgent signals, the "LIVE" pill, an urgent count
 - Brand-accent backgrounds on team / player / tournament profiles
 - **Never a button, CTA, link, or "Save / Submit" action**
 
-**TEAL — Actionable / interactive.** Carries the *primary, high-emphasis action* on a surface. A lower-priority secondary button steps down to the neutral grey tonal style — not red.
+**TEAL: Actionable / interactive.** Carries the *primary, high-emphasis action* on a surface. A lower-priority secondary button steps down to the neutral grey tonal style, not red.
 - Primary button & main CTA (high emphasis)
 - CTA cards and promotional action surfaces
 - Inline links and "Read more →" text
 - Active tabs, selected chips, focus rings, action icons
 
-**GREY / BLACK / WHITE — Neutral foundation.** ~90 % of the interface.
+**GREY / BLACK / WHITE: Neutral foundation.** ~90 % of the interface.
 - All body text, headings & metadata (black hierarchy)
 - Surfaces, cards, page backgrounds (white / `#F3F3F3`)
 - Borders, dividers, hover, disabled states (grey + alpha)
@@ -303,20 +303,20 @@ User-stated rule (verbatim):
 
 | Context | Token | Real example |
 |---|---|---|
-| Primary body / headings / card titles | `--label-grey-high` (`#0B0B0B`) | 125 nodes on white + 83 on `#F3F3F3` — dominant default |
-| Secondary text / descriptions / metadata | `--label-grey-medium` (black @ 60 %) | Dates, locations, helper text — 40+ nodes |
-| Disabled / hint / placeholder | `--label-grey-medium` (black @ 60 %) | Placeholders, disabled labels. **Was `--label-grey-low` — banned for text; migrated to `-medium`.** |
+| Primary body / headings / card titles | `--label-grey-high` (`#0B0B0B`) | 125 nodes on white + 83 on `#F3F3F3`, dominant default |
+| Secondary text / descriptions / metadata | `--label-grey-medium` (black @ 60 %) | Dates, locations, helper text: 40+ nodes |
+| Disabled / hint / placeholder | `--label-grey-medium` (black @ 60 %) | Placeholders, disabled labels. **Was `--label-grey-low`, banned for text; migrated to `-medium`.** |
 | Inline link / interactive text | `--label-secondary-high` (`#18958F`) | "Sign In" text button, "Read more →" |
-| Live / urgent / brand emphasis | `--label-primary-high` (`#E21C28`) | "Live", brand callouts — only 19 nodes, sparingly |
+| Live / urgent / brand emphasis | `--label-primary-high` (`#E21C28`) | "Live", brand callouts, only 19 nodes, sparingly |
 
 **Text on branded / dark surfaces:**
 
 | Context | Token | Use |
 |---|---|---|
-| Text on primary teal | `--label-static-white-high` | 75 nodes — white on teal CTAs & ribbons |
+| Text on primary teal | `--label-static-white-high` | 75 nodes, white on teal CTAs & ribbons |
 | Text on brand red surface | `--label-static-white-high` | "Load More" on About, brand pills |
-| Text on dark / black | `--label-static-white-high` | Footer, dark sections — 27 nodes |
-| Secondary text on dark | `--label-static-white-medium` (white @ 60 %) | Footer secondary text — 42 nodes |
+| Text on dark / black | `--label-static-white-high` | Footer, dark sections: 27 nodes |
+| Secondary text on dark | `--label-static-white-medium` (white @ 60 %) | Footer secondary text: 42 nodes |
 | Disabled label on dark | `--label-static-white-low` (white @ 30 %) | Disabled state on branded buttons |
 
 **Buttons & CTAs (the colour-role rule):**
@@ -325,9 +325,9 @@ User-stated rule (verbatim):
 |---|---|---|---|
 | Primary CTA | `--btn-bg-primary-prominent` (teal) | `--btn-label-primary-prominent` (white) | "Load More", "Purchase Livestream" |
 | Primary CTA hover | `--brand-secondary-60` (`#157975` deeper teal) | unchanged | Never invent new hover colors |
-| Brand / destructive CTA | `--btn-bg-secondary-prominent` (red) | `--btn-label-secondary-prominent` (white) | Delete, End match, Reject — destructive ONLY |
-| Ghost / text button surface | `--btn-bg-grey-prominent` (grey @ 12 %) | — | "Sign In" outlined / text |
-| Ghost / text button label | — | `--btn-label-primary-text-prominent` (teal) | "Sign In" — 11 nodes |
+| Brand / destructive CTA | `--btn-bg-secondary-prominent` (red) | `--btn-label-secondary-prominent` (white) | Delete, End match, Reject, destructive ONLY |
+| Ghost / text button surface | `--btn-bg-grey-prominent` (grey @ 12 %) | - | "Sign In" outlined / text |
+| Ghost / text button label | - | `--btn-label-primary-text-prominent` (teal) | "Sign In": 11 nodes |
 | Disabled button surface | `--btn-bg-primary-disable` (teal @ 20 %) | `--btn-label-primary-disable` (white @ 60 %) | Retains color identity, faded |
 
 **Links, status & interactive states:**
@@ -338,7 +338,7 @@ User-stated rule (verbatim):
 | Active nav / selected tab label | `--label-grey-high` (full opacity) + teal indicator below |
 | Active tab indicator | `--fill-secondary-prominent` (2 px underline / left bar) |
 | Selected filter chip | `--fill-secondary-muted` (teal @ 18 %) |
-| Live status pill | `--fill-primary-prominent` + `--label-static-white-high` (DEPRECATED — see new chip palette below) |
+| Live status pill | `--fill-primary-prominent` + `--label-static-white-high` (DEPRECATED, see new chip palette below) |
 | Live soft chip | `--fill-primary-muted` + `--label-primary-high` (red @ 8 % + `#E21C28`) |
 | Success / completed indicator | `--fill-secondary-muted` + `--label-secondary-high` |
 | Focus ring (any focusable) | `--focus-ring` (3 px outer teal @ 30 %) |
@@ -377,9 +377,9 @@ The featured-guide / informational-promo card on cricheroes.com originally used 
 
 | Variant | Surface | When to use |
 |---|---|---|
-| Default · informational | `--fill-grey-muted` | Educational guide, helper card, FYI note. Calm, neutral — does not compete. |
-| Interactive · suggested action | `--fill-secondary-muted` | "Did you mean", "Suggested filter", "Try this" — matches the Suggestion chip family. |
-| Warning · negative outcome | `--fill-primary-muted` | "Match abandoned", "Cancelled", recoverable warning — matches the Cancelled chip. |
+| Default · informational | `--fill-grey-muted` | Educational guide, helper card, FYI note. Calm, neutral, does not compete. |
+| Interactive · suggested action | `--fill-secondary-muted` | "Did you mean", "Suggested filter", "Try this", matches the Suggestion chip family. |
+| Warning · negative outcome | `--fill-primary-muted` | "Match abandoned", "Cancelled", recoverable warning, matches the Cancelled chip. |
 
 ---
 
@@ -396,7 +396,7 @@ The featured-guide / informational-promo card on cricheroes.com originally used 
 
 ### M3 type scale (CricHeroes values)
 
-Naming follows **Material 3** (Display / Headline / Title / Body / Label × Large / Medium / Small × Regular / Emphasized = 30 styles). VALUES are CricHeroes' own — not M3 defaults. Real measured font-size range on cricheroes.com is **8 px → 100 px**.
+Naming follows **Material 3** (Display / Headline / Title / Body / Label × Large / Medium / Small × Regular / Emphasized = 30 styles). VALUES are CricHeroes' own, not M3 defaults. Real measured font-size range on cricheroes.com is **8 px → 100 px**.
 
 CSS-variable mirror (exposed in `:root` for component CSS consumption):
 
@@ -419,7 +419,7 @@ CSS-variable mirror (exposed in `:root` for component CSS consumption):
 --ch-font-display-hero: 100px    /* marketing hero only · "NEWS"-scale */
 ```
 
-**Floor rule:** **12 px is the system floor.** No text below 12 px (`--ch-font-label-sm`) anywhere in the product. Sub-floor pixel sizes are a violation. If a section feels too dense for 12 px, redesign the density — don't shrink the font.
+**Floor rule:** **12 px is the system floor.** No text below 12 px (`--ch-font-label-sm`) anywhere in the product. Sub-floor pixel sizes are a violation. If a section feels too dense for 12 px, redesign the density, don't shrink the font.
 
 ### Component button-label family (own slot)
 
@@ -433,13 +433,13 @@ Buttons have their own typography family so they evolve independently of generic
 --ch-button-label-sm-tracking: 0.04em
 
 --ch-button-label-md-family:   var(--font-primary)
---ch-button-label-md-size:     0.875rem   /* 14 px · Medium (48 px button — default) */
+--ch-button-label-md-size:     0.875rem   /* 14 px · Medium (48 px button, default) */
 --ch-button-label-md-lh:       1.25rem    /* 20 px */
 --ch-button-label-md-weight:   500
 --ch-button-label-md-tracking: 0.01em
 
 --ch-button-label-lg-family:   var(--font-primary)
---ch-button-label-lg-size:     1rem       /* 16 px · Large (56 px button — marketing hero) */
+--ch-button-label-lg-size:     1rem       /* 16 px · Large (56 px button, marketing hero) */
 --ch-button-label-lg-lh:       1.5rem     /* 24 px */
 --ch-button-label-lg-weight:   500
 --ch-button-label-lg-tracking: 0.01em
@@ -448,10 +448,10 @@ Buttons have their own typography family so they evolve independently of generic
 These are mirrored to `typography.css` `:root`, `typography.tokens.json` (`components.button.*`), `tailwind.typography.js` (`text-button-label-*`), and live as CSS vars `--ch-button-label-{sm,md,lg}-*`. Changing the var updates every button.
 
 ### Weight palette
-- **400** (Regular) — body text
-- **500** (Medium) — labels, buttons, emphasis
-- **600** (SemiBold) — section titles, card titles (occasional)
-- **700** (Bold) — headlines, stat numbers, table headers, chip status text
+- **400** (Regular), body text
+- **500** (Medium), labels, buttons, emphasis
+- **600** (SemiBold), section titles, card titles (occasional)
+- **700** (Bold), headlines, stat numbers, table headers, chip status text
 
 The system uses **400 / 500 / 700** as the core three. **600 is allowed** for specific moments (the H2 lock, card titles) but is not the default.
 
@@ -473,15 +473,15 @@ The system uses **400 / 500 / 700** as the core three. **600 is allowed** for sp
 | Body Small | 14 px | Dense body, FAQ answer, table cell content |
 | Label Large | 16 px | Button-label-lg, prominent label |
 | Label Medium | 14 px | **Navbar links, body-label** |
-| Label Small | 12 px | **Chip text, table header, metadata** — the FLOOR |
+| Label Small | 12 px | **Chip text, table header, metadata**, the FLOOR |
 
 ### Casing (LOCKED RULE) · sentence case for text, Title Case for entities
 
 > **User note (from real usage):** subtitles were found set in uppercase / ALL CAPS. Off-brand. **Brand language = sentence case for all text; Title Case reserved for entities only.**
 
-- **Sentence case everywhere text reads as text** — headlines, **subtitles**, subheads, descriptions, body, helper text, buttons/CTAs. Capitalize only the first word + proper nouns. e.g. "Follow live cricket matches near you", NOT "Follow Live Cricket Matches Near You".
-- **Title Case = entities ONLY** — proper nouns: product / feature / team / tournament / association / place names (CricHeroes PRO, Super Sponsor, Black Caps Todabhim, Match Officials).
-- **Never set subtitles or any sentence/supporting copy in uppercase.** The ONLY sanctioned uppercase is the letter-spaced overline / eyebrow / label / table-header device (`--ch-font-label-sm`, `letter-spacing: 0.04em+`) — short functional micro-labels, never subtitles or running text. If a string reads as a subtitle or a sentence → sentence case.
+- **Sentence case everywhere text reads as text**, headlines, **subtitles**, subheads, descriptions, body, helper text, buttons/CTAs. Capitalize only the first word + proper nouns. e.g. "Follow live cricket matches near you", NOT "Follow Live Cricket Matches Near You".
+- **Title Case = entities ONLY**, proper nouns: product / feature / team / tournament / association / place names (CricHeroes PRO, Super Sponsor, Black Caps Todabhim, Match Officials).
+- **Never set subtitles or any sentence/supporting copy in uppercase.** The ONLY sanctioned uppercase is the letter-spaced overline / eyebrow / label / table-header device (`--ch-font-label-sm`, `letter-spacing: 0.04em+`), short functional micro-labels, never subtitles or running text. If a string reads as a subtitle or a sentence → sentence case.
 
 ---
 
@@ -506,7 +506,7 @@ The system uses **400 / 500 / 700** as the core three. **600 is allowed** for sp
 --sp-80: 80px
 ```
 
-**Retired tokens — must NOT come back:** `--sp-6`, `--sp-10`, `--sp-96`. These are deliberately DELETED from `:root` (the 4pt grid is enforced at the foundation level, not just by convention).
+**Retired tokens, must NOT come back:** `--sp-6`, `--sp-10`, `--sp-96`. These are deliberately DELETED from `:root` (the 4pt grid is enforced at the foundation level, not just by convention).
 
 ### 6 hierarchy tiers
 
@@ -517,7 +517,7 @@ The system uses **400 / 500 / 700** as the core three. **600 is allowed** for sp
 | Component | `--sp-8` / `--sp-12` | Padding inside components, gaps between adjacent items |
 | Block | `--sp-16` / `--sp-20` / `--sp-24` | Card padding, content blocks, paragraph spacing |
 | Layout | `--sp-32` / `--sp-40` / `--sp-48` | Section spacing, large card grids |
-| Hero | `--sp-64` / `--sp-80` | Marketing hero / cover only — never product chrome |
+| Hero | `--sp-64` / `--sp-80` | Marketing hero / cover only, never product chrome |
 
 ### Decision rules
 
@@ -533,10 +533,10 @@ From a fresh 10-page crawl of cricheroes.com:
 
 - **Card internal padding dominants:** `16 (×48), 20 (×84), 24 (×44)` → mapped to Standard / Analytics / Spacious card tokens.
 - **Card inner child gaps:** `13 (×24, snap 12), 16 (×8), 10 (×11, snap 8/12)` → header↔content 12, content↔footer 16, icon↔title 12.
-- **Section vertical padding in production:** `40 (×7 top), 60 (×6 top / ×4 bottom), 72 (×2 bottom)` — half off-grid. New system: **Product sections 48/48, Marketing sections 80/64.**
+- **Section vertical padding in production:** `40 (×7 top), 60 (×6 top / ×4 bottom), 72 (×2 bottom)`, half off-grid. New system: **Product sections 48/48, Marketing sections 80/64.**
 - **Card grids in production** use `margin-on-child` (parent `gap: 0` everywhere). **New code MUST use parent `gap`:** 16 (dense) / 24 (standard).
 - **Off-grid section values snapped:** 40→48 (or kept where compact), 50→48, 60→64, 72→80. Inner gap 13→12, 15→16, 10→8/12.
-- **Buttons shipped 30 / 22 / 20 px** (sub-AA) in real cricheroes.com — all collapsed into the locked 32 / 48 / 56 heights.
+- **Buttons shipped 30 / 22 / 20 px** (sub-AA) in real cricheroes.com, all collapsed into the locked 32 / 48 / 56 heights.
 
 ### Button gap mapping
 
@@ -567,7 +567,7 @@ From a fresh 10-page crawl of cricheroes.com:
 | Container | Width | Use |
 |---|---|---|
 | Narrow | 640 px | Forms, settings, single-action screens |
-| Reading | 720 px | Article / prose content — caps at ~65 char per line |
+| Reading | 720 px | Article / prose content, caps at ~65 char per line |
 | Standard | 1040 px | Dashboards, secondary pages |
 | **Wide** | **1240 px** | **Default product page width** |
 | Full | 1440 px | Marketing cap |
@@ -599,23 +599,25 @@ No media-query forests. The `auto-fill` + `minmax` pattern handles every breakpo
 
 | Strategy | Use |
 |---|---|
-| **Stretch** | Table fits in container — no horizontal scroll |
-| **Scroll** | Table wider than 1240 px — horizontal scroll inside the card |
-| **Collapse** | Below Compact (< 600 px viewport) — stack columns vertically |
+| **Stretch** | Table fits in container, no horizontal scroll |
+| **Scroll** | Table wider than 1240 px, horizontal scroll inside the card |
+| **Collapse** | Below Compact (< 600 px viewport), stack columns vertically |
 | **Responsive (column-priority)** | Show high-priority columns first; drop low-priority columns as viewport shrinks |
 
 ### CSS variables
 
 ```
---bp-compact:  0
+/* Shipped tokens (colors_and_type.css). Compact is the base range:
+   it needs no token and no media query. */
 --bp-medium:   600
 --bp-expanded: 840
 --bp-large:    1200
 --bp-xl:       1600
 
---grid-cols-*:    column count per breakpoint
---grid-margin-*:  outer margin per breakpoint
---grid-gutter-*:  gutter per breakpoint
+/* Column count, outer margin, and gutter per breakpoint are applied
+   per layout from the table above. They are NOT shipped as --grid-*
+   tokens; do not reference --grid-cols-* / --grid-margin-* /
+   --grid-gutter-* in code. */
 
 --container-narrow:   640px
 --container-reading:  720px
@@ -623,8 +625,9 @@ No media-query forests. The `auto-fill` + `minmax` pattern handles every breakpo
 --container-wide:     1240px    /* default */
 --container-full:     1440px
 
---nav-height:     56px
---sidebar-width:  240px to 280px
+--nav-height:     72px    /* shipped value (components spec); this section
+                             historically said 56, confirm with design */
+--sidebar-width:  280px   /* shipped value; 240 to 280 is the allowed range */
 ```
 
 ---
@@ -671,18 +674,18 @@ A surface uses **border OR shadow, never both**.
 | Card · static (in list) | L0 + border | L2 | L0 + border |
 | Card · interactive | L2 | L3 | L1 |
 | Card · selected | L2 + brand outline | L3 | L2 |
-| Card · dragged | L4 | — | — |
-| Modal · default | L5 + scrim | — | — |
-| Modal · nested | L5 (second scrim) | — | — |
-| Drawer | L4 | — | — |
-| Dropdown / select panel | L4 | — | — |
-| Menu (overflow, context) | L4 | — | — |
-| Tooltip | L3 | — | — |
-| Popover (rich in-flow) | L3 | — | — |
+| Card · dragged | L4 | - | - |
+| Modal · default | L5 + scrim | - | - |
+| Modal · nested | L5 (second scrim) | - | - |
+| Drawer | L4 | - | - |
+| Dropdown / select panel | L4 | - | - |
+| Menu (overflow, context) | L4 | - | - |
+| Tooltip | L3 | - | - |
+| Popover (rich in-flow) | L3 | - | - |
 | FAB · floating button | L3 | L4 | L2 |
-| Sticky nav · at top | L0 (border-bottom) | — | — |
-| Sticky nav · after scroll | L1 or L2 | — | — |
-| Analytics widget | L0 + border | L0 + border | — |
+| Sticky nav · at top | L0 (border-bottom) | - | - |
+| Sticky nav · after scroll | L1 or L2 | - | - |
+| Analytics widget | L0 + border | L0 + border | - |
 
 **Selection is communicated via color, not depth.** **Focus is always a 3 px ring** (chip-specific override uses 2 px via `--focus-ring-chip`).
 
@@ -694,8 +697,8 @@ A surface uses **border OR shadow, never both**.
 | Button Large | `--radius-md` (12) |
 | Input field | `--radius-sm` (8) |
 | Search bar | `--radius-full` (pill) |
-| Chip — interactive / metadata | `--radius-sm` (8) |
-| Chip — status | `--radius-full` (pill) |
+| Chip, interactive / metadata | `--radius-sm` (8) |
+| Chip, status | `--radius-full` (pill) |
 | Card (default) | `--radius-md` (12) |
 | Card (looking-for classified) | `--radius-lg` (16) |
 | Modal / drawer / dialog | `--radius-md` (12) or `--radius-xl` (28) for bottom sheet |
@@ -713,7 +716,7 @@ A surface uses **border OR shadow, never both**.
 | **Horizontal Full** | Horizontal + tagline "Your cricket matters" beneath |
 | **Vertical** | Stacked mark above wordmark |
 | **Vertical Full** | Vertical + tagline beneath wordmark |
-| **PRO** (Horizontal / Vertical variants) | Sub-brand lockup — never mixes with base lockup on the same screen |
+| **PRO** (Horizontal / Vertical variants) | Sub-brand lockup, never mixes with base lockup on the same screen |
 
 Each ships as `SVG + PNG + white variant`. Files live in `/logos/` and `/logos/white/`.
 
@@ -721,15 +724,15 @@ Each ships as `SVG + PNG + white variant`. Files live in `/logos/` and `/logos/w
 
 | Surface | Lockup | Size |
 |---|---|---|
-| **Top nav** | **Horizontal Full with tagline** | **40 px** (locked policy — replaces earlier Horizontal-only recommendation; site's current CSS-text logo is WRONG, must be replaced with SVG) |
+| **Top nav** | **Horizontal Full with tagline** | **40 px** (locked policy, replaces earlier Horizontal-only recommendation; site's current CSS-text logo is WRONG, must be replaced with SVG) |
 | Cover / hero of guidelines page | Horizontal Full | 64 px |
 | Footer | Horizontal Full | 40 px |
 | Mobile nav (≥ 480 px) | Horizontal Full with tagline | 32 px |
 | Mobile nav (< 480 px) | Horizontal (no tagline) | 32 px |
 | Mobile nav (< 360 px) | Logomark only | 24 px |
-| Collapsed sidenav / favicon / loading | Logomark | 16 px square (MISSING ASSET — must be extracted from `horizontal-logo.svg`) |
-| App splash | Vertical Full on red | — |
-| PWA / apple-touch / favicon-large | Logomark on red square | 180 / 192 / 512 (MISSING — site only declares `favicon.ico`) |
+| Collapsed sidenav / favicon / loading | Logomark | 16 px square (MISSING ASSET, must be extracted from `horizontal-logo.svg`) |
+| App splash | Vertical Full on red | - |
+| PWA / apple-touch / favicon-large | Logomark on red square | 180 / 192 / 512 (MISSING, site only declares `favicon.ico`) |
 
 ### Min sizes
 
@@ -762,12 +765,12 @@ Each ships as `SVG + PNG + white variant`. Files live in `/logos/` and `/logos/w
 ### Known missing assets
 
 The Brand section calls out two missing assets that must be produced:
-1. **Standalone logomark SVG** (the cricket-ball + whale-tail in isolation) — needed for favicon (16/32/48), apple-touch-icon (180), PWA manifest icons (192/512), loading screens, collapsed sidenav, mobile narrow, video watermark, compact PDF footers.
+1. **Standalone logomark SVG** (the cricket-ball + whale-tail in isolation), needed for favicon (16/32/48), apple-touch-icon (180), PWA manifest icons (192/512), loading screens, collapsed sidenav, mobile narrow, video watermark, compact PDF footers.
 2. **Logomark on red square** (for PWA / apple-touch / favicon-large).
 
 ---
 
-## 9. Parabola — brand visual identity
+## 9. Parabola, brand visual identity
 
 The signature soft-overlapping-oval wallpaper pattern. **Optional, not mandatory.** Used only on genuinely high-priority sections or when explicitly mentioned.
 
@@ -775,9 +778,9 @@ The signature soft-overlapping-oval wallpaper pattern. **Optional, not mandatory
 
 | Colour | Asset | When to use |
 |---|---|---|
-| **White** | `parabolas/white-fhd.jpg` | Neutral filler — when a section feels blank but isn't a priority moment. Adds subtle brand presence without demanding attention. |
-| **Green / teal** | `parabolas/green-fhd.jpg` | Action surfaces — CTA cards, suggestion sections, any priority surface that invites interaction. |
-| **Red** | `parabolas/red-fhd.png` | RARE — only for team / player / tournament profile backgrounds where the brand red is already the dominant surface. Always opacity-managed so it supports the hierarchy, never breaks it. |
+| **White** | `parabolas/white-fhd.jpg` | Neutral filler, when a section feels blank but isn't a priority moment. Adds subtle brand presence without demanding attention. |
+| **Green / teal** | `parabolas/green-fhd.jpg` | Action surfaces: CTA cards, suggestion sections, any priority surface that invites interaction. |
+| **Red** | `parabolas/red-fhd.png` | RARE, only for team / player / tournament profile backgrounds where the brand red is already the dominant surface. Always opacity-managed so it supports the hierarchy, never breaks it. |
 
 ### Three opacity tiers
 
@@ -788,6 +791,11 @@ The signature soft-overlapping-oval wallpaper pattern. **Optional, not mandatory
 | **Priority** | 50–60 % (`--parabola-opacity: 0.55`) | Hero-moment highlight · launch banners, marketing moments · pattern becomes a visual feature. |
 
 ### CSS implementation
+
+> Recipe, not shipped: the `.parabola-*` helpers and `--parabola-img` /
+> `--parabola-opacity` variables below are NOT in styles.css or
+> colors_and_type.css. Copy this block into your page (adjust the asset
+> paths) when a surface needs a parabola.
 
 ```css
 .parabola-bg {
@@ -817,9 +825,9 @@ The signature soft-overlapping-oval wallpaper pattern. **Optional, not mandatory
 ### Hard rules (locked, user-stated)
 
 1. **Maximum one parabola per page**, regardless of colour. Two parabolas compete and break the visual rhythm.
-2. **Never at 100 % opacity** — always at reduced opacity. The pattern is a background presence, never the foreground subject.
-3. **Optional** — if a section is normal-priority, do NOT add a parabola just because the system has one. Use it only when explicitly mentioned in the section spec, or when a priority surface needs a brand-flavoured lift.
-4. **Foreground always wins** — if content readability drops, lower the opacity tier, don't shift the type colour to fight the parabola.
+2. **Never at 100 % opacity**, always at reduced opacity. The pattern is a background presence, never the foreground subject.
+3. **Optional**, if a section is normal-priority, do NOT add a parabola just because the system has one. Use it only when explicitly mentioned in the section spec, or when a priority surface needs a brand-flavoured lift.
+4. **Foreground always wins**, if content readability drops, lower the opacity tier, don't shift the type colour to fight the parabola.
 
 ### Do / don't
 
@@ -854,7 +862,7 @@ User-stated rule (verbatim):
 | Job | Colour | Token | When |
 |---|---|---|---|
 | **Primary action** | Teal | `--btn-bg-primary-prominent` | The one highest-priority action on a screen / section / modal / workflow. Save · Continue · Submit · Buy · Start match · Send. |
-| **Secondary action** | **Grey tonal** | **`--btn-bg-grey-prominent`** | Lower-emphasis sibling of the primary — paired beside teal so teal stays focal. Cancel · Back · Skip · Maybe later. **Secondary buttons are GREY, not red.** The `--btn-bg-secondary-*` token name is a legacy brand-mapping artefact; semantically the secondary button is tonal grey. |
+| **Secondary action** | **Grey tonal** | **`--btn-bg-grey-prominent`** | Lower-emphasis sibling of the primary, paired beside teal so teal stays focal. Cancel · Back · Skip · Maybe later. **Secondary buttons are GREY, not red.** The `--btn-bg-secondary-*` token name is a legacy brand-mapping artefact; semantically the secondary button is tonal grey. |
 | **Destructive action** | Red | `--btn-bg-secondary-prominent` | Reserved STRICTLY for irreversible / destructive / high-attention actions. Delete · Remove · End match · Reject · Discard. **Red buttons are NEVER primary CTAs.** If the action isn't destructive, it's teal. |
 | **Tertiary / inline link** | Transparent · teal label | `--btn-label-primary-text-prominent` | Lowest-emphasis · supportive action. "Sign in" · "Read more →" · contextual jumps. |
 
@@ -878,11 +886,11 @@ User-stated rule (verbatim):
 
 **Do:** Make every primary CTA teal. Pair teal with a grey secondary when two actions sit side-by-side. Reserve red for irreversible / destructive moments only. Use the tertiary text button when the action is supportive, not central.
 
-**Don't:** Use red for Save / Submit / Continue / Buy or any forward-action button. Use red as the secondary button beside a teal primary (reads as "Cancel + Delete", never "Cancel + Save"). Pair two teal buttons (one primary per surface). Drop the tonal grey secondary in favour of an outlined button — outlines are explicitly out of scope.
+**Don't:** Use red for Save / Submit / Continue / Buy or any forward-action button. Use red as the secondary button beside a teal primary (reads as "Cancel + Delete", never "Cancel + Save"). Pair two teal buttons (one primary per surface). Drop the tonal grey secondary in favour of an outlined button, outlines are explicitly out of scope.
 
 ### Size-context map (from cricheroes.com crawl)
 
-- Real cricheroes.com today ships buttons at **40 px (×9 CTAs)** and **30 px (×3 chrome)** — all collapse to **Medium 48**.
+- Real cricheroes.com today ships buttons at **40 px (×9 CTAs)** and **30 px (×3 chrome)**, all collapse to **Medium 48**.
 - **Large 56** is reserved for marketing hero CTAs (≤ 1 per viewport). Not used in product chrome.
 - **Pagination / chrome below 32 are sub-AA and must go up.**
 
@@ -890,7 +898,7 @@ User-stated rule (verbatim):
 
 ## 11. Chips
 
-### M3 taxonomy — 4 categories chosen by JOB, not look
+### M3 taxonomy: 4 categories chosen by JOB, not look
 
 | Category | Use | Style |
 |---|---|---|
@@ -910,12 +918,12 @@ User-stated rules (verbatim):
 
 | # | State | Surface | Label | Notes |
 |---|---|---|---|---|
-| 1 | **Live** | `--fill-primary-muted` | `--label-primary-high` | Tonal red bg + red-high label. **NO pulsing dot — removed.** Chip text "Live" is the differentiator. |
+| 1 | **Live** | `--fill-primary-muted` | `--label-primary-high` | Tonal red bg + red-high label. **NO pulsing dot, removed.** Chip text "Live" is the differentiator. |
 | 2 | **Ongoing** | `--fill-primary-muted` | `--label-primary-high` | **VISUALLY IDENTICAL to Live.** Context (chip text + surrounding card) is the only differentiator (Live = match real-time, Ongoing = tournament running). |
-| 3 | **Upcoming** | `--fill-secondary-low` | `--label-secondary-high` | Tonal teal — forward-looking. |
-| 4 | **Cancelled** | `--fill-primary-muted` | **`--label-primary-medium`** (red @ 52 %) | Same tonal-red surface as Live/Ongoing, label stays red but softer. **Originally used `--label-primary-low` — updated after the `-low` / `-muted` text ban.** Stays in the red family so Cancelled doesn't fully drop into "neutral past" territory. Ranked ABOVE Completed because cancellation is a deliberate exception. |
-| 5 | **Completed** | `--fill-grey-low` | `--label-grey-medium` | Tonal grey medium — calm, archival. |
-| 6 | **Abandoned** | `--fill-grey-muted` | `--label-grey-medium` | Lighter grey + medium-contrast label · no glyph · communicates "didn't conclude meaningfully" (rain, light, safety). **Originally used `--label-grey-low` — migrated to `-medium` under the text ban.** |
+| 3 | **Upcoming** | `--fill-secondary-low` | `--label-secondary-high` | Tonal teal, forward-looking. |
+| 4 | **Cancelled** | `--fill-primary-muted` | **`--label-primary-medium`** (red @ 52 %) | Same tonal-red surface as Live/Ongoing, label stays red but softer. **Originally used `--label-primary-low`, updated after the `-low` / `-muted` text ban.** Stays in the red family so Cancelled doesn't fully drop into "neutral past" territory. Ranked ABOVE Completed because cancellation is a deliberate exception. |
+| 5 | **Completed** | `--fill-grey-low` | `--label-grey-medium` | Tonal grey medium, calm, archival. |
+| 6 | **Abandoned** | `--fill-grey-muted` | `--label-grey-medium` | Lighter grey + medium-contrast label · no glyph · communicates "didn't conclude meaningfully" (rain, light, safety). **Originally used `--label-grey-low`, migrated to `-medium` under the text ban.** |
 
 **The pulsing live-dot was removed entirely.** The `.chip-live-dot` rule and `chip-pulse` keyframes are deleted. The status family has NO animation; no special `prefers-reduced-motion` path needed.
 
@@ -930,12 +938,12 @@ User-stated rules (verbatim):
   - Status pills → `--radius-full`
   - Interactive / metadata (Assist / Filter / Input) → `--radius-sm` (8 px)
 - **Border width:** 0 (filled) · 1 px (outlined Assist / Filter only)
-- **Focus ring:** **`--focus-ring-chip`** — 2 px · `rgb(--rgb-secondary / 0.45)`. Chip-specific override of the system's 3 px ring so it doesn't compete with the 32 px chip. WCAG 2.4.13 compliant.
+- **Focus ring:** **`--focus-ring-chip`**: 2 px · `rgb(--rgb-secondary / 0.45)`. Chip-specific override of the system's 3 px ring so it doesn't compete with the 32 px chip. WCAG 2.4.13 compliant.
 - **Leading / trailing icon size:** `icon-xs` (16 px)
 - **Close (✕) icon:** 14 px glyph inside a 20 px circular hit (`--sp-20`)
 - **Avatar (Input chips):** 24 px (`icon-md` from the icon scale) with **−8 px outset** (pulls avatar to chip edge)
 - **Typography:** `--ch-button-label-sm` (12 px · weight 500 · +0.01 em tracking · line-height 16 px)
-- **Case:** **Sentence case everywhere.** First word capitalised, proper nouns retain their casing ("Live", "Ongoing", "Mumbai Indians", "Did you mean"). **ALL CAPS was evaluated and dropped** — at 12 px it added shoutiness without scanability gain.
+- **Case:** **Sentence case everywhere.** First word capitalised, proper nouns retain their casing ("Live", "Ongoing", "Mumbai Indians", "Did you mean"). **ALL CAPS was evaluated and dropped**, at 12 px it added shoutiness without scanability gain.
 
 ### Status hierarchy (visual emphasis ranking)
 
@@ -944,13 +952,13 @@ User-stated rules (verbatim):
 | 1 (highest) | Live | Real-time match · the red colour family carries urgency · chip text differentiates from Ongoing |
 | 2 | Ongoing | Tournament currently running · visually identical to Live · context differentiates |
 | 3 | Upcoming | Future activity · forward-looking · teal family signals scheduled/anticipated |
-| 4 | Cancelled | **Deliberately ABOVE Completed** — cancellation is a deliberate exception that warrants attention |
+| 4 | Cancelled | **Deliberately ABOVE Completed**, cancellation is a deliberate exception that warrants attention |
 | 5 | Completed | Expected outcome · default end state · calm, archival, predictable |
 | 6 (lowest) | Abandoned | Match never reached meaning (rain / light / safety) · lower contrast than Completed · "didn't conclude meaningfully" rather than "ended successfully" · NO glyph (faded treatment is the signal) |
 
 ### Diff from canonical M3
 
-M3 doesn't separate negative-deliberate from negative-incidental. **CricHeroes does** — cricket has frequent rain abandonments alongside organiser cancellations, and conflating them loses real product information. Cancelled gets MORE emphasis than Completed (it's an exception); Abandoned gets LESS (it's an incomplete that should scan past without competing with Completed results).
+M3 doesn't separate negative-deliberate from negative-incidental. **CricHeroes does**, cricket has frequent rain abandonments alongside organiser cancellations, and conflating them loses real product information. Cancelled gets MORE emphasis than Completed (it's an exception); Abandoned gets LESS (it's an incomplete that should scan past without competing with Completed results).
 
 ---
 
@@ -974,45 +982,45 @@ Hover lifts to `--elevation-3` only when the card is interactive (links to its o
 ### The 15 patterns
 
 **A · Container & layout primitives (2)**
-1. **Card · base** — the primitive. Every card inherits.
-2. **Hero card** — Tournament hero + Player profile hero. Full-width red surface — IS a card (user-locked). 3-column layout (logo / avatar tile · title-meta-actions · stat-tile cluster). **No top/bottom accent bars** (removed per user). Action button is `--btn-bg-primary-prominent` (teal) — never the white-pill-on-red shortcut.
+1. **Card · base**, the primitive. Every card inherits.
+2. **Hero card**: Tournament hero + Player profile hero. Full-width red surface: IS a card (user-locked). 3-column layout (logo / avatar tile · title-meta-actions · stat-tile cluster). **No top/bottom accent bars** (removed per user). Action button is `--btn-bg-primary-prominent` (teal), never the white-pill-on-red shortcut.
 
 **B · Collection / list cards (7)**
 
-3. **Match card** (status variants: `live` / `past` / `upcoming`) — `~450 × 215 px` · `--radius-md` · `--bg-primary`. Header band (tournament + venue + format) · status chip top-right · two team rows (`team-name (bold) · 123/4 (10.0)`) · state line ("Need X runs", "Yet to bat", "won the toss and elected to field"). Compact variant for player-profile grid (~300 px wide). Implemented as `.ch-card-msummary`.
-4. **Tournament card** — `450 × 117–140 px` · `--radius-md` · `--bg-primary`. Logo tile left (square, `--radius-sm`), title + date range + location stacked right, status chip top-right.
-5. **Association testimonial card** — `514 × 389 px` · `--radius-md` · `--bg-primary`. Photo header (16:9) · name + location title · body quote · attribution footer with avatar.
-6. **Community category card** — `240 × 140 px` · `--radius-md` · `--bg-primary`. Centred glyph + label · cursor pointer.
-7. **Looking-for classified card** — `419 × 174–318 px` · `--radius-lg` (16 — the only non-hero card using `lg`) · `--bg-primary` · `--sp-16` padding. Compact post with 40 px avatar (tonal teal), headline ("X is looking for Y"), description body, footer row with relative time + actions.
-8. **Store product card** — `242 × 419 px` · `--radius-md` · transparent bg (image fills). 3:4 image (top), brand line `--ch-font-label-sm`, product name `--ch-font-body-sm` bold, price row (current · was strike-through · red discount %). Sold in horizontal-scrolling row groups.
-9. **Featured-guide card** (the "no peach" card) — `288 × 210 px` · `--radius-md` · `--sp-16` padding · bg picked by context: `--fill-grey-muted` (default), `--fill-secondary-muted` (interactive), `--fill-primary-muted` (warning).
+3. **Match card** (status variants: `live` / `past` / `upcoming`): `~450 × 215 px` · `--radius-md` · `--bg-primary`. Header band (tournament + venue + format) · status chip top-right · two team rows (`team-name (bold) · 123/4 (10.0)`) · state line ("Need X runs", "Yet to bat", "won the toss and elected to field"). Compact variant for player-profile grid (~300 px wide). Implemented as `.ch-card-msummary`.
+4. **Tournament card**: `450 × 117–140 px` · `--radius-md` · `--bg-primary`. Logo tile left (square, `--radius-sm`), title + date range + location stacked right, status chip top-right.
+5. **Association testimonial card**: `514 × 389 px` · `--radius-md` · `--bg-primary`. Photo header (16:9) · name + location title · body quote · attribution footer with avatar.
+6. **Community category card**: `240 × 140 px` · `--radius-md` · `--bg-primary`. Centred glyph + label · cursor pointer.
+7. **Looking-for classified card**: `419 × 174–318 px` · `--radius-lg` (16, the only non-hero card using `lg`) · `--bg-primary` · `--sp-16` padding. Compact post with 40 px avatar (tonal teal), headline ("X is looking for Y"), description body, footer row with relative time + actions.
+8. **Store product card**: `242 × 419 px` · `--radius-md` · transparent bg (image fills). 3:4 image (top), brand line `--ch-font-label-sm`, product name `--ch-font-body-sm` bold, price row (current · was strike-through · red discount %). Sold in horizontal-scrolling row groups.
+9. **Featured-guide card** (the "no peach" card): `288 × 210 px` · `--radius-md` · `--sp-16` padding · bg picked by context: `--fill-grey-muted` (default), `--fill-secondary-muted` (interactive), `--fill-primary-muted` (warning).
 
 **C · Match summary header (1)**
 
-10. **Match summary card** — Top of every match page. Header band (tournament name + format) · venue meta line · status chip top-right · both team rows with scores · current state line. Shares structure with Match card #3 but at larger scale + always-expanded.
+10. **Match summary card**: Top of every match page. Header band (tournament name + format) · venue meta line · status chip top-right · both team rows with scores · current state line. Shares structure with Match card #3 but at larger scale + always-expanded.
 
 **D · Sidebar info cards (3)**
 
-11. **Stat tile card** — Big-number-led mini card. Single, or split-2 (Current RR / Projected Score twin). `--ch-font-headline-md` weight 700 number, `--ch-font-label-md` muted caption.
-12. **Info-list card** (3 subtypes — one component) — Section title (`--ch-font-title-sm`) + label-value rows. Subtypes: **Officials** (role-avatar-name rows · `--sp-12` gap), **Details** (label-value pairs · `--sp-4` gap), **Notes** (timeline · `--sp-12` y padding + 1 px divider). All share `.ch-card-info`.
-13. **Video stream card** — Thumbnail (16:9 dark gradient `--brand-black` → `--brand-secondary-80`) with red play affordance + "Watch on YouTube" pill · "View All Video Streams" link · `TOTAL VIEWS:` + `LIVE VIEWERS:` counters.
+11. **Stat tile card**: Big-number-led mini card. Single, or split-2 (Current RR / Projected Score twin). `--ch-font-headline-md` weight 700 number, `--ch-font-label-md` muted caption.
+12. **Info-list card** (3 subtypes, one component): Section title (`--ch-font-title-sm`) + label-value rows. Subtypes: **Officials** (role-avatar-name rows · `--sp-12` gap), **Details** (label-value pairs · `--sp-4` gap), **Notes** (timeline · `--sp-12` y padding + 1 px divider). All share `.ch-card-info`.
+13. **Video stream card**: Thumbnail (16:9 dark gradient `--brand-black` → `--brand-secondary-80`) with red play affordance + "Watch on YouTube" pill · "View All Video Streams" link · `TOTAL VIEWS:` + `LIVE VIEWERS:` counters.
 
 **E · Visualisation (1)**
 
-14. **Chart card** — Frame for every Analysis-tab chart. Header (title · scope chip · expand icon) · body 180 px tall · gradient grey background · bar elements use `--fill-secondary-high` / `--fill-primary-high` alternating. Variants: Manhattan · Run Rate · Worm · Wickets Pie · Types of Runs · Partnerships.
+14. **Chart card**: Frame for every Analysis-tab chart. Header (title · scope chip · expand icon) · body 180 px tall · gradient grey background · bar elements use `--fill-secondary-high` / `--fill-primary-high` alternating. Variants: Manhattan · Run Rate · Worm · Wickets Pie · Types of Runs · Partnerships.
 
 **F · Squad / team (1)**
 
-15. **Squad tile** — `112 px wide` · `--radius-md`. Photo top (1:1 aspect · `--fill-primary-prominent` default cap glyph) · name below (`--ch-font-label-sm` weight 500) · captain `(C)` / wicketkeeper `(WK)` inline · ✓ teal pin top-right when selected for playing 11. **PRO badge slot is DELIBERATELY NOT included — deferred to Badges work.**
+15. **Squad tile**: `112 px wide` · `--radius-md`. Photo top (1:1 aspect · `--fill-primary-prominent` default cap glyph) · name below (`--ch-font-label-sm` weight 500) · captain `(C)` / wicketkeeper `(WK)` inline · ✓ teal pin top-right when selected for playing 11. **PRO badge slot is DELIBERATELY NOT included, deferred to Badges work.**
 
 **G · Feed (1)**
 
-16. **Feed item** — One component, 5 variants for the commentary stream. Result-badge colours follow chip palette:
-   - `ball` — `over.ball` label (mono grey) · 28 px result badge · headline + dismissal sub
-   - `over-summary` — grey-muted band · "END OF OVER N" + total runs/wickets · current batters + bowlers
-   - `batter-intro` — 40 px tonal-teal avatar + "NEXT" + handedness + stats inline
-   - `bowler-intro` — stumps icon + entry line
-   - `event` — star icon + cheer line
+16. **Feed item**: One component, 5 variants for the commentary stream. Result-badge colours follow chip palette:
+   - `ball`: `over.ball` label (mono grey) · 28 px result badge · headline + dismissal sub
+   - `over-summary`, grey-muted band · "END OF OVER N" + total runs/wickets · current batters + bowlers
+   - `batter-intro`: 40 px tonal-teal avatar + "NEXT" + handedness + stats inline
+   - `bowler-intro`, stumps icon + entry line
+   - `event`, star icon + cheer line
 
    **Result badge colours:**
    - `W` → `--fill-primary-prominent` + `--label-static-white-high` (red)
@@ -1023,18 +1031,18 @@ Hover lifts to `--elevation-3` only when the card is interactive (links to its o
 
 **H · Utility (1)**
 
-17. **Empty-state card** — `--sp-32 var(--sp-24)` padding · centred icon (56 × 56 circle, `--fill-grey-muted`) + headline (`--ch-font-body-md` weight 600) + helper line (`--ch-font-body-sm` muted, max 320 px).
+17. **Empty-state card**: `--sp-32 var(--sp-24)` padding · centred icon (56 × 56 circle, `--fill-grey-muted`) + headline (`--ch-font-body-md` weight 600) + helper line (`--ch-font-body-sm` muted, max 320 px).
 
-(Index numbering: the system documentation refers to "15 first-class patterns" by counting Hero as 1 — internal layout is the 17 above.)
+(Index numbering: the system documentation refers to "15 first-class patterns" by counting Hero as 1, internal layout is the 17 above.)
 
-### Coverage gaps (auth-walled — anatomy extracted from screenshots only)
+### Coverage gaps (auth-walled, anatomy extracted from screenshots only)
 
 The Cards section ends with an explicit warning-tonal callout listing what could NOT be measured directly:
 
-- **Past-match tabs** (Info · Insights · Heroes · Badges · Squad) — anatomy slotted into existing patterns; needs logged-in capture
-- **Tournament tabs** (Leaderboard · Points Table · Stats · Heroes) — Points Table T8 anatomy reconstructed from screenshots; live capture needs login
-- **Community sub-pages** (`/community/scorers`, `/community/academies`) — almost certainly use the Looking-for classified card
-- **PRO crown / verified-tick badges** — intentionally deferred to Badges work
+- **Past-match tabs** (Info · Insights · Heroes · Badges · Squad), anatomy slotted into existing patterns; needs logged-in capture
+- **Tournament tabs** (Leaderboard · Points Table · Stats · Heroes): Points Table T8 anatomy reconstructed from screenshots; live capture needs login
+- **Community sub-pages** (`/community/scorers`, `/community/academies`), almost certainly use the Looking-for classified card
+- **PRO crown / verified-tick badges**, intentionally deferred to Badges work
 
 ---
 
@@ -1064,10 +1072,10 @@ dismissal:    --label-grey-medium · font-size: --ch-font-label-sm · display: b
 | **T2** | Bowling scorecard | Bowlers · O · M · R · W · 0s · 4s · 6s · WD · NB · Eco |
 | **T3** | Live mini-batters | Batters · R · B · 4s · 6s · SR (only current batters · `*` marks active) |
 | **T4** | Live mini-bowlers | Bowlers · O · M · R · W · Eco (current bowler `*`) |
-| **T5** | Fall of Wickets | Inline row (not strictly a table) — `1-1 (Ankur Jain, 1 ov), 41-2 (...), ...` · footer under T1 |
-| **T6** | Extras & Yet-to-bat | Label-aligned footer rows under T1 — `Extras (b 1, wd 9, nb 2, lb 2) = 14` / `Yet to Bat: SANJU JAIN, ...` |
+| **T5** | Fall of Wickets | Inline row (not strictly a table): `1-1 (Ankur Jain, 1 ov), 41-2 (...), ...` · footer under T1 |
+| **T6** | Extras & Yet-to-bat | Label-aligned footer rows under T1: `Extras (b 1, wd 9, nb 2, lb 2) = 14` / `Yet to Bat: SANJU JAIN, ...` |
 | **T7** | MVP leaderboard | Avatar + name + team(s) · grouped metric cells (Batting · Bowling · Fielding) · Total · trophy icon |
-| **T8** | Points table | Team logo + name · M · W · L · T · NR · NRR · Pts (anatomy from screenshots — auth-walled in crawl) |
+| **T8** | Points table | Team logo + name · M · W · L · T · NR · NRR · Pts (anatomy from screenshots, auth-walled in crawl) |
 
 ---
 
@@ -1081,64 +1089,64 @@ dismissal:    --label-grey-medium · font-size: --ch-font-label-sm · display: b
 
 | Context | Behaviour | Container rule |
 |---|---|---|
-| **Full-width** (no sidebar) | Component spans the entire content area, capped by `--container-wide` (1240 px) | Default — no max-width on the component |
-| **Adjusted** (sidebar present) | Main column shrinks to ~9/12 of the grid (sidebar takes 3/12 = 240–280 px); component shrinks with it | Same component, no special variant — fluid handles it |
+| **Full-width** (no sidebar) | Component spans the entire content area, capped by `--container-wide` (1240 px) | Default, no max-width on the component |
+| **Adjusted** (sidebar present) | Main column shrinks to ~9/12 of the grid (sidebar takes 3/12 = 240–280 px); component shrinks with it | Same component, no special variant, fluid handles it |
 | **Centered** (standalone moment) | Wrap in centred flex with sensible max-width | 440 forms · 320 menus · 296 date picker · 520 search |
-| **Inline** (within a row) | Component takes only the width its content needs | Use intrinsic size — never set a width |
+| **Inline** (within a row) | Component takes only the width its content needs | Use intrinsic size, never set a width |
 
 ### The 17 components
 
-**1 · Navbar** — Site-wide top navigation. **72 px** white surface · 1 px bottom border on the wrapper (no top/bottom accent bars — those were removed). Horizontal Full logo with tagline (44 px) on the left, dropdown nav links centered, then app-store badges, profile avatar, search trigger on the right.
+**1 · Navbar**: Site-wide top navigation. **72 px** white surface · 1 px bottom border on the wrapper (no top/bottom accent bars, those were removed). Horizontal Full logo with tagline (44 px) on the left, dropdown nav links centered, then app-store badges, profile avatar, search trigger on the right.
 - Links: `--ch-font-label-md` · weight 700 · `--label-grey-high` at rest, `--label-secondary-high` on hover/active
 - Dropdown chevron: 8 px · built from two borders rotated 45° (inherits link colour)
 - App badges: 32 × 32 · `--radius-xs` · Google Play 4-colour glyph + Apple App Store stylized "A" on blue gradient · official external brand glyphs (audit carve-out)
 - Avatar: 36 × 36 · `--radius-full` · `--fill-secondary-muted` background · tonal teal initials · 2 px white inner ring + 1 px grey-low outer ring · PRO badge slot intentionally empty
 - Search trigger: 36 × 36 ghost button · hover → `--fill-grey-muted`
 
-**2 · Input field** — 48 px tall · `--radius-sm` · `--bg-primary` · 1 px `--fill-grey-high` border at rest.
+**2 · Input field**: 48 px tall · `--radius-sm` · `--bg-primary` · 1 px `--fill-grey-high` border at rest.
 - Focus: `--fill-secondary-prominent` border + 3 px `rgb(--rgb-secondary / 0.18)` focus ring
 - Error: `--fill-primary-prominent` border + red helper text (`--label-primary-high`)
 - Disabled: `--fill-grey-muted` surface · `--label-grey-medium` colour · cursor not-allowed
 - Helper text: `--ch-font-label-sm` · `--label-grey-medium`
 - Label: `--ch-font-label-sm` · weight 600 · uppercase · letter-spacing 0.04em · `--label-grey-medium`
 
-**3 · Tab bar** — Two patterns, both with teal active state:
-- **Underline tabs** — in-page primary nav (match summary, tournament detail). Padding `--sp-12 --sp-16` · 2 px transparent underline at rest · active = `--label-secondary-high` text + `--fill-secondary-prominent` 2 px underline + weight 700.
-- **Segmented control** — filter / view-mode toggle. Container `--fill-grey-muted` · `--radius-full` · 4 px padding. Active tab = `--bg-primary` + `--elevation-2` + `--label-grey-high` + weight 600.
+**3 · Tab bar**: Two patterns, both with teal active state:
+- **Underline tabs**, in-page primary nav (match summary, tournament detail). Padding `--sp-12 --sp-16` · 2 px transparent underline at rest · active = `--label-secondary-high` text + `--fill-secondary-prominent` 2 px underline + weight 700.
+- **Segmented control**, filter / view-mode toggle. Container `--fill-grey-muted` · `--radius-full` · 4 px padding. Active tab = `--bg-primary` + `--elevation-2` + `--label-grey-high` + weight 600.
 
-**4 · Carousel** — 220 px container · `--radius-md` · floating elevation-3 white arrow buttons.
+**4 · Carousel**: 220 px container · `--radius-md` · floating elevation-3 white arrow buttons.
 - Dots: 8 × 8 · `--radius-full` · `rgb(--rgb-white / 0.6)` at rest, `--fill-secondary-prominent` + width 24 px when active.
 
-**5 · Checkbox · teal** — 20 × 20 · `--radius-xs` · 2 px `--fill-grey-high` border · `--bg-primary`.
-- Checked / indeterminate: `--fill-secondary-prominent` fill + `--label-static-white-high` glyph (✓ or –)
+**5 · Checkbox · teal**: 20 × 20 · `--radius-xs` · 2 px `--fill-grey-high` border · `--bg-primary`.
+- Checked / indeterminate: `--fill-secondary-prominent` fill + `--label-static-white-high` glyph (✓ or -)
 - Disabled: opacity 0.4
 - **Never red.**
 
-**6 · Date / time picker** — 296 px popover · `--radius-md` · `--elevation-3` · `--sp-16` padding.
+**6 · Date / time picker**: 296 px popover · `--radius-md` · `--elevation-3` · `--sp-16` padding.
 - Today: 1 px `--fill-secondary-prominent` inset ring + `--label-secondary-high` text · weight 700
 - Selected: `--fill-secondary-prominent` solid pill + `--label-static-white-high`
-- Out-of-month: `--label-grey-medium` (was `--label-grey-low` — migrated under the text ban)
+- Out-of-month: `--label-grey-medium` (was `--label-grey-low`, migrated under the text ban)
 - Cells: aspect 1:1 · `--radius-full` · hover → `--fill-grey-muted`
 
-**7 · Dialog** — `--radius-md` · `--elevation-5` · max-width 440 px · `rgb(--rgb-black / 0.40)` scrim.
+**7 · Dialog**: `--radius-md` · `--elevation-5` · max-width 440 px · `rgb(--rgb-black / 0.40)` scrim.
 - Title: `--ch-font-title-md` · weight 700 · `--label-grey-high`
 - Body: `--ch-font-body-sm` · `--label-grey-medium` · line-height 1.6
 - Close: 32 × 32 ghost button top-right · hover → `--fill-grey-muted`
 - Actions: flex right · `--sp-8` gap · destructive uses Warning (red) Filled, non-destructive uses Primary (teal)
 
-**8 · Divider** — Four shapes:
+**8 · Divider**: Four shapes:
 - 1 px hairline `--fill-grey-low` (default)
 - 8 px thick band `--fill-grey-muted` (page-band separator)
 - Vertical 1 px (inline)
 - Labelled (1 px lines + centred uppercase label `--ch-font-label-sm` 0.04em `--label-grey-medium`)
 
-**9 · Loading & Progress** — All teal · all animations respect `prefers-reduced-motion`:
+**9 · Loading & Progress**: All teal · all animations respect `prefers-reduced-motion`:
 - **Circular spinner**: 32 × 32 default · 20 × 20 small · 48 × 48 large · 3 px border `--fill-grey-muted` with top-border `--fill-secondary-prominent` · `ch-cmp-spin 0.8s linear infinite`
 - **Linear progress**: 6 px tall · `--fill-grey-muted` track · `--fill-secondary-prominent` fill · indeterminate uses `ch-cmp-progress 1.5s ease-in-out infinite`
 - **Bouncing dots**: 8 × 8 circles · `--fill-secondary-prominent` · staggered `ch-cmp-dot 1.2s ease-in-out infinite`
 - **Skeleton shimmer**: `--fill-grey-muted` → `--fill-grey-low` linear gradient · 200 % background-size · `ch-cmp-shimmer 1.6s ease-in-out infinite`
 
-**10 · Menu (dropdown)** — `--elevation-4` floating list · `--sp-4` outer padding · min-width 220 px.
+**10 · Menu (dropdown)**: `--elevation-4` floating list · `--sp-4` outer padding · min-width 220 px.
 - Items: `--sp-8 var(--sp-12)` padding · `--radius-sm`
 - Hover: `--fill-grey-muted`
 - Selected: `--fill-secondary-muted` + `--label-secondary-high` + weight 600
@@ -1146,26 +1154,26 @@ dismissal:    --label-grey-medium · font-size: --ch-font-label-sm · display: b
 - Disabled: `--label-grey-medium` · no hover
 - Divider: 1 px `--fill-grey-low` (inline divider before destructive)
 
-**11 · Radio button · teal** — 20 × 20 circle · 2 px `--fill-grey-high` border · `--bg-primary`.
+**11 · Radio button · teal**: 20 × 20 circle · 2 px `--fill-grey-high` border · `--bg-primary`.
 - Selected: border-color `--fill-secondary-prominent` + 10 × 10 inner dot `--fill-secondary-prominent`
 - Disabled: opacity 0.4
 - **Never red.**
 
-**12 · Search bar** — Pill (`--radius-full`) · 48 px tall · `--fill-grey-muted` background · 1 px transparent border at rest.
+**12 · Search bar**: Pill (`--radius-full`) · 48 px tall · `--fill-grey-muted` background · 1 px transparent border at rest.
 - Focus-within: `--bg-primary` background + `--fill-secondary-prominent` border + 3 px `rgb(--rgb-secondary / 0.18)` ring
 - Leading magnifier SVG (20 × 20 · `--label-grey-medium`)
 - Trailing clear button (20 × 20 · `--fill-grey-high` background · `--label-static-white-high` ✕)
 
-**13 · Tooltip** — Dark `--brand-black` surface · `--label-static-white-high` text · `--ch-font-label-sm` weight 500 · `--sp-8 var(--sp-12)` padding · `--radius-xs` · `--elevation-3`.
+**13 · Tooltip**: Dark `--brand-black` surface · `--label-static-white-high` text · `--ch-font-label-sm` weight 500 · `--sp-8 var(--sp-12)` padding · `--radius-xs` · `--elevation-3`.
 - 4 px arrow (rotated square via `::after`).
 
-**14 · Slider** — Track 4 px `--fill-grey-muted` · `--radius-full`. Fill 4 px `--fill-secondary-prominent`. Thumb 20 px circle `--fill-secondary-prominent` + 2 px white ring + `--elevation-2`. Floating value label above on drag.
+**14 · Slider**: Track 4 px `--fill-grey-muted` · `--radius-full`. Fill 4 px `--fill-secondary-prominent`. Thumb 20 px circle `--fill-secondary-prominent` + 2 px white ring + `--elevation-2`. Floating value label above on drag.
 
-**15 · Snackbar / Toast** — `--brand-black` (default) · `--fill-secondary-prominent` (success) · `--fill-primary-prominent` (error) · `--radius-sm` · `--elevation-4` · `--sp-12 var(--sp-16)` padding.
+**15 · Snackbar / Toast**: `--brand-black` (default) · `--fill-secondary-prominent` (success) · `--fill-primary-prominent` (error) · `--radius-sm` · `--elevation-4` · `--sp-12 var(--sp-16)` padding.
 - Message: `--ch-font-body-sm` · `--label-static-white-high`
-- Action label: bright teal `rgb(--rgb-secondary-30)` on dark · weight 700 · uppercase · 0.04em — **so it reads interactive on dark without breaking the no-red-action rule**
+- Action label: bright teal `rgb(--rgb-secondary-30)` on dark · weight 700 · uppercase · 0.04em: **so it reads interactive on dark without breaking the no-red-action rule**
 
-**16 · App Store badge (Apple + Google)** — Full pill `Download on the App Store` / `Get it on Google Play`. Two sizes:
+**16 · App Store badge (Apple + Google)**: Full pill `Download on the App Store` / `Get it on Google Play`. Two sizes:
 
 | | Default | Small (footer) |
 |---|---|---|
@@ -1180,7 +1188,7 @@ Surface: `--brand-black` · 1 px `rgb(--rgb-white / 0.18)` border · `--radius-s
 
 **Always show both badges paired.** Never one platform alone. Default 48 = home-header centre under hero. Small 40 = footer brand column. For production, link to real store URLs and use Apple/Google official PNG/SVG assets.
 
-**17 · FAQ accordion** — Native `<details>` / `<summary>` so keyboard / screen readers / open-close state work without JS. One bordered card holds the whole list.
+**17 · FAQ accordion**: Native `<details>` / `<summary>` so keyboard / screen readers / open-close state work without JS. One bordered card holds the whole list.
 - Container: `--bg-primary` · 1 px `--fill-grey-low` · `--radius-md`
 - Row divider: 1 px `--fill-grey-low` between items
 - Question (`summary`): `--ch-font-body-md` weight 600 · `--label-grey-high` · padding `--sp-20 var(--sp-24)` · hover lifts to `--fill-grey-muted` · focus lifts to `--fill-secondary-muted` + teal label
@@ -1188,7 +1196,7 @@ Surface: `--brand-black` · 1 px `rgb(--rgb-white / 0.18)` border · `--radius-s
 - Answer: `--ch-font-body-sm` · `--label-grey-medium` · line-height 1.7 · padding `0 --sp-24 --sp-20` (indented under question text). Inline links → `--label-secondary-high`
 - Rules: Open the first item by default · max ~10 items per accordion (sub-group if more) · never put critical info inside collapsed answers
 
-### Component animations (prefixed keyframes — won't clash)
+### Component animations (prefixed keyframes, won't clash)
 
 ```
 @keyframes ch-cmp-spin     { to { transform: rotate(360deg); } }
@@ -1232,15 +1240,15 @@ icon-library/
 ### Stroke / fill conventions
 
 - Default stroke: 2 px · `stroke-linecap: round` · `stroke-linejoin: round`
-- Default colour: `--label-grey-high` (`--icon-grey-prominent`) — black/neutral
+- Default colour: `--label-grey-high` (`--icon-grey-prominent`), black/neutral
 - Action icons: `--label-secondary-high` (teal) when interactive
-- Brand icons: `--icon-primary-high` (red) — rare, brand moments only
+- Brand icons: `--icon-primary-high` (red), rare, brand moments only
 - Disabled icons: `--icon-grey-medium` (50 %)
 - Icons on dark surface: `--icon-static-white`
 
 ### Iconography principles (from the design system)
 
-- Follow a **"necessity over aesthetics"** approach — use an icon only when removing it would negatively impact understanding, recognition, or task completion.
+- Follow a **"necessity over aesthetics"** approach, use an icon only when removing it would negatively impact understanding, recognition, or task completion.
 - If the meaning is already clear through text, do not add an icon unless it improves scannability.
 - Prioritise simplicity and reduce visual noise.
 - Maintain consistency across the product.
@@ -1256,24 +1264,24 @@ The full guidelines HTML passes a 5-check audit on every save:
 | Check | Pass criterion |
 |---|---|
 | **Raw hex outside `:root`** | 0 occurrences in CSS rules or `style="..."` attributes (except inside `<code>` / documentation displays) |
-| **Raw `rgba()` / `hsla()` literals** | 0 occurrences — every alpha-using color goes through `rgb(var(--rgb-*) / X)` |
-| **Off-scale `font-size`** | 0 occurrences — every font-size matches the M3 type scale (12 / 14 / 16 / 18 / 20 / 24 / 28 / 32 / 40 / 48 / 56 / 64 / 100 px) |
-| **Off-scale `padding` / `margin` / `gap`** | 0 occurrences — every value matches the 12-token scale (0 / 1 / 2 / 4 / 8 / 12 / 16 / 20 / 24 / 32 / 40 / 48 / 64 / 80) · 1, 2, 3 allowed for structural borders / strokes |
-| **Raw `border-radius`** | 0 occurrences — every value matches `--radius-*` (0 / 4 / 8 / 12 / 16 / 28 / 9999) |
+| **Raw `rgba()` / `hsla()` literals** | 0 occurrences, every alpha-using color goes through `rgb(var(--rgb-*) / X)` |
+| **Off-scale `font-size`** | 0 occurrences, every font-size matches the M3 type scale (12 / 14 / 16 / 18 / 20 / 24 / 28 / 32 / 40 / 48 / 56 / 64 / 100 px) |
+| **Off-scale `padding` / `margin` / `gap`** | 0 occurrences, every value matches the 12-token scale (0 / 1 / 2 / 4 / 8 / 12 / 16 / 20 / 24 / 32 / 40 / 48 / 64 / 80) · 1, 2, 3 allowed for structural borders / strokes |
+| **Raw `border-radius`** | 0 occurrences, every value matches `--radius-*` (0 / 4 / 8 / 12 / 16 / 28 / 9999) |
 
 ### Sanctioned exceptions
 
 Three places where literal hex values are allowed outside `:root` (and the audit explicitly carves them out):
 
-1. **Google Play 4-colour glyph** — official external brand asset (the `aria-label="Get on Google Play"` button SVG uses Google's blue `#4285F4` / green `#34A853` / yellow `#FBBC05` / red `#EA4335`).
-2. **Apple App Store icon** — official Apple-brand gradient (`#1AC9FE → #0073F7`) + white "A" glyph (the `aria-label="Download on the App Store"` button SVG).
-3. **Store-badge component (#16 in Components)** — the Apple silhouette SVG and the 4-colour Google triangle inside the full Download pill.
+1. **Google Play 4-colour glyph**, official external brand asset (the `aria-label="Get on Google Play"` button SVG uses Google's blue `#4285F4` / green `#34A853` / yellow `#FBBC05` / red `#EA4335`).
+2. **Apple App Store icon**, official Apple-brand gradient (`#1AC9FE → #0073F7`) + white "A" glyph (the `aria-label="Download on the App Store"` button SVG).
+3. **Store-badge component (#16 in Components)**, the Apple silhouette SVG and the 4-colour Google triangle inside the full Download pill.
 
 These are the ONLY places where literal hex appears in HTML / inline styles. Everything else in the entire HTML file consumes tokens.
 
 ### Going-forward rule
 
-> Any new CSS in this file MUST reach through tokens — **no raw hex**, **no raw rgba** (outside `rgb(var(--rgb-*) / X)`), **no off-scale px in padding/margin/gap**, **no font-size below the 12 px floor**.
+> Any new CSS in this file MUST reach through tokens: **no raw hex**, **no raw rgba** (outside `rgb(var(--rgb-*) / X)`), **no off-scale px in padding/margin/gap**, **no font-size below the 12 px floor**.
 
 ---
 
@@ -1290,7 +1298,7 @@ Already covered under **Components → Layout context**. Restating here as a sin
 
 - Pages at Large+ breakpoint (≥ 1200 px) that include a sidebar.
 - Sidebar takes 3/12 of the grid (240–280 px); the main column shrinks to ~9/12.
-- **The component itself does not change** — it shrinks because its parent column shrank.
+- **The component itself does not change**, it shrinks because its parent column shrank.
 
 ### When components are centered (standalone moment)
 
@@ -1307,13 +1315,13 @@ Already covered under **Components → Layout context**. Restating here as a sin
 ### When components are inline (within a row)
 
 - Inline chip in a header · search trigger in a navbar · slider beside a value cell.
-- Use intrinsic content width — never set a width on the component.
+- Use intrinsic content width, never set a width on the component.
 
 ### The Don't list
 
 - **Don't hard-code a pixel width inside the component itself.**
-- **Don't centre a component by default** — only when it's a standalone moment.
-- **Don't shrink components below the readable minimum** — forms never below 280 px, date picker 296 px is the floor.
+- **Don't centre a component by default**, only when it's a standalone moment.
+- **Don't shrink components below the readable minimum**, forms never below 280 px, date picker 296 px is the floor.
 
 ---
 
@@ -1322,7 +1330,7 @@ Already covered under **Components → Layout context**. Restating here as a sin
 ```
 CH- Web Design System/
 ├── README.md                                   # human-friendly overview
-├── AI-CONTEXT.md                                # THIS FILE — exhaustive AI reference
+├── AI-CONTEXT.md                                # THIS FILE, exhaustive AI reference
 ├── cricheroes-design-guidelines.html            # the system (12 modules, ~600 KB, self-contained · WEB ONLY)
 ├── card-inventory.md                            # Phase-1 research: 43 raw card patterns → 15 consolidated
 │
@@ -1330,7 +1338,7 @@ CH- Web Design System/
 │   ├── cricheroes-color-system.html
 │   ├── cricheroes-color-system.md
 │   ├── logos/                                   # local copies needed by the standalone page
-│   └── parabola/                                # local copies (singular folder name) — { -green.jpg, -red.png, -white.jpg }
+│   └── parabola/                                # local copies (singular folder name), { -green.jpg, -red.png, -white.jpg }
 │
 ├── logos/                                       # 5 lockups × red + white variants
 │   ├── horizontal-logo.svg                      # Horizontal · wordmark
@@ -1368,16 +1376,16 @@ CH- Web Design System/
 ### What the HTML references (resolve these paths)
 
 `cricheroes-design-guidelines.html` references:
-- `logos/horizontal-logo-full.svg` — navbar + footer + cover + Home Brand tile
-- `parabolas/green-fhd.jpg` / `parabolas/red-fhd.png` / `parabolas/white-fhd.jpg` — Brand → Parabola subsection
-- Inline SVGs — all icon glyphs in the page chrome (not the icon-library; the icon-library is a separate `icon-library.html`)
+- `logos/horizontal-logo-full.svg`, navbar + footer + cover + Home Brand tile
+- `parabolas/green-fhd.jpg` / `parabolas/red-fhd.png` / `parabolas/white-fhd.jpg`: Brand → Parabola subsection
+- Inline SVGs, all icon glyphs in the page chrome (not the icon-library; the icon-library is a separate `icon-library.html`)
 
 `Color System/cricheroes-color-system.html` references:
-- `parabola/parabola-green.jpg` / `parabola/parabola-red.png` / `parabola/parabola-white.jpg` (folder named **singular** — different from `parabolas/` at the top level)
+- `parabola/parabola-green.jpg` / `parabola/parabola-red.png` / `parabola/parabola-white.jpg` (folder named **singular**, different from `parabolas/` at the top level)
 
 ### Self-containment
 
-The HTML page has **no CDN / no external font dependency** apart from the Ubuntu / Ubuntu Sans web fonts (already loaded via Google Fonts in the page head — the only network dependency). Drop the folder on any webserver, double-click `cricheroes-design-guidelines.html`, and the entire system loads from the adjacent files.
+The HTML page has **no CDN / no external font dependency** apart from the Ubuntu / Ubuntu Sans web fonts (already loaded via Google Fonts in the page head, the only network dependency). Drop the folder on any webserver, double-click `cricheroes-design-guidelines.html`, and the entire system loads from the adjacent files.
 
 ---
 
@@ -1387,9 +1395,9 @@ Every locked rule below is a direct user statement. Treat these as immovable.
 
 ### On the colour system
 
-> "Make every button, CTA, CTA card and link teal. Default text to `--label-grey-high`. Reach for red only as an accent — a brand-flavoured heading word, a live signal, or a profile background held back with opacity. Always consume Tier 2 / Tier 3 tokens, never raw hex."
+> "Make every button, CTA, CTA card and link teal. Default text to `--label-grey-high`. Reach for red only as an accent, a brand-flavoured heading word, a live signal, or a profile background held back with opacity. Always consume Tier 2 / Tier 3 tokens, never raw hex."
 
-> "Don't paint actions red — no red 'Save', 'Submit' or 'Buy'. Don't use teal for plain body text. Don't let red carry more than a small share of any screen. Don't apply opacity on a text node — pick the right `--label-*` step instead."
+> "Don't paint actions red, no red 'Save', 'Submit' or 'Buy'. Don't use teal for plain body text. Don't let red carry more than a small share of any screen. Don't apply opacity on a text node, pick the right `--label-*` step instead."
 
 > "red buttons are not primary buttons they're destructive button striclty"
 
@@ -1401,7 +1409,7 @@ Every locked rule below is a direct user statement. Treat these as immovable.
 
 > "for live and ongoing use tonal red bg and red prominent label and for cancelled use red tonal bg and grey label like abandoned and keep all of the other same"
 
-> "use the second attached image label color and not the greey one"  (originally locked Cancelled to `--label-primary-low`; **superseded by the text ban** — Cancelled now uses `--label-primary-medium`)
+> "use the second attached image label color and not the greey one"  (originally locked Cancelled to `--label-primary-low`; **superseded by the text ban**: Cancelled now uses `--label-primary-medium`)
 >
 > "dont use this colors text at all as i've tested this design system and have used this in some cases which has created chaos soo please dint use this in the text at all"  (the `-low` / `-muted` label ban · never use for text)
 
@@ -1421,7 +1429,7 @@ Every locked rule below is a direct user statement. Treat these as immovable.
 
 ### On the Hero card
 
-> "Tournament/Player hero header — should this be a card or a section (page-level header)? Cards are normally rectangular content blocks; these are full-width red bands. **its a card only**"
+> "Tournament/Player hero header, should this be a card or a section (page-level header)? Cards are normally rectangular content blocks; these are full-width red bands. **its a card only**"
 
 ### On the navbar
 
@@ -1431,15 +1439,15 @@ Every locked rule below is a direct user statement. Treat these as immovable.
 
 > "pro is a badge which we will be discussing out on further and will aslo add that soo add ignore it as of now add it while we work on it"
 
-(Deferred — never bake PRO badge slots into Avatar or Squad Tile components until the Badges work is done.)
+(Deferred, never bake PRO badge slots into Avatar or Squad Tile components until the Badges work is done.)
 
 ### On commentary feed
 
-> "Commentary feed rows — model as one `<FeedItem>` with type variants, or 5 separate row components? I'd recommend one with variants. **yes**"
+> "Commentary feed rows, model as one `<FeedItem>` with type variants, or 5 separate row components? I'd recommend one with variants. **yes**"
 
 ### On tab-content shells
 
-> "Tab-content shell + tab strip — should these be one component ('tabbed card') or two? — **in tabs there are cards soo use cards as types**"
+> "Tab-content shell + tab strip, should these be one component ('tabbed card') or two?: **in tabs there are cards soo use cards as types**"
 
 (The tab strip is structural navigation; the THINGS INSIDE tabs are cards. Do not make the tab strip itself its own card component.)
 
@@ -1461,9 +1469,9 @@ When generating code or design specs for CricHeroes web product:
 4. **Default to 16 spacing** when unsure. Escalate in real jumps (16 → 24 → 48).
 5. **Default card radius is 12 px** (`--radius-md`). Default elevation is `--elevation-2`. Default surface is `--bg-primary`.
 6. **Treat 12 px as the type floor.** No text below 12 px anywhere.
-7. **Sentence case** for chips and most labels (uppercase only for tiny section eyebrows / table headers / dividers — and there only at `--ch-font-label-sm` with `letter-spacing: 0.04em+`).
+7. **Sentence case** for chips and most labels (uppercase only for tiny section eyebrows / table headers / dividers, and there only at `--ch-font-label-sm` with `letter-spacing: 0.04em+`).
 8. **One Primary CTA per view.** Pair with a grey tonal secondary if a second action is needed.
-9. **Width is layout, not component.** Don't hard-code widths on components — let parent columns drive width.
+9. **Width is layout, not component.** Don't hard-code widths on components, let parent columns drive width.
 10. **Composability over invention.** If an existing card / chip / component covers the case, reuse it. Only build a new pattern when nothing composes.
 
 ### Never
@@ -1472,12 +1480,12 @@ When generating code or design specs for CricHeroes web product:
 2. Use red for a primary action, save, submit, continue, or buy button. (Red = destructive only.)
 3. Use teal for plain body text. (Teal = action color; body text is grey hierarchy.)
 4. Stack opacity on opacity, or apply `opacity:` to a text node (use the right `--label-*` step instead).
-5. Bring back retired tokens `--sp-6`, `--sp-10`, `--sp-96` — these are deleted from `:root`.
-6. Add a peach token — use existing greys/teal/red tonal surfaces by context for educational / promo / warning callouts.
-7. Bake a PRO badge slot into the Avatar or Squad Tile components yet — that's deferred.
-8. Add the pulsing live-dot — that animation was explicitly removed from the chip system.
-9. Use solid status chip fills — all status chips are tonal (low-opacity surface + matching label).
-10. Use red as the secondary button beside a teal primary — that reads as "Cancel + Delete", never "Cancel + Save".
+5. Bring back retired tokens `--sp-6`, `--sp-10`, `--sp-96`, these are deleted from `:root`.
+6. Add a peach token, use existing greys/teal/red tonal surfaces by context for educational / promo / warning callouts.
+7. Bake a PRO badge slot into the Avatar or Squad Tile components yet, that's deferred.
+8. Add the pulsing live-dot, that animation was explicitly removed from the chip system.
+9. Use solid status chip fills, all status chips are tonal (low-opacity surface + matching label).
+10. Use red as the secondary button beside a teal primary, that reads as "Cancel + Delete", never "Cancel + Save".
 11. Stack two parabolas on a single page, or run a parabola at 100 % opacity.
 12. Add a top accent bar or bottom accent bar to the navbar (those were explicitly removed).
 
@@ -1531,14 +1539,14 @@ These are flagged explicitly so future work picks them up:
 
 | Item | Status | Where |
 |---|---|---|
-| **PRO badge / verified tick on avatars** | DEFERRED — wait for Badges work | Avatar in navbar + Squad tile in Cards — slots intentionally empty |
-| **Standalone logomark SVG** (cricket-ball isolated) | MISSING — must be extracted from `horizontal-logo.svg` | Used by favicon (16/32/48), apple-touch-icon (180), PWA icons (192/512), collapsed sidenav, mobile narrow |
+| **PRO badge / verified tick on avatars** | DEFERRED, wait for Badges work | Avatar in navbar + Squad tile in Cards, slots intentionally empty |
+| **Standalone logomark SVG** (cricket-ball isolated) | MISSING, must be extracted from `horizontal-logo.svg` | Used by favicon (16/32/48), apple-touch-icon (180), PWA icons (192/512), collapsed sidenav, mobile narrow |
 | **Logomark on red square** for PWA / apple-touch | MISSING | Needed for proper iOS / Android PWA install icon |
-| **Past-match tabs anatomy** (Info · Insights · Heroes · Badges · Squad) | Auth-walled — slot into existing patterns when capturable | Cards section has a callout flagging these |
-| **Tournament tabs anatomy** (Leaderboard · Points Table · Stats · Heroes) | Auth-walled — Points Table T8 reconstructed from screenshots only | Cards section callout |
-| **Community sub-pages anatomy** (`/community/scorers`, etc.) | Auth-walled — likely reuses Looking-for classified card | Cards section callout |
-| **Token naming legacy** | `--btn-bg-secondary-prominent` (red) and `--btn-label-secondary-prominent` are misleadingly named — they represent the DESTRUCTIVE button, not the semantic "secondary action" (which is grey). Documented in Button colour-role rule. | Eventual rename to `--btn-bg-destructive-*` is desirable but breaks downstream consumers. |
+| **Past-match tabs anatomy** (Info · Insights · Heroes · Badges · Squad) | Auth-walled, slot into existing patterns when capturable | Cards section has a callout flagging these |
+| **Tournament tabs anatomy** (Leaderboard · Points Table · Stats · Heroes) | Auth-walled: Points Table T8 reconstructed from screenshots only | Cards section callout |
+| **Community sub-pages anatomy** (`/community/scorers`, etc.) | Auth-walled, likely reuses Looking-for classified card | Cards section callout |
+| **Token naming legacy** | `--btn-bg-secondary-prominent` (red) and `--btn-label-secondary-prominent` are misleadingly named, they represent the DESTRUCTIVE button, not the semantic "secondary action" (which is grey). Documented in Button colour-role rule. | Eventual rename to `--btn-bg-destructive-*` is desirable but breaks downstream consumers. |
 
 ---
 
-*End of AI-CONTEXT.md. If any rule in this file conflicts with the live `cricheroes-design-guidelines.html`, the HTML wins on visual examples and this file wins on written rules — until a corrective update reconciles them.*
+*End of AI-CONTEXT.md. If any rule in this file conflicts with the live `cricheroes-design-guidelines.html`, the HTML wins on visual examples and this file wins on written rules, until a corrective update reconciles them.*

@@ -1,4 +1,4 @@
-// CricHeroes mobile — shared UI primitives
+// CricHeroes mobile, shared UI primitives
 // Loaded after React + ios-frame.jsx + icons.jsx
 
 // ──────────────────────────────────────────────────────────────
@@ -157,7 +157,7 @@ function LiveTag({ dark = false }) {
 }
 
 // ──────────────────────────────────────────────────────────────
-// Score card — signature CricHeroes element
+// Score card, signature CricHeroes element
 //   Header (tournament + status pill), divider, teams (bold name +
 //   score on right, dim name if yet to bat), divider, status line,
 //   teal action links on bottom-right.
@@ -342,7 +342,7 @@ function TabBar({ current, onChange, onStart }) {
 }
 
 // ──────────────────────────────────────────────────────────────
-// Top nav bar (CH style — solid red or white)
+// Top nav bar (CH style, solid red or white)
 // ──────────────────────────────────────────────────────────────
 function TopBar({ title, left, right, theme = 'red', sub, safeTop = 54 }) {
   const dark = theme === 'red' || theme === 'black';
@@ -374,7 +374,7 @@ function IconBtn({ icon, onClick, color = 'currentColor', size = 22 }) {
 }
 
 // ──────────────────────────────────────────────────────────────
-// Scrollable body container — fills inside iOS frame
+// Scrollable body container, fills inside iOS frame
 // ──────────────────────────────────────────────────────────────
 function Body({ children, style }) {
   return (

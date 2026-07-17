@@ -29,22 +29,30 @@ const TYPE_PX   = new Set([12,14,16,18,20,24,28,32,40,48,56,64,100]);
 const RADIUS_PX = new Set([0,4,8,12,16,28]);
 const SP_PX     = new Set([2,4,8,12,16,20,24,32,40,48,64,80]);
 
-// Per-line flag: is the line inside a :root { } block? (CSS + <style> in HTML)
-function rootFlagsByLine(src) {
+// Per-line CSS context: is the line inside a :root { } block, and what is the
+// enclosing selector chain? (CSS + <style> in HTML) The selector chain lets the
+// selector-scoped rules (red CTA fill, gradient on card) fire on multi-line CSS
+// where the selector and declaration sit on different lines.
+function cssContextByLine(src) {
   const flags = [false];
-  const stack = []; // booleans: is this block (or an ancestor) a :root block
+  const sels = [''];
+  const stack = []; // { root: this block or an ancestor is :root, sel: block selector }
   let inComment = false, sel = '', line = 0;
+  const snap = () => {
+    flags[line] = stack.length ? stack[stack.length - 1].root : false;
+    sels[line] = stack.map(s => s.sel).join(' ');
+  };
   for (let k = 0; k < src.length; k++) {
     const c = src[k];
-    if (c === '\n') { line++; flags[line] = stack.length ? stack[stack.length - 1] : false; continue; }
+    if (c === '\n') { line++; snap(); continue; }
     if (inComment) { if (c === '*' && src[k + 1] === '/') { inComment = false; k++; } continue; }
     if (c === '/' && src[k + 1] === '*') { inComment = true; k++; continue; }
-    if (c === '{') { const parent = stack.length ? stack[stack.length - 1] : false; stack.push(parent || /:root/.test(sel)); sel = ''; continue; }
+    if (c === '{') { const parent = stack.length ? stack[stack.length - 1].root : false; stack.push({ root: parent || /:root/.test(sel), sel: sel.trim() }); sel = ''; continue; }
     if (c === '}') { stack.pop(); sel = ''; continue; }
     if (c === ';') { sel = ''; continue; }
     sel += c;
   }
-  return flags;
+  return { flags, sels };
 }
 
 // each finding: [line, message, severity] where severity is 'hard' | 'soft'
@@ -60,16 +68,20 @@ function lint(file, src) {
   const scanSrc = isMarkup
     ? src.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, (m) => m.replace(/[^\n]/g, ' '))
     : src;
-  const inRoot = cssContext ? rootFlagsByLine(scanSrc) : [];
+  const ctx = cssContext ? cssContextByLine(scanSrc) : { flags: [], sels: [] };
   const scanLines = scanSrc.split('\n');
   src.split('\n').forEach((line, i) => {
     const n = i + 1;
-    const root = inRoot[i] === true;
+    const root = ctx.flags[i] === true;
     const code = line.replace(/\/\/.*$/, '');              // universal rules: raw line
     const cssCode = cssContext ? (scanLines[i] || '') : ''; // css-context rules: script-stripped
+    // Selector scope for this line: same-line text plus, in CSS context, the
+    // enclosing block's selector (so multi-line rules are still caught).
+    const selScope = code + ' ' + (cssContext ? (ctx.sels[i] || '') : '');
 
     // --- BLOCK tier (all lintable file types) ---
     if (EMOJI.test(line)) out.push([n, 'emoji in product UI (dot, tick, arrow glyphs are fine)', 'hard']);
+    if (/\u2014/.test(line)) out.push([n, 'em-dash banned: use a colon or comma instead', 'hard']);
     if (SAAS_GRADIENT.test(code)) out.push([n, 'off-brand SaaS purple/indigo gradient: use brand colours', 'hard']);
     const dead = code.match(DEAD_TOKEN);
     if (dead) out.push([n, `removed/renamed token "${dead[0]}": use the official token (see colors_and_type.css)`, 'hard']);
@@ -77,10 +89,10 @@ function lint(file, src) {
     // button uses --btn-bg-secondary-* and is allowed; this catches raw red or a
     // direct --brand-primary/--rgb-primary fill on a primary/cta selector.
     if (/(background|background-color)\s*:\s*(#e21c28|var\(--brand-primary\b|rgb\(\s*var\(--rgb-primary\b)/i.test(code) &&
-        /(btn|button|cta|\.primary)/i.test(code)) {
+        /(btn|button|cta|\.primary)/i.test(selScope)) {
       out.push([n, 'red as a primary/CTA button fill: primary actions use teal (--btn-bg-primary-prominent)', 'hard']);
     }
-    if (/background[^;]*gradient\(/i.test(code) && /(btn|button|\.card|\.fcard)/i.test(code)) {
+    if (/background[^;]*gradient\(/i.test(code) && /(btn|button|\.card|\.fcard)/i.test(selScope)) {
       out.push([n, 'gradient on button/card: gradients are hero-only', 'hard']);
     }
 

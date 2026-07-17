@@ -47,6 +47,8 @@
   /* points table card */
   .panel { background: var(--bg-primary); border-radius: var(--radius-lg); box-shadow: var(--elevation-2); padding: var(--sp-24); max-width: 720px; margin: 0 auto; }
   .panel .head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--sp-16); }
+  .stat-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius-md); }
+  .stat-wrap:focus-visible { outline: none; box-shadow: var(--focus-ring); }
   table { width: 100%; border-collapse: collapse; }
   th, td { text-align: right; padding: var(--sp-12) var(--sp-8); }
   th:first-child, td:first-child { text-align: left; }
@@ -118,6 +120,7 @@
         <h3 class="ch-title-medium-emphasized">Mohali Premier League</h3>
         <a class="ch-label-medium" style="color:var(--label-secondary-high)" href="#">Full table</a>
       </div>
+      <div class="stat-wrap" tabindex="0" role="region" aria-label="Mohali Premier League standings, scroll horizontally">
       <table>
         <thead><tr><th>Team</th><th>P</th><th>W</th><th>L</th><th>NRR</th><th>Pts</th></tr></thead>
         <tbody>
@@ -128,6 +131,7 @@
           <tr><td><span class="rank">5</span> <span class="ch-body-medium">Trident CC</span></td><td class="num">8</td><td class="num">1</td><td class="num">7</td><td class="num">-1.71</td><td class="num">2</td></tr>
         </tbody>
       </table>
+      </div>
     </div>
   </section>
 

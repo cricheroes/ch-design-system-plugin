@@ -55,7 +55,7 @@ skills/cricheroes-design/         the design system + SKILL.md
   reference/                      real component specs (components.jsx, icons.jsx, ...)
   preview/                        one preview card per concern
   assets/                         icons, official logos, backgrounds, favicon
-  fonts/                          Ubuntu Sans, Barlow (scorecard)
+  fonts/                          Ubuntu Sans (variable + italic; scores use its tabular numerals)
   ui_kits/                        App Kit + Web Kit reference builds
 ```
 

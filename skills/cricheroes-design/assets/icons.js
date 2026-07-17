@@ -1,5 +1,5 @@
 /* ============================================================================
-   CricHeroes icons — inline SVG registry.
+   CricHeroes icons, inline SVG registry.
 
    Rounded, 24×24 viewBox, 1.75px stroke, rounded caps & joins. No emoji in
    product UI.

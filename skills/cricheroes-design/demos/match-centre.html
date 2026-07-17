@@ -49,6 +49,8 @@
   .over-note b { color: var(--label-grey-high); }
 
   /* mini table */
+  .stat-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius-md); }
+  .stat-wrap:focus-visible { outline: none; box-shadow: var(--focus-ring); }
   table { width: 100%; border-collapse: collapse; }
   th, td { text-align: right; padding: var(--sp-8) var(--sp-4); }
   th:first-child, td:first-child { text-align: left; }
@@ -118,6 +120,7 @@
 
     <div class="card">
       <h2 class="ch-title-small-emphasized">Batsmen</h2>
+      <div class="stat-wrap" tabindex="0" role="region" aria-label="Batsmen scorecard, scroll horizontally">
       <table>
         <thead><tr><th>Batter</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr></thead>
         <tbody>
@@ -125,16 +128,19 @@
           <tr><td class="ch-body-small">K Iyer</td><td class="num">18</td><td class="num">14</td><td class="num">2</td><td class="num">0</td><td class="num">128.5</td></tr>
         </tbody>
       </table>
+      </div>
     </div>
 
     <div class="card">
       <h2 class="ch-title-small-emphasized">Bowler</h2>
+      <div class="stat-wrap" tabindex="0" role="region" aria-label="Bowler figures, scroll horizontally">
       <table>
         <thead><tr><th>Bowler</th><th>O</th><th>R</th><th>W</th><th>Econ</th></tr></thead>
         <tbody>
           <tr><td class="ch-body-small-emphasized">R Sharma</td><td class="num">3.3</td><td class="num">28</td><td class="num">2</td><td class="num">8.0</td></tr>
         </tbody>
       </table>
+      </div>
     </div>
 
     <div class="actions">
