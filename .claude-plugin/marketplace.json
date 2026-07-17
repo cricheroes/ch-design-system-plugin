@@ -1,17 +1,19 @@
 {
   "name": "cricheroes",
+  "description": "CricHeroes design system marketplace",
+  "version": "0.4.0",
   "owner": {
     "name": "CricHeroes",
     "email": "support@cricheroes.in"
   },
-  "metadata": {
-    "description": "CricHeroes design system marketplace",
-    "version": "0.4.0"
-  },
   "plugins": [
     {
       "name": "design-system",
-      "source": "./",
+      "displayName": "CricHeroes Design System",
+      "source": {
+        "source": "github",
+        "repo": "cricheroes/design-system"
+      },
       "description": "CricHeroes design system: tokens, icons, component specs and brand voice, with an audit command and an advisory brand-lint hook to validate any project against the brand.",
       "version": "0.4.0",
       "category": "design"
