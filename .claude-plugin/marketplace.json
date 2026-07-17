@@ -1,7 +1,8 @@
 {
   "name": "cricheroes",
   "owner": {
-    "name": "CricHeroes"
+    "name": "CricHeroes",
+    "email": "support@cricheroes.in"
   },
   "metadata": {
     "description": "CricHeroes design system marketplace",

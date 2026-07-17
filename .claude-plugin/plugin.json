@@ -2,7 +2,7 @@
   "name": "design-system",
   "version": "0.4.0",
   "description": "CricHeroes design system: tokens, icons, component specs and brand voice, with an audit command to validate any project against the brand.",
-  "author": { "name": "CricHeroes" },
+  "author": { "name": "CricHeroes", "email": "support@cricheroes.in" },
   "skills": ["./skills/cricheroes-design"],
   "commands": ["./commands/cricheroes-audit.md", "./commands/cricheroes-design.md"]
 }
