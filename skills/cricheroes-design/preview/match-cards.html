@@ -1,29 +1,29 @@
-<!-- @dsCard group="Components" name="Match cards" subtitle="Live · upcoming · result — the signature element" -->
+<!-- @dsCard group="Components" name="Match cards" subtitle="Live · upcoming · result: the signature element" -->
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Match cards — CricHeroes</title><link rel="stylesheet" href="../colors_and_type.css">
+<title>Match cards: CricHeroes</title><link rel="stylesheet" href="../colors_and_type.css">
 <style>
-body{margin:0;background:var(--bg-secondary);font-family:var(--font-sans);color:var(--label-1);padding:24px}
+body{margin:0;background:var(--bg-secondary);font-family:var(--font-primary);color:var(--label-grey-high);padding:24px}
 .wrap{max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
-h1{font-weight:600;font-size:18px;margin:0;color:var(--label-1)}
-.sub{color:var(--label-2);font-size:13px;margin:0 0 4px}
-.mc{background:#fff;border-radius:var(--r-12);box-shadow:var(--shadow-2);overflow:hidden}
+h1{font-weight:600;font-size:18px;margin:0;color:var(--label-grey-high)}
+.sub{color:var(--label-grey-medium);font-size:13px;margin:0 0 4px}
+.mc{background:var(--bg-primary);border-radius:var(--radius-md);box-shadow:var(--elevation-2);overflow:hidden}
 .hd{padding:14px 16px 12px;display:flex;align-items:flex-start;gap:10px}
-.tour{font-weight:700;font-size:14px;color:var(--label-1)}.tour span{font-weight:400;color:var(--label-2)}
-.meta{font-size:12px;color:var(--label-1);margin-top:4px}.meta i{color:var(--label-3);font-style:normal;margin:0 6px}
-.pill{flex:none;padding:4px 12px;border-radius:var(--r-pill);font-weight:600;font-size:12px;color:#fff}
-.live{background:var(--ch-red)}.up{background:var(--status-warning)}.res{background:var(--label-1)}
-.dv{height:1px;background:var(--divider);margin:0 16px}
+.tour{font-weight:700;font-size:14px;color:var(--label-grey-high)}.tour span{font-weight:400;color:var(--label-grey-medium)}
+.meta{font-size:12px;color:var(--label-grey-high);margin-top:4px}.meta i{color:var(--label-grey-medium);font-style:normal;margin:0 6px}
+.pill{flex:none;padding:4px 12px;border-radius:var(--radius-full);font-weight:600;font-size:12px}
+.live{background:var(--fill-primary-muted);color:var(--label-primary-high)}.up{background:var(--fill-secondary-low);color:var(--label-secondary-high)}.res{background:var(--fill-grey-low);color:var(--label-grey-medium)}
+.dv{height:1px;background:rgb(var(--rgb-grey) / 0.12);margin:0 16px}
 .teams{padding:14px 16px;display:flex;flex-direction:column;gap:12px}
 .tr{display:flex;align-items:center;gap:10px}
-.tn{flex:1;font-weight:700;font-size:16px;color:var(--label-1)}.tn.yet{font-weight:400;color:var(--label-2)}
-.ts{font-weight:700;font-size:18px;color:var(--label-1);font-variant-numeric:tabular-nums}.ts em{font-weight:400;font-size:12px;color:var(--label-2);font-style:normal;margin-left:4px}
-.st{padding:12px 16px 4px;font-size:13px;color:var(--label-1)}
-.act{padding:8px 16px 14px;display:flex;justify-content:flex-end;gap:18px;font-weight:600;font-size:13px;color:var(--ch-teal)}
+.tn{flex:1;font-weight:700;font-size:16px;color:var(--label-grey-high)}.tn.yet{font-weight:400;color:var(--label-grey-medium)}
+.ts{font-weight:700;font-size:18px;color:var(--label-grey-high)}.ts em{font-weight:400;font-size:12px;color:var(--label-grey-medium);font-style:normal;margin-left:4px}
+.st{padding:12px 16px 4px;font-size:13px;color:var(--label-grey-high)}
+.act{padding:8px 16px 14px;display:flex;justify-content:flex-end;gap:18px;font-weight:600;font-size:13px;color:var(--label-secondary-high)}
 </style></head><body><div class="wrap">
 <div><h1>Match cards</h1><p class="sub">White card, status pill, tabular scores, teal action links.</p></div>
 
 <div class="mc"><div class="hd"><div style="flex:1"><div class="tour">Sunday League<span>, Quarter-final</span></div><div class="meta">Sept 3, 2025<i>|</i>20 Ov.<i>|</i>Oval Maidan</div></div><span class="pill live">Live</span></div>
-<div class="dv"></div><div class="teams"><div class="tr"><div class="tn">Andheri Strikers</div><div class="ts">154/8 <em>(18.4 Ov)</em></div></div><div class="tr"><div class="tn yet">Bandra Blasters</div></div></div>
+<div class="dv"></div><div class="teams"><div class="tr"><div class="tn">Andheri Strikers</div><div class="ts ch-display-numeric">154/8 <em>(18.4 Ov)</em></div></div><div class="tr"><div class="tn yet">Bandra Blasters</div></div></div>
 <div class="dv"></div><div class="st">Strikers need 12 runs in 8 balls.</div><div class="act"><span>Insights</span><span>Table</span><span>Leaderboard</span></div></div>
 
 <div class="mc"><div class="hd"><div style="flex:1"><div class="tour">Corporate Cup</div><div class="meta">Sept 5, 2025, 8:22 pm<i>|</i>10 Ov.<i>|</i>Shivaji Park</div></div><span class="pill up">Upcoming</span></div>
@@ -31,6 +31,6 @@ h1{font-weight:600;font-size:18px;margin:0;color:var(--label-1)}
 <div class="dv"></div><div class="st">Starts in 2 hours.</div><div class="act"><span>Insights</span><span>Squads</span></div></div>
 
 <div class="mc"><div class="hd"><div style="flex:1"><div class="tour">Sunday League<span>, Semi-final</span></div><div class="meta">Sept 1, 2025<i>|</i>20 Ov.<i>|</i>Cross Maidan</div></div><span class="pill res">Result</span></div>
-<div class="dv"></div><div class="teams"><div class="tr"><div class="tn">Marine Mavericks</div><div class="ts">187/6 <em>(20 Ov)</em></div></div><div class="tr"><div class="tn">Andheri Strikers</div><div class="ts">155 <em>(18.2 Ov)</em></div></div></div>
+<div class="dv"></div><div class="teams"><div class="tr"><div class="tn">Marine Mavericks</div><div class="ts ch-display-numeric">187/6 <em>(20 Ov)</em></div></div><div class="tr"><div class="tn">Andheri Strikers</div><div class="ts ch-display-numeric">155 <em>(18.2 Ov)</em></div></div></div>
 <div class="dv"></div><div class="st">Mavericks won by 32 runs. Fought till the last over.</div><div class="act"><span>Insights</span><span>Scorecard</span></div></div>
 </div></body></html>

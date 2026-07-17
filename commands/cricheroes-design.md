@@ -8,8 +8,8 @@ Build the requested UI **on-brand for CricHeroes**. Load the `cricheroes-design`
 Requested: `$ARGUMENTS`
 
 Rules:
-1. Link `skills/cricheroes-design/colors_and_type.css`; use `var(--ch-*)` / `var(--space-*)` / `var(--radius-*)` / `var(--shadow-*)` tokens — never hardcode.
-2. Reuse the real component specs in `skills/cricheroes-design/reference/components.jsx` (Btn, Chip, ScoreCard, Row, ListCard, TabBar, TopBar, LiveTag, Avatar).
-3. Red = identity, teal = action. Icons via `assets/icons.js` (`<span data-icon>` + `CH.icons.hydrate`). No emoji in product UI.
-4. Copy in the brand voice: sentence case, active, British spelling, numerals + tabular numbers for stats.
-5. After building, run the brand-lint over your output: `node skills/cricheroes-design/../../hooks/brand-lint.mjs <file>` (or `hooks/brand-lint.mjs` from repo root) and fix any advisories.
+1. Link `skills/cricheroes-design/colors_and_type.css` and use its official semantic tokens, never hardcode. Backgrounds `--bg-*`; text `--label-{grey,primary,secondary}-*`; fills `--fill-*`; buttons `--btn-bg-*` / `--btn-label-*`; icons `--icon-*`; spacing `--sp-*`; radius `--radius-*` (`--radius-none/xs/sm/md/lg/xl/full`); elevation `--elevation-*`; and the type classes `.ch-<role>` (e.g. `.ch-title-medium`, `.ch-body-medium`). The `--brand-*` primitives are the underlying reference layer only: never consume them directly.
+2. Build from the component specs in `skills/cricheroes-design/reference/AI-CONTEXT.md` (buttons, chips, cards, tables, and the 17 interactive primitives). The mobile App-Kit React components are legacy and now live in `skills/cricheroes-design/reference/mobile/`. See `skills/cricheroes-design/demos/` for live examples.
+3. Red = identity, teal = action: keep them apart. Icons via `skills/cricheroes-design/assets/icons.js` (`<span data-icon>` placeholders plus `CH.icons.hydrate(document)`). No emoji in product UI.
+4. Copy in the brand voice: sentence case, active voice, British spelling, numerals plus tabular numbers for stats.
+5. After building, run the brand-lint over your output: `node hooks/brand-lint.mjs <file>` and fix any advisories.

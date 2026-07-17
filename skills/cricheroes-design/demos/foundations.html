@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CricHeroes design system: foundations</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  :root { --page: 1080px; }
+  body { background: var(--bg-secondary); }
+  .wrap { max-width: var(--page); margin: 0 auto; padding: var(--sp-24) var(--sp-20) var(--sp-80); }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--sp-16);
+    padding: var(--sp-12) var(--sp-20);
+    background: rgb(var(--rgb-white) / 0.86);
+    backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid var(--fill-grey-low);
+  }
+  .topbar img { height: 26px; display: block; }
+  .topbar .tag { color: var(--label-grey-medium); }
+
+  .hero { padding: var(--sp-40) 0 var(--sp-24); }
+  .eyebrow { color: var(--label-secondary-high); }
+  .hero p.lede { max-width: 60ch; color: var(--label-grey-medium); margin-top: var(--sp-12); }
+
+  .rule {
+    display: flex; gap: var(--sp-16); align-items: flex-start;
+    margin: var(--sp-24) 0 var(--sp-40);
+    padding: var(--sp-20);
+    border-radius: var(--radius-md);
+    background: var(--bg-primary);
+    box-shadow: var(--elevation-2);
+    border-left: 3px solid var(--brand-primary);
+  }
+  .rule .k { color: var(--label-grey-medium); }
+
+  section { margin-top: var(--sp-40); }
+  section > h2 { margin-bottom: var(--sp-4); }
+  section > .sub { color: var(--label-grey-medium); margin-bottom: var(--sp-20); }
+
+  .grid { display: grid; gap: var(--sp-16); }
+  .cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cols-4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 720px) { .cols-3, .cols-4 { grid-template-columns: repeat(2, 1fr); } }
+
+  .card { background: var(--bg-primary); border-radius: var(--radius-md); box-shadow: var(--elevation-2); padding: var(--sp-16); }
+
+  /* colour roles */
+  .swatch { height: 72px; border-radius: var(--radius-sm); margin-bottom: var(--sp-8); box-shadow: var(--elevation-1); }
+  .sw-red   { background: var(--brand-primary); }
+  .sw-teal  { background: var(--brand-secondary); }
+  .sw-ink   { background: var(--brand-black); }
+  .sw-gold  { background: var(--ch-gold); }
+  .sw-grey  { background: var(--brand-grey-5); }
+  .sw-redfill  { background: var(--fill-primary-medium); }
+  .sw-tealfill { background: var(--fill-secondary-medium); }
+  .role { color: var(--label-grey-high); }
+  .role small { display: block; color: var(--label-grey-medium); }
+
+  /* type scale */
+  .type-row { padding: var(--sp-12) 0; border-bottom: 1px solid var(--fill-grey-low); display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-16); }
+  .type-row span.meta { color: var(--label-grey-medium); white-space: nowrap; }
+
+  /* buttons */
+  .btn { display: inline-flex; align-items: center; gap: var(--sp-8); border: 0; cursor: pointer; border-radius: var(--radius-sm); padding: 0 var(--sp-20); height: 48px; transition: filter var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard); }
+  .btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .btn-primary   { background: var(--btn-bg-primary-prominent);   color: var(--btn-label-primary-prominent); }
+  .btn-primary:hover { filter: brightness(0.94); }
+  .btn-tonal     { background: var(--btn-bg-grey-prominent);      color: var(--btn-label-grey-prominent); }
+  .btn-destructive { background: var(--btn-bg-secondary-prominent); color: var(--btn-label-secondary-prominent); }
+  .btn-text      { background: transparent; color: var(--btn-label-primary-text-prominent); padding: 0 var(--sp-8); }
+  .btn-row { display: flex; flex-wrap: wrap; gap: var(--sp-12); align-items: center; }
+
+  /* chips */
+  .chip { display: inline-flex; align-items: center; gap: var(--sp-8); height: 32px; padding: 0 var(--sp-12); border-radius: var(--radius-full); }
+  .chip .dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
+  .chip-live      { background: var(--fill-primary-muted);   color: var(--label-primary-high); }
+  .chip-upcoming  { background: var(--fill-secondary-low);   color: var(--label-secondary-high); }
+  .chip-completed { background: var(--fill-grey-low);        color: var(--label-grey-medium); }
+  .chip-assist    { background: var(--fill-grey-muted);      color: var(--label-grey-high); }
+
+  /* radius + elevation demos */
+  .tile { background: var(--bg-primary); border: 1px solid var(--fill-grey-low); height: 72px; display: flex; align-items: center; justify-content: center; color: var(--label-grey-medium); }
+  .r-xs { border-radius: var(--radius-xs); } .r-sm { border-radius: var(--radius-sm); }
+  .r-md { border-radius: var(--radius-md); } .r-lg { border-radius: var(--radius-lg); }
+  .r-xl { border-radius: var(--radius-xl); } .r-full { border-radius: var(--radius-full); }
+  .e1 { box-shadow: var(--elevation-1); border: 0; } .e2 { box-shadow: var(--elevation-2); border: 0; }
+  .e3 { box-shadow: var(--elevation-3); border: 0; } .e4 { box-shadow: var(--elevation-4); border: 0; }
+
+  .icons { display: flex; flex-wrap: wrap; gap: var(--sp-16); }
+  .icons span[data-icon] { color: var(--icon-grey-prominent); }
+  .icons .act span { color: var(--icon-secondary-high); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <img src="../assets/logos/official/horizontal-logo.svg" alt="CricHeroes">
+  <span class="ch-label-small tag">Design system</span>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow ch-overline">Foundations</div>
+    <h1 class="ch-display-medium-emphasized">Your cricket matters.</h1>
+    <p class="lede ch-body-large">The building blocks every CricHeroes screen shares: colour roles, the type scale, spacing, radius and elevation. Use the tokens, never hardcode.</p>
+  </div>
+
+  <div class="rule">
+    <span data-icon="ball" aria-hidden="true"></span>
+    <div>
+      <div class="ch-title-small-emphasized">Red = identity. Teal = action. Don't mix them.</div>
+      <p class="k ch-body-small">Scarlet red is the logo, live badges and destructive actions, never a normal button fill. Seafoam teal is every action: buttons, links, tabs and focus rings.</p>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="ch-headline-small">Colour roles</h2>
+    <p class="sub ch-body-medium">Semantic, not decorative. Opacity is preserved through <code>rgb(var(--rgb-*) / a)</code>.</p>
+    <div class="grid cols-4">
+      <div class="card"><div class="swatch sw-red"></div><div class="role ch-label-medium">Identity <small>--brand-primary</small></div></div>
+      <div class="card"><div class="swatch sw-teal"></div><div class="role ch-label-medium">Action <small>--brand-secondary</small></div></div>
+      <div class="card"><div class="swatch sw-ink"></div><div class="role ch-label-medium">Ink <small>--label-grey-high</small></div></div>
+      <div class="card"><div class="swatch sw-gold"></div><div class="role ch-label-medium">Premium <small>--ch-gold (extension)</small></div></div>
+      <div class="card"><div class="swatch sw-redfill"></div><div class="role ch-label-medium">Live tint <small>--fill-primary-medium</small></div></div>
+      <div class="card"><div class="swatch sw-tealfill"></div><div class="role ch-label-medium">Selected <small>--fill-secondary-medium</small></div></div>
+      <div class="card"><div class="swatch sw-grey"></div><div class="role ch-label-medium">Divider <small>--brand-grey-5</small></div></div>
+      <div class="card"><div class="swatch" style="background:var(--bg-secondary)"></div><div class="role ch-label-medium">Surface <small>--bg-secondary</small></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="ch-headline-small">Type scale</h2>
+    <p class="sub ch-body-medium">Ubuntu Sans. Sentence case. 700 is the emphasis ceiling; 12px is the floor.</p>
+    <div class="card">
+      <div class="type-row"><span class="ch-display-small">Display small</span><span class="meta ch-label-small">.ch-display-small</span></div>
+      <div class="type-row"><span class="ch-headline-medium">Headline medium</span><span class="meta ch-label-small">.ch-headline-medium</span></div>
+      <div class="type-row"><span class="ch-title-large">Title large</span><span class="meta ch-label-small">.ch-title-large</span></div>
+      <div class="type-row"><span class="ch-body-medium">Body medium, the workhorse for reading.</span><span class="meta ch-label-small">.ch-body-medium</span></div>
+      <div class="type-row"><span class="ch-label-medium">Label medium</span><span class="meta ch-label-small">.ch-label-medium</span></div>
+      <div class="type-row"><span class="ch-display-numeric" style="font-size:var(--ch-font-headline-md)">230/6</span><span class="meta ch-label-small">.ch-display-numeric · tabular</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="ch-headline-small">Buttons</h2>
+    <p class="sub ch-body-medium">One primary per view. Teal leads; red is destructive only.</p>
+    <div class="card btn-row">
+      <button class="btn btn-primary ch-button-label-md">Follow team</button>
+      <button class="btn btn-tonal ch-button-label-md">Share</button>
+      <button class="btn btn-destructive ch-button-label-md">Remove</button>
+      <button class="btn btn-text ch-button-label-md">See all</button>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="ch-headline-small">Chips &amp; status</h2>
+    <p class="sub ch-body-medium">Tonal, never solid fills. Status is communicated by colour and label, not depth.</p>
+    <div class="card btn-row">
+      <span class="chip chip-live ch-label-small-emphasized"><span class="dot"></span>Live</span>
+      <span class="chip chip-upcoming ch-label-small-emphasized">Upcoming</span>
+      <span class="chip chip-completed ch-label-small-emphasized">Completed</span>
+      <span class="chip chip-assist ch-label-small">T20</span>
+      <span class="chip chip-assist ch-label-small">Near me</span>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="ch-headline-small">Radius &amp; elevation</h2>
+    <p class="sub ch-body-medium">A surface uses a border or a shadow, never both.</p>
+    <div class="grid cols-3" style="margin-bottom:var(--sp-16)">
+      <div class="tile r-sm ch-label-small">radius-sm</div>
+      <div class="tile r-md ch-label-small">radius-md</div>
+      <div class="tile r-xl ch-label-small">radius-xl</div>
+    </div>
+    <div class="grid cols-4">
+      <div class="tile r-md e1 ch-label-small">elevation-1</div>
+      <div class="tile r-md e2 ch-label-small">elevation-2</div>
+      <div class="tile r-md e3 ch-label-small">elevation-3</div>
+      <div class="tile r-md e4 ch-label-small">elevation-4</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="ch-headline-small">Icons</h2>
+    <p class="sub ch-body-medium">Stroke set, hydrated from <code>assets/icons.js</code>. Grey for content, teal for actions.</p>
+    <div class="card icons">
+      <span data-icon="bat" aria-hidden="true"></span>
+      <span data-icon="ball" aria-hidden="true"></span>
+      <span data-icon="trophy" aria-hidden="true"></span>
+      <span data-icon="stats" aria-hidden="true"></span>
+      <span data-icon="calendar" aria-hidden="true"></span>
+      <span data-icon="location" aria-hidden="true"></span>
+      <span class="act"><span data-icon="search" aria-hidden="true"></span></span>
+      <span class="act"><span data-icon="share" aria-hidden="true"></span></span>
+      <span class="act"><span data-icon="plus" aria-hidden="true"></span></span>
+    </div>
+  </section>
+
+</div>
+
+<script src="../assets/icons.js"></script>
+<script>if (window.CH && CH.icons) CH.icons.hydrate(document);</script>
+</body>
+</html>

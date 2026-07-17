@@ -1,4 +1,4 @@
-# CricHeroes Design System — plugin + skill
+# CricHeroes Design System: plugin + skill
 
 **"Your cricket matters."**
 

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CricHeroes: run your tournament</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  :root { --page: 1120px; }
+  body { background: var(--bg-primary); }
+  .wrap { max-width: var(--page); margin: 0 auto; padding: 0 var(--sp-20); }
+
+  nav { display: flex; align-items: center; justify-content: space-between; padding: var(--sp-16) 0; }
+  nav img { height: 28px; display: block; }
+  nav .links { display: flex; gap: var(--sp-24); align-items: center; }
+  nav .links a { color: var(--label-grey-medium); }
+  nav .links a:hover { color: var(--label-grey-high); }
+
+  .btn { display: inline-flex; align-items: center; gap: var(--sp-8); border: 0; cursor: pointer; height: 48px; padding: 0 var(--sp-24); border-radius: var(--radius-sm); transition: filter var(--duration-fast) var(--ease-standard); text-decoration: none; }
+  .btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .btn-primary { background: var(--btn-bg-primary-prominent); color: var(--btn-label-primary-prominent); }
+  .btn-primary:hover { filter: brightness(0.94); }
+  .btn-tonal { background: var(--btn-bg-grey-prominent); color: var(--btn-label-grey-prominent); }
+  .btn-sm { height: 40px; padding: 0 var(--sp-16); }
+
+  /* hero with the official parabola, low opacity per brand rules */
+  .hero { position: relative; overflow: hidden; border-radius: var(--radius-xl); background: var(--bg-secondary); margin-top: var(--sp-8); padding: var(--sp-64) var(--sp-48); }
+  .hero::after { content: ""; position: absolute; inset: 0; background: url("../assets/parabolas/red-fhd.png") no-repeat right -8% center / auto 150%; opacity: 0.16; pointer-events: none; }
+  .hero > * { position: relative; z-index: 1; }
+  .hero .eyebrow { color: var(--label-primary-high); }
+  .hero h1 { max-width: 16ch; margin: var(--sp-12) 0 var(--sp-16); }
+  .hero p { max-width: 52ch; color: var(--label-grey-medium); margin-bottom: var(--sp-24); }
+  .hero .cta { display: flex; gap: var(--sp-12); flex-wrap: wrap; }
+
+  section { margin-top: var(--sp-64); }
+  .section-head { text-align: center; margin-bottom: var(--sp-32); }
+  .section-head p { color: var(--label-grey-medium); margin-top: var(--sp-8); }
+
+  .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-16); }
+  @media (max-width: 760px) { .bento { grid-template-columns: 1fr; } }
+  .feature { background: var(--bg-primary); border: 1px solid var(--fill-grey-low); border-radius: var(--radius-lg); padding: var(--sp-24); transition: box-shadow var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard); }
+  .feature:hover { box-shadow: var(--elevation-3); transform: translateY(-2px); }
+  .feature .ic { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--fill-secondary-medium); color: var(--icon-secondary-high); display: flex; align-items: center; justify-content: center; margin-bottom: var(--sp-16); }
+  .feature h3 { margin-bottom: var(--sp-8); }
+  .feature p { color: var(--label-grey-medium); }
+
+  /* points table card */
+  .panel { background: var(--bg-primary); border-radius: var(--radius-lg); box-shadow: var(--elevation-2); padding: var(--sp-24); max-width: 720px; margin: 0 auto; }
+  .panel .head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--sp-16); }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: right; padding: var(--sp-12) var(--sp-8); }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { color: var(--label-grey-medium); font-weight: var(--ch-weight-medium); border-bottom: 1px solid var(--fill-grey-low); }
+  tbody td { border-bottom: 1px solid var(--fill-grey-low); }
+  tbody tr:last-child td { border-bottom: 0; }
+  .num { font-variant-numeric: tabular-nums; color: var(--label-grey-high); }
+  .rank { color: var(--label-grey-medium); }
+  .q td { }
+  .q .team-name { color: var(--label-secondary-high); }
+  .qbadge { display: inline-block; margin-left: var(--sp-8); padding: 0 var(--sp-8); height: 20px; line-height: 20px; border-radius: var(--radius-full); background: var(--fill-secondary-medium); color: var(--label-secondary-high); }
+
+  footer { margin: var(--sp-80) 0 var(--sp-48); text-align: center; }
+  footer p { color: var(--label-grey-medium); margin-top: var(--sp-8); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav>
+    <img src="../assets/logos/official/horizontal-logo.svg" alt="CricHeroes">
+    <div class="links">
+      <a class="ch-label-medium" href="#">Features</a>
+      <a class="ch-label-medium" href="#">Tournaments</a>
+      <a class="btn btn-tonal btn-sm ch-button-label-md" href="#">Sign in</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="eyebrow ch-overline">For organisers</div>
+    <h1 class="ch-display-large-emphasized">Run your whole tournament from one place.</h1>
+    <p class="ch-body-large">Fixtures, live scoring, squads and standings, free for every grassroots league. Set it up in minutes and let the scores tell the story.</p>
+    <div class="cta">
+      <a class="btn btn-primary ch-button-label-lg" href="#"><span data-icon="trophy" aria-hidden="true"></span>Create a tournament</a>
+      <a class="btn btn-tonal ch-button-label-lg" href="#">See a live example</a>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-head">
+      <h2 class="ch-headline-medium">Everything a league needs</h2>
+      <p class="ch-body-large">Built for scorers, captains and fans alike.</p>
+    </div>
+    <div class="bento">
+      <article class="feature">
+        <div class="ic"><span data-icon="ball" aria-hidden="true"></span></div>
+        <h3 class="ch-title-medium-emphasized">Ball-by-ball scoring</h3>
+        <p class="ch-body-medium">Score live from the ground. Commentary, wagon wheels and partnerships update in real time.</p>
+      </article>
+      <article class="feature">
+        <div class="ic"><span data-icon="calendar" aria-hidden="true"></span></div>
+        <h3 class="ch-title-medium-emphasized">Fixtures &amp; formats</h3>
+        <p class="ch-body-medium">Round-robin, knockout or league. Auto-generate fixtures and share them in a tap.</p>
+      </article>
+      <article class="feature">
+        <div class="ic"><span data-icon="stats" aria-hidden="true"></span></div>
+        <h3 class="ch-title-medium-emphasized">Standings &amp; stats</h3>
+        <p class="ch-body-medium">Live points tables, leaderboards and player careers that update as matches finish.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2 class="ch-headline-medium">Standings that update themselves</h2>
+    </div>
+    <div class="panel">
+      <div class="head">
+        <h3 class="ch-title-medium-emphasized">Mohali Premier League</h3>
+        <a class="ch-label-medium" style="color:var(--label-secondary-high)" href="#">Full table</a>
+      </div>
+      <table>
+        <thead><tr><th>Team</th><th>P</th><th>W</th><th>L</th><th>NRR</th><th>Pts</th></tr></thead>
+        <tbody>
+          <tr class="q"><td><span class="rank">1</span> <span class="team-name ch-body-medium-emphasized">Mohali Strikers</span><span class="qbadge ch-label-small">Q</span></td><td class="num">8</td><td class="num">7</td><td class="num">1</td><td class="num">+1.42</td><td class="num">14</td></tr>
+          <tr class="q"><td><span class="rank">2</span> <span class="team-name ch-body-medium-emphasized">Royal Chargers</span><span class="qbadge ch-label-small">Q</span></td><td class="num">8</td><td class="num">6</td><td class="num">2</td><td class="num">+0.88</td><td class="num">12</td></tr>
+          <tr><td><span class="rank">3</span> <span class="ch-body-medium">Capitals XI</span></td><td class="num">8</td><td class="num">4</td><td class="num">4</td><td class="num">+0.10</td><td class="num">8</td></tr>
+          <tr><td><span class="rank">4</span> <span class="ch-body-medium">Sky Riders</span></td><td class="num">8</td><td class="num">3</td><td class="num">5</td><td class="num">-0.64</td><td class="num">6</td></tr>
+          <tr><td><span class="rank">5</span> <span class="ch-body-medium">Trident CC</span></td><td class="num">8</td><td class="num">1</td><td class="num">7</td><td class="num">-1.71</td><td class="num">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <a class="btn btn-primary ch-button-label-lg" href="#">Create a tournament</a>
+    <p class="ch-body-small">CricHeroes, the home of grassroots cricket.</p>
+  </footer>
+
+</div>
+<script src="../assets/icons.js"></script>
+<script>if (window.CH && CH.icons) CH.icons.hydrate(document);</script>
+</body>
+</html>

@@ -1,9 +1,14 @@
 /* =============================================================
    CricHeroes Design System — Core foundations
-   Extracted from Figma file "iCricHeroes Design System"
+   Official web tokens. Mirrors the source of truth:
+     - cricheroes-design-guidelines.html  :root  (colour / spacing / radius / elevation)
+     - typography.css                     (15 M3 roles x Regular + Emphasized)
+   Token names and values are canonical; do not edit values here,
+   change them in the source system and re-sync.
    ============================================================= */
 
-/* Ubuntu Sans is the primary brand typeface. Variable font, weight 100→800, width 75→100. */
+/* Ubuntu Sans is the primary brand typeface. Variable font, weight 100->800, width 75->100.
+   Shipped locally so the system is self-contained (no network dependency). */
 @font-face {
   font-family: "Ubuntu Sans";
   src: url("fonts/UbuntuSans-VariableFont_wdth_wght.ttf") format("truetype-variations"),
@@ -23,183 +28,447 @@
   font-display: swap;
 }
 
-/* Barlow — the scorecard typeface (tabular figures for scores/stats). Static weights from Google Fonts. */
-@font-face { font-family: "Barlow"; src: url("fonts/Barlow-Regular.ttf")  format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: "Barlow"; src: url("fonts/Barlow-Medium.ttf")   format("truetype"); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: "Barlow"; src: url("fonts/Barlow-SemiBold.ttf") format("truetype"); font-weight: 600; font-style: normal; font-display: swap; }
-@font-face { font-family: "Barlow"; src: url("fonts/Barlow-Bold.ttf")     format("truetype"); font-weight: 700; font-style: normal; font-display: swap; }
-
 :root {
-  /* -------------------------------------------------------------
-     1. PRIMITIVE COLORS — straight from Figma variables
-     ------------------------------------------------------------- */
 
-  /* Brand Red — the identity color (logo, brand mark, destructive). */
-  --ch-red:           rgb(226, 28, 40);   /* brand-primary    */
-  --ch-red-light:     rgb(242, 100, 114); /* brand-primary30  */
-  --ch-red-lighter:   rgb(255, 233, 238); /* brand-primary10  */
-  --ch-red-dark:      rgb(127, 23, 25);   /* brand-primary70  */
-  --ch-red-darker:    rgb(90, 18, 16);    /* brand-primary80  */
+  /* ─── TIER 1 · FOUNDATIONS (Brand Primitives) ───
+     REFERENCE ONLY, do NOT use directly in components.
+     These exist solely to compose semantic tokens. */
 
-  /* Brand Teal — the primary INTERACTIVE color (buttons, PRO, links). */
-  --ch-teal:          rgb(24, 149, 143);  /* brand-secondary    */
-  --ch-teal-light:    rgb(67, 219, 211);  /* brand-secondary30  */
-  --ch-teal-lighter:  rgb(225, 255, 254); /* brand-secondary10  */
-  --ch-teal-dark:     rgb(23, 85, 82);    /* brand-secondary60  */
-  --ch-teal-darker:   rgb(12, 41, 40);    /* brand-secondary80  */
+  --brand-primary:      #E21C28;
+  --brand-primary-10:   #F9D2D4;
+  --brand-primary-30:   #EE777E;
+  --brand-primary-70:   #8C151C;
+  --brand-primary-80:   #611217;
 
-  /* Neutrals — iOS-style greys, near-true black/white. */
-  --ch-black:  rgb(11, 11, 11);
-  --ch-white:  rgb(254, 255, 255);
-  --ch-grey:   rgb(142, 142, 147);   /* grey */
-  --ch-grey2:  rgb(174, 174, 178);
-  --ch-grey3:  rgb(199, 199, 204);
-  --ch-grey4:  rgb(209, 209, 214);
-  --ch-grey5:  rgb(229, 229, 234);
-  --ch-grey6:  rgb(242, 242, 247);
+  --brand-secondary:    #18958F;
+  --brand-secondary-10: #D1EAE9;
+  --brand-secondary-30: #74BFBC;
+  --brand-secondary-60: #157975;
+  --brand-secondary-80: #104240;
 
-  /* -------------------------------------------------------------
-     2. SEMANTIC COLORS — what designers should actually use
-     ------------------------------------------------------------- */
+  --brand-grey:    #8E8E93;
+  --brand-grey-2:  #AEAEB2;
+  --brand-grey-3:  #C7C7CC;
+  --brand-grey-4:  #D1D1D6;
+  --brand-grey-5:  #E5E5EA;
+  --brand-grey-6:  #F2F2F7;
 
-  /* Backgrounds */
-  --bg-primary:    var(--ch-white);            /* main screen */
-  --bg-secondary:  rgb(243, 243, 243);         /* grouped lists, cards on white */
-  --bg-tertiary:   var(--ch-white);
+  --brand-black:   #0B0B0B;
+  --brand-white:   #FEFFFF;
 
-  /* Text labels */
-  --label-1:       var(--ch-black);            /* high  — headlines, body */
-  --label-2:       rgba(11, 11, 11, 0.60);     /* medium — secondary text */
-  --label-3:       rgba(11, 11, 11, 0.30);     /* low — disabled / timestamps */
-  --label-muted:   rgba(11, 11, 11, 0.18);
+  /* RGB triplets — power opacity-based semantic tokens */
+  --rgb-primary:        226 28 40;
+  --rgb-secondary:      24 149 143;
+  --rgb-secondary-30:   116 191 188;
+  --rgb-grey:           142 142 147;
+  --rgb-black:          11 11 11;
+  --rgb-white:          254 255 255;
 
-  /* Static labels (on photos / colored fills) */
-  --label-on-color: var(--ch-white);
-  --label-on-color-medium: rgba(254, 255, 255, 0.60);
 
-  /* Fills (translucent overlays — for chips, hover states) */
-  --fill-grey:     rgba(142, 142, 147, 0.16);
-  --fill-grey-low: rgba(142, 142, 147, 0.08);
-  --fill-red:      rgba(226, 28, 40, 0.14);    /* destructive bg */
-  --fill-teal:     rgba(24, 149, 143, 0.16);   /* primary action bg */
+  /* ─── TIER 2 · SEMANTIC TOKENS ───
+     The only tokens components should consume. */
 
-  /* Buttons */
-  --btn-primary-bg:        var(--ch-teal);
-  --btn-primary-label:     var(--ch-white);
-  --btn-primary-bg-soft:   var(--fill-teal);
-  --btn-primary-label-soft:var(--ch-teal);
+  /* Screen Background — solid surfaces only (no opacity) */
+  --bg-primary:   #FEFFFF;
+  --bg-secondary: #F3F3F3;
+  --bg-tertiary:  #FEFFFF;
 
-  --btn-destructive-bg:        var(--ch-red);
-  --btn-destructive-label:     var(--ch-white);
-  --btn-destructive-bg-soft:   var(--fill-red);
-  --btn-destructive-label-soft:var(--ch-red);
+  /* Labels / Primary — branded red text. Only -high and -medium are text-safe. */
+  --label-primary-high:    rgb(var(--rgb-primary));
+  --label-primary-medium:  rgb(var(--rgb-primary) / 0.52);
+  --label-primary-low:     rgb(var(--rgb-primary) / 0.30);
+  --label-primary-muted:   rgb(var(--rgb-primary) / 0.14);
 
-  --btn-neutral-bg:    var(--fill-grey);
-  --btn-neutral-label: var(--ch-black);
+  /* Labels / Secondary — interaction teal text */
+  --label-secondary-high:   rgb(var(--rgb-secondary));
+  --label-secondary-medium: rgb(var(--rgb-secondary) / 0.54);
+  --label-secondary-low:    rgb(var(--rgb-secondary) / 0.30);
+  --label-secondary-muted:  rgb(var(--rgb-secondary) / 0.18);
+
+  /* Labels / Grey — primary body-text hierarchy. -low / -muted are NOT text-safe. */
+  --label-grey-high:    rgb(var(--rgb-black));
+  --label-grey-medium:  rgb(var(--rgb-black) / 0.60);
+  --label-grey-low:     rgb(var(--rgb-black) / 0.30);
+  --label-grey-muted:   rgb(var(--rgb-black) / 0.18);
+
+  /* Labels / Static — fixed tone for coloured / image surfaces */
+  --label-static-black-high:    rgb(var(--rgb-black));
+  --label-static-black-medium:  rgb(var(--rgb-black) / 0.60);
+  --label-static-black-low:     rgb(var(--rgb-black) / 0.30);
+  --label-static-black-muted:   rgb(var(--rgb-black) / 0.16);
+  --label-static-white-high:    rgb(var(--rgb-white));
+  --label-static-white-medium:  rgb(var(--rgb-white) / 0.60);
+  --label-static-white-low:     rgb(var(--rgb-white) / 0.30);
+  --label-static-white-muted:   rgb(var(--rgb-white) / 0.16);
+
+  /* Fill / Grey — neutral surfaces, dividers, hover, disabled */
+  --fill-grey-prominent: rgb(var(--rgb-grey));
+  --fill-grey-high:      rgb(var(--rgb-grey) / 0.20);
+  --fill-grey-medium:    rgb(var(--rgb-grey) / 0.16);
+  --fill-grey-low:       rgb(var(--rgb-grey) / 0.12);
+  --fill-grey-muted:     rgb(var(--rgb-grey) / 0.08);
+
+  /* Fill / Primary — branded surfaces, live / urgent moments */
+  --fill-primary-prominent: rgb(var(--rgb-primary));
+  --fill-primary-high:      rgb(var(--rgb-primary) / 0.20);
+  --fill-primary-medium:    rgb(var(--rgb-primary) / 0.16);
+  --fill-primary-low:       rgb(var(--rgb-primary) / 0.12);
+  --fill-primary-muted:     rgb(var(--rgb-primary) / 0.08);
+
+  /* Fill / Secondary — interaction surfaces, selected, focus tint */
+  --fill-secondary-prominent: rgb(var(--rgb-secondary));
+  --fill-secondary-high:      rgb(var(--rgb-secondary) / 0.20);
+  --fill-secondary-medium:    rgb(var(--rgb-secondary) / 0.16);
+  --fill-secondary-low:       rgb(var(--rgb-secondary) / 0.12);
+  --fill-secondary-muted:     rgb(var(--rgb-secondary) / 0.08);
+
+
+  /* ─── TIER 3 · COMPONENT TOKENS ───
+     Pre-mapped for the most opinionated components.
+     Note: --btn-*-secondary-* is the RED / destructive button (legacy name). */
+
+  /* Buttons / Background */
+  --btn-bg-primary-prominent:   rgb(var(--rgb-secondary));            /* Main CTA — Teal */
+  --btn-bg-primary-disable:     rgb(var(--rgb-secondary) / 0.20);
+  --btn-bg-secondary-prominent: rgb(var(--rgb-primary));              /* Brand / destructive CTA — Red */
+  --btn-bg-secondary-disable:   rgb(var(--rgb-primary) / 0.14);
+  --btn-bg-grey-prominent:      rgb(var(--rgb-grey) / 0.12);
+  --btn-bg-grey-disable:        rgb(var(--rgb-grey) / 0.12);
+  --btn-bg-black-prominent:     rgb(var(--rgb-black));
+
+  /* Buttons / Label */
+  --btn-label-primary-prominent:        rgb(var(--rgb-white));
+  --btn-label-primary-disable:          rgb(var(--rgb-white) / 0.60);
+  --btn-label-secondary-prominent:      rgb(var(--rgb-white));
+  --btn-label-secondary-disable:        rgb(var(--rgb-white) / 0.50);
+  --btn-label-grey-prominent:           rgb(var(--rgb-black));
+  --btn-label-grey-disable:             rgb(var(--rgb-black) / 0.30);
+  --btn-label-primary-text-prominent:   rgb(var(--rgb-secondary));
+  --btn-label-primary-text-disable:     rgb(var(--rgb-secondary) / 0.60);
+  --btn-label-secondary-text-prominent: rgb(var(--rgb-primary));
+  --btn-label-secondary-text-disable:   rgb(var(--rgb-primary) / 0.50);
+  --btn-label-black-text-prominent:     rgb(var(--rgb-black));
+  --btn-label-black-text-disable:       rgb(var(--rgb-black) / 0.30);
 
   /* Icons */
-  --icon-1: var(--ch-black);
-  --icon-2: var(--ch-grey);
-  --icon-3: var(--ch-grey3);
-  --icon-primary:   var(--ch-red);   /* brand-tinted icons */
-  --icon-secondary: var(--ch-teal);  /* action-tinted icons */
+  --icon-primary-high:    rgb(var(--rgb-primary));
+  --icon-secondary-high:  rgb(var(--rgb-secondary));
+  --icon-grey-prominent:  rgb(var(--rgb-black));
+  --icon-grey-high:       rgb(var(--rgb-grey));
+  --icon-grey-medium:     rgb(var(--rgb-grey) / 0.50);
+  --icon-grey-low:        rgb(var(--rgb-grey) / 0.30);
+  --icon-static-black:    rgb(var(--rgb-black));
+  --icon-static-white:    rgb(var(--rgb-white));
 
-  /* Dividers / borders */
-  --divider:       rgba(11, 11, 11, 0.10);
-  --divider-strong:rgba(11, 11, 11, 0.18);
 
-  /* Status colors (system-standard iOS palette) */
-  --status-success: rgb(52, 199, 89);
-  --status-warning: rgb(255, 149, 0);
-  --status-error:   var(--ch-red);
-  --status-info:    rgb(0, 122, 255);
+  /* ─── Typography · Families ─── */
+  --font-primary: 'Ubuntu Sans', 'Ubuntu', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-brand:   'Ubuntu Sans', 'Ubuntu', sans-serif;
+  --font-mono:    'Ubuntu Sans', 'Ubuntu', sans-serif;   /* tabular figures for scores/stats via font-variant-numeric */
 
-  /* -------------------------------------------------------------
-     3. SPACING — 4px base. Use only these stops.
-     ------------------------------------------------------------- */
-  --space-0:  0;
-  --space-1:  2px;
-  --space-2:  4px;
-  --space-3:  8px;
-  --space-4:  12px;
-  --space-5:  16px;
-  --space-6:  20px;
-  --space-7:  24px;
-  --space-8:  32px;
-  --space-9:  40px;
-  --space-10: 48px;
-  --space-11: 64px;
-  --space-12: 80px;
-  --space-13: 96px;
+  /* Family + weight aliases consumed by the .ch-* type classes below.
+     Aliased to the shipped "Ubuntu Sans" so the local font loads (guidelines names win). */
+  --ch-font-brand: var(--font-brand);
+  --ch-font-plain: var(--font-primary);
+  --ch-font-logo:  "Roboto", sans-serif;                 /* logo lockup only */
+  --ch-weight-regular:       400;
+  --ch-weight-medium:        500;
+  --ch-weight-bold:          700;                         /* 700 is the emphasis ceiling (Ubuntu static palette) */
+  --ch-weight-light-numeric: 300;                         /* optional, big stat numerals only */
 
-  /* -------------------------------------------------------------
-     4. RADII — pills + soft squircle
-     ------------------------------------------------------------- */
-  --r-2:   2px;
-  --r-4:   4px;
-  --r-8:   8px;
-  --r-12:  12px;   /* cards, sheets */
-  --r-16:  16px;   /* large cards */
-  --r-20:  20px;
-  --r-24:  24px;
-  --r-32:  32px;
-  --r-pill: 999px; /* buttons, chips, FAB */
+  /* ─── Typography · M3 Type Scale (CSS-var mirror of the .ch-* classes) ───
+     Component CSS that needs a font-size should consume one of these vars,
+     never a raw px value. --ch-font-label-sm (12px) is the system FLOOR. */
+  --ch-font-display-lg:    64px;
+  --ch-font-display-md:    56px;
+  --ch-font-display-sm:    48px;
+  --ch-font-headline-lg:   40px;
+  --ch-font-headline-md:   32px;
+  --ch-font-headline-sm:   28px;
+  --ch-font-title-lg:      24px;
+  --ch-font-title-md:      20px;
+  --ch-font-title-sm:      18px;
+  --ch-font-body-lg:       18px;
+  --ch-font-body-md:       16px;
+  --ch-font-body-sm:       14px;
+  --ch-font-label-lg:      16px;
+  --ch-font-label-md:      14px;
+  --ch-font-label-sm:      12px;
+  --ch-font-display-hero: 100px;   /* marketing hero only */
 
-  /* -------------------------------------------------------------
-     5. ELEVATION — flat by default; subtle ambient shadow on cards.
-     ------------------------------------------------------------- */
-  --shadow-0: none;
-  --shadow-1: 0 1px 2px rgba(11, 11, 11, 0.06);
-  --shadow-2: 0 2px 8px rgba(11, 11, 11, 0.08);
-  --shadow-3: 0 8px 24px rgba(11, 11, 11, 0.12);
-  --shadow-sticky: 0 -2px 12px rgba(11, 11, 11, 0.08); /* bottom sheets */
+  /* ─── Typography · Button Label (component-specific slot) ─── */
+  --ch-button-label-sm-family:   var(--font-primary);
+  --ch-button-label-sm-size:     0.75rem;   /* 12px */
+  --ch-button-label-sm-lh:       1rem;      /* 16px */
+  --ch-button-label-sm-weight:   500;
+  --ch-button-label-sm-tracking: 0.04em;
+  --ch-button-label-md-family:   var(--font-primary);
+  --ch-button-label-md-size:     0.875rem;  /* 14px */
+  --ch-button-label-md-lh:       1.25rem;   /* 20px */
+  --ch-button-label-md-weight:   500;
+  --ch-button-label-md-tracking: 0.01em;
+  --ch-button-label-lg-family:   var(--font-primary);
+  --ch-button-label-lg-size:     1rem;      /* 16px */
+  --ch-button-label-lg-lh:       1.5rem;    /* 24px */
+  --ch-button-label-lg-weight:   500;
+  --ch-button-label-lg-tracking: 0.01em;
 
-  /* -------------------------------------------------------------
-     6. TYPOGRAPHY — Ubuntu Sans, geometric / friendly humanist
-     ------------------------------------------------------------- */
-  --font-sans: "Ubuntu Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text",
-               "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  /* Scorecard typeface — Barlow, tabular figures. Use for scores/stats only. */
-  --ch-font-scorecard: "Barlow", var(--font-sans);
+  /* ─── Spacing (4pt) — 12 foundation tokens ───
+     Retired (do not reintroduce): --sp-6 · --sp-10 · --sp-96 */
+  --sp-2:  2px;  --sp-4:  4px;  --sp-8:  8px;   --sp-12: 12px;
+  --sp-16: 16px; --sp-20: 20px; --sp-24: 24px;  --sp-32: 32px;
+  --sp-40: 40px; --sp-48: 48px; --sp-64: 64px;  --sp-80: 80px;
 
-  /* Weights — Ubuntu Sans provides 100–800 */
-  --w-regular:  400; /* @kind font */
-  --w-medium:   500; /* @kind font */
-  --w-semibold: 600; /* @kind font */
-  --w-bold:     700; /* @kind font */
+  /* ─── Radius ─── */
+  --radius-none: 0;
+  --radius-xs:   4px;     /* inputs, badges, code chips */
+  --radius-sm:   8px;     /* buttons (Small / Medium), chips, search */
+  --radius-md:   12px;    /* cards (default), most surfaces */
+  --radius-lg:   16px;    /* analytics / promo / large surfaces */
+  --radius-xl:   28px;    /* modals, drawers, bottom sheets, large dialogs */
+  --radius-full: 9999px;  /* pills, avatars, status chips, FAB */
 
-  /* Type scale — iOS / Material derived, suitable for mobile + slides */
-  --t-display-lg:  44px;
-  --t-display:     34px;
-  --t-display-sm:  28px;
-  --t-title-lg:    24px;
-  --t-title:       20px;
-  --t-title-sm:    17px;
-  --t-headline:    17px;
-  --t-body:        15px;
-  --t-callout:     14px;
-  --t-subhead:     13px;
-  --t-footnote:    12px;
-  --t-caption:     11px;
+  /* ─── Elevation · 6 levels (Material 3-aligned). A surface uses border OR shadow, never both. ─── */
+  --elevation-0: none;
+  --elevation-1: 0 0 0 1px rgb(var(--rgb-black) / 0.04);
+  --elevation-2: 0 1px 2px rgb(var(--rgb-black) / 0.04), 0 1px 3px rgb(var(--rgb-black) / 0.06);
+  --elevation-3: 0 4px 12px rgb(var(--rgb-black) / 0.06), 0 1px 3px rgb(var(--rgb-black) / 0.04);
+  --elevation-4: 0 8px 20px rgb(var(--rgb-black) / 0.08), 0 2px 4px rgb(var(--rgb-black) / 0.06);
+  --elevation-5: 0 12px 32px rgb(var(--rgb-black) / 0.10), 0 2px 6px rgb(var(--rgb-black) / 0.06);
 
-  /* -------------------------------------------------------------
-     7. BRAND-PLAYBOOK EXTRAS — from the Brand Playbook, not in the
-        Figma export. Use sparingly.
-     ------------------------------------------------------------- */
-  --ch-gold:        rgb(203, 142, 64);          /* Khaki Gold — awards / premium */
-  --ch-gold-fill:   rgba(203, 142, 64, 0.16);
-  --border:         1px solid var(--ch-grey5);  /* default 1px border */
-  --focus-ring:     0 0 0 2px var(--ch-teal);   /* teal focus ring */
-  /* The two approved gradients — hero visuals only, never buttons/cards. */
-  --ch-gradient-red:  linear-gradient(135deg, var(--ch-red-dark), var(--ch-red));
-  --ch-gradient-teal: linear-gradient(135deg, var(--ch-teal), var(--ch-teal-dark));
+  /* Backward-compat aliases */
+  --shadow-ambient: var(--elevation-1);
+  --shadow-card:    var(--elevation-2);
+  --shadow-raised:  var(--elevation-3);
+  --shadow-overlay: var(--elevation-5);
 
-  /* Motion — fast & functional. Spring only for toasts / success moments. */
+  /* ─── Focus ring ─── */
+  --focus-ring:      0 0 0 3px rgb(var(--rgb-secondary) / 0.30);
+  --focus-ring-chip: 0 0 0 2px rgb(var(--rgb-secondary) / 0.45);
+
+  /* ─── CricHeroes extensions ───
+     NOT in the official web export. Brand-playbook values, use sparingly.
+     Flagged for the design team to fold in or drop. */
+  --ch-gold:      #CB8E40;                        /* Khaki Gold — awards / premium */
+  --ch-gold-fill: rgb(203 142 64 / 0.16);
   --duration-fast: 150ms;
   --ease-standard: cubic-bezier(0.2, 0, 0.2, 1);
   --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+/* ═══════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-primary);
+  background: var(--bg-primary);
+  color: var(--label-grey-high);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; }
+
+/* ═══════════════════════════════════════════════════
+   TYPE ROLE CLASSES — 15 M3 roles x Regular + Emphasized
+   Emphasized = same size / line-height / tracking, weight stepped up.
+   ═══════════════════════════════════════════════════ */
+
+/* ---------- DISPLAY ---------- */
+.ch-display-large, .ch-display-large-emphasized {
+  font-family: var(--ch-font-brand);
+  font-size: clamp(2.5rem, 1.6rem + 2.8vw, 4rem); /* 40 -> 64 */
+  line-height: 4.5rem;          /* 72 */
+  letter-spacing: -0.02em;
+}
+.ch-display-large            { font-weight: 500; }
+.ch-display-large-emphasized { font-weight: 700; }
+
+.ch-display-medium, .ch-display-medium-emphasized {
+  font-family: var(--ch-font-brand);
+  font-size: clamp(2.25rem, 1.6rem + 2vw, 3.5rem); /* 36 -> 56 */
+  line-height: 4rem;            /* 64 */
+  letter-spacing: -0.02em;
+}
+.ch-display-medium            { font-weight: 500; }
+.ch-display-medium-emphasized { font-weight: 700; }
+
+.ch-display-small, .ch-display-small-emphasized {
+  font-family: var(--ch-font-brand);
+  font-size: clamp(1.875rem, 1.4rem + 1.5vw, 3rem); /* 30 -> 48 */
+  line-height: 3.5rem;          /* 56 */
+  letter-spacing: -0.01em;
+}
+.ch-display-small            { font-weight: 500; }
+.ch-display-small-emphasized { font-weight: 700; }
+
+/* ---------- HEADLINE ---------- */
+.ch-headline-large, .ch-headline-large-emphasized {
+  font-family: var(--ch-font-brand);
+  font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem); /* 28 -> 40 */
+  line-height: 3rem;            /* 48 */
+  letter-spacing: -0.01em;
+}
+.ch-headline-large            { font-weight: 500; }
+.ch-headline-large-emphasized { font-weight: 700; }
+
+.ch-headline-medium, .ch-headline-medium-emphasized {
+  font-family: var(--ch-font-brand);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); /* 24 -> 32 */
+  line-height: 2.5rem;          /* 40 */
+  letter-spacing: 0;
+}
+.ch-headline-medium            { font-weight: 500; }
+.ch-headline-medium-emphasized { font-weight: 700; }
+
+.ch-headline-small, .ch-headline-small-emphasized {
+  font-family: var(--ch-font-brand);
+  font-size: clamp(1.375rem, 1.15rem + 0.7vw, 1.75rem); /* 22 -> 28 */
+  line-height: 2.25rem;         /* 36 */
+  letter-spacing: 0;
+}
+.ch-headline-small            { font-weight: 500; }
+.ch-headline-small-emphasized { font-weight: 700; }
+
+/* ---------- TITLE (fixed size) ---------- */
+.ch-title-large, .ch-title-large-emphasized {
+  font-family: var(--ch-font-brand);
+  font-size: 1.5rem;            /* 24 */
+  line-height: 1.875rem;        /* 30 */
+  letter-spacing: 0;
+}
+.ch-title-large            { font-weight: 500; }
+.ch-title-large-emphasized { font-weight: 700; }
+
+.ch-title-medium, .ch-title-medium-emphasized {
+  font-family: var(--ch-font-plain);
+  font-size: 1.25rem;           /* 20 */
+  line-height: 1.75rem;         /* 28 */
+  letter-spacing: 0;
+}
+.ch-title-medium            { font-weight: 500; }
+.ch-title-medium-emphasized { font-weight: 700; }
+
+.ch-title-small, .ch-title-small-emphasized {
+  font-family: var(--ch-font-plain);
+  font-size: 1.125rem;          /* 18 */
+  line-height: 1.5rem;          /* 24 */
+  letter-spacing: 0;
+}
+.ch-title-small            { font-weight: 500; }
+.ch-title-small-emphasized { font-weight: 700; }
+
+/* ---------- BODY (fixed size) ---------- */
+.ch-body-large, .ch-body-large-emphasized {
+  font-family: var(--ch-font-plain);
+  font-size: 1.125rem;          /* 18 */
+  line-height: 1.75rem;         /* 28 */
+  letter-spacing: 0;
+}
+.ch-body-large            { font-weight: 400; }
+.ch-body-large-emphasized { font-weight: 500; }
+
+.ch-body-medium, .ch-body-medium-emphasized {
+  font-family: var(--ch-font-plain);
+  font-size: 1rem;              /* 16 */
+  line-height: 1.5rem;          /* 24 */
+  letter-spacing: 0;
+}
+.ch-body-medium            { font-weight: 400; }
+.ch-body-medium-emphasized { font-weight: 500; }
+
+.ch-body-small, .ch-body-small-emphasized {
+  font-family: var(--ch-font-plain);
+  font-size: 0.875rem;          /* 14 */
+  line-height: 1.25rem;         /* 20 */
+  letter-spacing: 0;
+}
+.ch-body-small            { font-weight: 400; }
+.ch-body-small-emphasized { font-weight: 500; }
+
+/* ---------- LABEL (fixed size) ---------- */
+.ch-label-large, .ch-label-large-emphasized {
+  font-family: var(--ch-font-plain);
+  font-size: 1rem;              /* 16 */
+  line-height: 1.5rem;          /* 24 */
+  letter-spacing: 0.01em;
+}
+.ch-label-large            { font-weight: 500; }
+.ch-label-large-emphasized { font-weight: 700; }
+
+.ch-label-medium, .ch-label-medium-emphasized {
+  font-family: var(--ch-font-plain);
+  font-size: 0.875rem;          /* 14 */
+  line-height: 1.25rem;         /* 20 */
+  letter-spacing: 0.01em;
+}
+.ch-label-medium            { font-weight: 500; }
+.ch-label-medium-emphasized { font-weight: 700; }
+
+.ch-label-small, .ch-label-small-emphasized {
+  font-family: var(--ch-font-plain);
+  font-size: 0.75rem;           /* 12 — system floor */
+  line-height: 1rem;            /* 16 */
+  letter-spacing: 0.04em;
+}
+.ch-label-small            { font-weight: 500; }
+.ch-label-small-emphasized { font-weight: 700; }
+
+/* ---------- COMPONENT · BUTTON LABEL ---------- */
+.ch-button-label-sm {
+  font-family: var(--ch-button-label-sm-family);
+  font-size: var(--ch-button-label-sm-size);
+  line-height: var(--ch-button-label-sm-lh);
+  font-weight: var(--ch-button-label-sm-weight);
+  letter-spacing: var(--ch-button-label-sm-tracking);
+}
+.ch-button-label-md {
+  font-family: var(--ch-button-label-md-family);
+  font-size: var(--ch-button-label-md-size);
+  line-height: var(--ch-button-label-md-lh);
+  font-weight: var(--ch-button-label-md-weight);
+  letter-spacing: var(--ch-button-label-md-tracking);
+}
+.ch-button-label-lg {
+  font-family: var(--ch-button-label-lg-family);
+  font-size: var(--ch-button-label-lg-size);
+  line-height: var(--ch-button-label-lg-lh);
+  font-weight: var(--ch-button-label-lg-weight);
+  letter-spacing: var(--ch-button-label-lg-tracking);
+}
+
+/* ---------- MODIFIERS ---------- */
+.ch-display-hero {
+  font-family: var(--ch-font-brand);
+  font-size: clamp(3rem, 2rem + 5vw, 6.25rem); /* up to 100px */
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.ch-overline {
+  font-family: var(--ch-font-plain);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+/* Numeric display for scores / stats — tabular Ubuntu Sans (this replaces the old Barlow scorecard face). */
+.ch-display-numeric { font-weight: var(--ch-weight-light-numeric); font-variant-numeric: tabular-nums; }
+
+/* ---------- SEMANTIC HTML MAPPING ---------- */
+h1 { font-family: var(--ch-font-brand); font-size: clamp(1.75rem,1.3rem + 1.4vw,2.5rem); line-height: 3rem;   font-weight: 700; letter-spacing: -0.01em; } /* headline-large emphasized */
+h2 { font-family: var(--ch-font-brand); font-size: clamp(1.5rem,1.2rem + 1vw,2rem);      line-height: 2.5rem; font-weight: 500; }                          /* headline-medium */
+h3 { font-family: var(--ch-font-brand); font-size: clamp(1.375rem,1.15rem + 0.7vw,1.75rem); line-height: 2.25rem; font-weight: 500; }                      /* headline-small */
+h4 { font-family: var(--ch-font-brand); font-size: 1.5rem;  line-height: 1.875rem; font-weight: 500; }  /* title-large */
+h5 { font-family: var(--ch-font-plain); font-size: 1.25rem; line-height: 1.75rem;  font-weight: 500; }  /* title-medium */
+h6 { font-family: var(--ch-font-plain); font-size: 1.125rem;line-height: 1.5rem;   font-weight: 500; }  /* title-small */
+p  { font-family: var(--ch-font-plain); font-size: 1rem; line-height: 1.5rem; font-weight: 400; }        /* body-medium */
+small, caption, .caption { font-family: var(--ch-font-plain); font-size: 0.75rem; line-height: 1rem; font-weight: 400; }
 
 /* Respect reduced motion. */
 @media (prefers-reduced-motion: reduce) {
@@ -207,36 +476,6 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
-
-/* =============================================================
-   Semantic text styles — apply directly to elements
-   ============================================================= */
-
-body {
-  font-family: var(--font-sans);
-  font-feature-settings: "ss01", "cv01";
-  color: var(--label-1);
-  background: var(--bg-primary);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.ch-display-lg { font: var(--w-bold)     var(--t-display-lg)/1.05 var(--font-sans); letter-spacing:-0.02em; }
-.ch-display    { font: var(--w-bold)     var(--t-display)/1.1  var(--font-sans); letter-spacing:-0.015em; }
-.ch-display-sm { font: var(--w-bold)     var(--t-display-sm)/1.15 var(--font-sans); letter-spacing:-0.01em; }
-.ch-title-lg   { font: var(--w-bold)     var(--t-title-lg)/1.2  var(--font-sans); letter-spacing:-0.005em; }
-.ch-title      { font: var(--w-semibold) var(--t-title)/1.25 var(--font-sans); }
-.ch-title-sm   { font: var(--w-semibold) var(--t-title-sm)/1.3 var(--font-sans); }
-.ch-headline   { font: var(--w-semibold) var(--t-headline)/1.35 var(--font-sans); }
-.ch-body       { font: var(--w-regular)  var(--t-body)/1.45 var(--font-sans); }
-.ch-body-em    { font: var(--w-semibold) var(--t-body)/1.45 var(--font-sans); }
-.ch-callout    { font: var(--w-medium)   var(--t-callout)/1.4 var(--font-sans); }
-.ch-subhead    { font: var(--w-medium)   var(--t-subhead)/1.4 var(--font-sans); }
-.ch-footnote   { font: var(--w-regular)  var(--t-footnote)/1.35 var(--font-sans); color: var(--label-2); }
-.ch-caption    { font: var(--w-medium)   var(--t-caption)/1.3 var(--font-sans); color: var(--label-2); text-transform: uppercase; letter-spacing: 0.04em; }
-
-/* Buttons stamp their label with Bold (Android) / Medium (iOS); use the Bold one as primary */
-.ch-btn-label    { font: var(--w-bold) var(--t-callout)/1 var(--font-sans); }
-.ch-btn-label-sm { font: var(--w-bold) var(--t-footnote)/1 var(--font-sans); }
