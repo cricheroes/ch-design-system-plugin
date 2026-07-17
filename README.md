@@ -23,37 +23,48 @@ You get the `cricheroes-design` skill, the `/cricheroes-design` and
 `/cricheroes-audit` commands, and a brand-lint hook that flags hard violations
 (emoji in UI, red used as a button fill, off-brand gradients).
 
-### claude.ai chat (skill upload)
+### claude.ai (web and desktop)
 
-The skill (tokens, component specs, brand voice, audit checklist) also works in
-the claude.ai web and mobile apps. Slash commands and the brand-lint hook are
-Claude Code features and do not run there.
+Two routes; both need a paid plan (Pro, Max, Team, or Enterprise).
 
-1. Zip the skill folder so `cricheroes-design/` (with `SKILL.md` at its root)
-   is the top-level entry of the archive:
+**Plugin (preferred):** in the left sidebar open Customize, then the Plugins
+tab, and install this plugin (browse if your org admin has distributed it, or
+add this repo's marketplace). The skill is then available in every chat; invoke
+it by asking for CricHeroes UI work, or via `/` or the `+` menu. On Team and
+Enterprise, an org admin can distribute the plugin org-wide from a marketplace
+so nobody installs manually.
 
-   ```
-   cd skills && zip -r cricheroes-design.zip cricheroes-design
-   ```
+**Skill zip (fallback):** zip the skill folder so `cricheroes-design/` (with
+`SKILL.md` at its root) is the top-level entry, then upload it under Customize,
+then Skills, and toggle it on:
 
-2. In claude.ai go to Settings, then Customize, then Skills, click the plus
-   button, and upload the zip.
-3. Toggle the skill on. Claude then applies the CricHeroes system whenever a
-   chat involves building or reviewing UI.
+```
+cd skills && zip -r cricheroes-design.zip cricheroes-design
+```
 
-Requirements: a Pro, Max, Team, or Enterprise plan with "Code execution and
-file creation" enabled. On Team and Enterprise an org owner or admin must first
-enable Skills under Organization settings. Skill zips are limited to 200 files;
-this skill ships about 54, so it fits comfortably.
+Requires "Code execution and file creation" enabled; on Team and Enterprise an
+org admin must enable Skills under Organization settings first. Skill zips are
+limited to 200 files; this skill ships about 54.
+
+In chat, the skill runs fully; the brand-lint hook does not (it runs in Claude
+Code and Cowork), and slash commands are Claude Code only.
 
 ### Cowork (Claude desktop app)
 
-Skills uploaded to claude.ai do not sync to Cowork automatically. Either:
+Skills and plugins do not sync from claude.ai chat automatically. Install the
+plugin in Cowork from this marketplace, or upload the same skill zip under
+Customize, then Skills. Cowork also runs the plugin's hooks, so the brand-lint
+guard is active there.
 
-- upload the same zip in Cowork under Customize, then Skills, or
-- install the full plugin in Cowork from this marketplace (Cowork supports
-  plugin marketplaces by URL), which bundles the skill; hooks and slash
-  commands still run only in Claude Code.
+### Figma (optional, for design-system audits in Figma)
+
+Connect the Figma connector in claude.ai (Settings, then Connectors, then
+Figma) or in Cowork. With the connector plus this skill enabled, Claude can
+read a Figma file's variables, styles, and components and audit them against
+the token canon in `colors_and_type.css`, flag drift, and mirror the three-tier
+token contract when creating or updating Figma variables. The CSS in this repo
+stays the source of truth; Figma-side differences are reported, not silently
+adopted.
 
 ### Codex and other agents that read `AGENTS.md`
 

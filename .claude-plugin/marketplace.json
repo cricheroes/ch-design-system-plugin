@@ -3,14 +3,14 @@
   "owner": { "name": "CricHeroes" },
   "metadata": {
     "description": "CricHeroes design system marketplace",
-    "version": "0.3.0"
+    "version": "0.4.0"
   },
   "plugins": [
     {
       "name": "cricheroes-design-system",
       "source": "./",
       "description": "CricHeroes design system: tokens, icons, component specs and brand voice, with an audit command and an advisory brand-lint hook to validate any project against the brand.",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "category": "design"
     }
   ]
