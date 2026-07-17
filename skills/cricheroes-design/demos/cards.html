@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CricHeroes: card patterns</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  :root { --page: 1180px; }
+  body { background: var(--bg-secondary); color: var(--label-grey-high); }
+  .page { max-width: var(--page); margin: 0 auto; padding: var(--sp-24) var(--sp-20) var(--sp-80); }
+
+  /* ── base card primitive · every card inherits ── */
+  .card { background: var(--bg-primary); border: 1px solid var(--fill-grey-low); border-radius: var(--radius-md); box-shadow: var(--elevation-2); padding: var(--sp-16); overflow: hidden; }
+  .card--link { cursor: pointer; transition: box-shadow var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard); }
+  .card--link:hover { box-shadow: var(--elevation-3); transform: translateY(-2px); }
+  .card--link:active { transform: translateY(0); box-shadow: var(--elevation-1); }
+
+  /* ── focus (teal ring on every interactive surface) ── */
+  a:focus-visible, button:focus-visible, .focusable:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .card--link:focus-visible, .tile:focus-visible, .prod:focus-visible, .sq:focus-visible { outline: none; box-shadow: var(--focus-ring), var(--elevation-3); }
+
+  /* ── masthead ── */
+  .masthead { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--sp-24); flex-wrap: wrap; padding: var(--sp-16) 0 var(--sp-32); border-bottom: 1px solid var(--fill-grey-low); }
+  .masthead img { height: 26px; display: block; margin-bottom: var(--sp-16); }
+  .masthead .eyebrow { color: var(--brand-secondary-60); }
+  .masthead h1 { margin: var(--sp-4) 0 var(--sp-8); }
+  .masthead p { color: var(--label-grey-medium); max-width: 52ch; }
+  .tagchips { display: flex; gap: var(--sp-8); flex-wrap: wrap; }
+  .tagchip { display: inline-flex; align-items: center; gap: var(--sp-4); padding: var(--sp-4) var(--sp-12); border-radius: var(--radius-full); background: var(--fill-grey-muted); color: var(--label-grey-medium); }
+
+  /* ── section scaffolding ── */
+  .sec { margin-top: var(--sp-48); }
+  .sec-head { display: flex; align-items: baseline; gap: var(--sp-12); margin-bottom: var(--sp-20); flex-wrap: wrap; }
+  .sec-head .eyebrow { color: var(--brand-secondary-60); }
+  .sec-head h2 { color: var(--label-grey-high); }
+  .sec-head .n { color: var(--label-grey-low); font-variant-numeric: tabular-nums; margin-left: auto; }
+  .cell { display: flex; flex-direction: column; gap: var(--sp-8); }
+  .cap { display: flex; gap: var(--sp-8); align-items: baseline; color: var(--label-grey-medium); }
+  .cap b { color: var(--label-grey-high); font-weight: var(--ch-weight-medium); }
+
+  .grid-field { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--sp-20); align-items: start; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-20); align-items: start; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-20); align-items: start; }
+  .stack { display: flex; flex-direction: column; gap: var(--sp-20); }
+
+  /* ── buttons ── */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-8); border: 0; cursor: pointer; min-height: 44px; padding: 0 var(--sp-20); border-radius: var(--radius-sm); text-decoration: none; transition: filter var(--duration-fast) var(--ease-standard); }
+  .btn-primary { background: var(--btn-bg-primary-prominent); color: var(--btn-label-primary-prominent); }
+  .btn-primary:hover { filter: brightness(0.94); }
+  .btn-tonal { background: var(--btn-bg-grey-prominent); color: var(--btn-label-grey-prominent); }
+  .btn-tonal:hover { filter: brightness(0.96); }
+  .btn-icon { min-width: 44px; padding: 0; }
+  .btn-onred { background: rgb(var(--rgb-white) / 0.16); color: var(--label-static-white-high); }
+  .btn-onred:hover { background: rgb(var(--rgb-white) / 0.26); }
+
+  /* teal text link, contrast-safe for small text */
+  .tlink { display: inline-flex; align-items: center; gap: var(--sp-4); min-height: 44px; padding: 0 var(--sp-8); color: var(--brand-secondary-60); font-weight: var(--ch-weight-medium); }
+  .tlink:hover { color: var(--label-secondary-high); }
+  .tlink [data-icon] { display: inline-flex; }
+
+  /* status pills (display only, not touch targets) */
+  .pill { display: inline-flex; align-items: center; gap: var(--sp-4); padding: var(--sp-4) var(--sp-12); border-radius: var(--radius-full); flex: none; }
+  .pill [data-icon] { display: inline-flex; }
+  .pill-live { background: var(--fill-primary-muted); color: var(--label-primary-high); }
+  .pill-up { background: var(--fill-secondary-muted); color: var(--brand-secondary-60); }
+  .pill-res { background: var(--fill-grey-low); color: var(--label-grey-medium); }
+
+  /* ── hero card · full-width red identity surface ── */
+  .hero { position: relative; overflow: hidden; border-radius: var(--radius-lg); background: var(--fill-primary-prominent); color: var(--label-static-white-high); padding: var(--sp-40); display: grid; grid-template-columns: auto 1fr auto; gap: var(--sp-32); align-items: center; }
+  .hero::after { content: ""; position: absolute; inset: 0; background: url("../assets/parabolas/white-fhd.jpg") no-repeat right center / auto 170%; opacity: 0.12; pointer-events: none; }
+  .hero > * { position: relative; z-index: 1; }
+  .hero .badge { width: 76px; height: 76px; border-radius: var(--radius-md); background: rgb(var(--rgb-white) / 0.16); display: flex; align-items: center; justify-content: center; color: var(--label-static-white-high); }
+  .hero .eyebrow { color: var(--label-static-white-high); }
+  .hero h2 { color: var(--label-static-white-high); margin: var(--sp-4) 0 var(--sp-8); }
+  .hero .hmeta { color: var(--label-static-white-high); margin-bottom: var(--sp-16); }
+  .hero .acts { display: flex; gap: var(--sp-12); flex-wrap: wrap; }
+  .hstats { display: flex; gap: var(--sp-12); }
+  .hstat { background: rgb(var(--rgb-white) / 0.12); border-radius: var(--radius-md); padding: var(--sp-12) var(--sp-16); min-width: 86px; }
+  .hstat .n { font-variant-numeric: tabular-nums; font-weight: var(--ch-weight-bold); font-size: var(--ch-font-headline-sm); color: var(--label-static-white-high); }
+  .hstat .l { color: var(--label-static-white-high); }
+
+  /* ── base primitive anatomy ── */
+  .prim { display: grid; grid-template-columns: 300px 1fr; gap: var(--sp-32); align-items: center; }
+  .prim .demo { display: flex; align-items: center; justify-content: center; padding: var(--sp-24); background: var(--fill-grey-muted); border-radius: var(--radius-md); }
+  .prim .sample { width: 200px; text-align: center; }
+  .prim .sample .k { color: var(--label-grey-medium); margin-top: var(--sp-4); }
+  .spec { display: flex; flex-direction: column; gap: var(--sp-12); }
+  .spec .row { display: flex; gap: var(--sp-12); align-items: baseline; }
+  .spec .k { color: var(--label-grey-medium); min-width: 108px; }
+  .spec code { font-family: var(--font-mono); background: var(--fill-grey-muted); padding: var(--sp-2) var(--sp-8); border-radius: var(--radius-xs); color: var(--label-grey-high); }
+  .spec .note { color: var(--label-grey-medium); margin-top: var(--sp-4); }
+
+  /* ── match cards / summary (shared anatomy) ── */
+  .mcard, .msum { padding: 0; }
+  .mhead { display: flex; align-items: flex-start; gap: var(--sp-12); padding: var(--sp-16); }
+  .mhead .t { flex: 1; min-width: 0; }
+  .tour { font-weight: var(--ch-weight-bold); color: var(--label-grey-high); }
+  .tour span { font-weight: var(--ch-weight-regular); color: var(--label-grey-medium); }
+  .mmeta { color: var(--label-grey-medium); margin-top: var(--sp-4); }
+  .divide { height: 1px; background: var(--fill-grey-low); }
+  .teams { display: flex; flex-direction: column; gap: var(--sp-12); padding: var(--sp-16); }
+  .trow { display: flex; align-items: center; gap: var(--sp-12); }
+  .tlogo { width: 32px; height: 32px; border-radius: var(--radius-sm); background: var(--fill-grey-medium); color: var(--label-grey-medium); display: flex; align-items: center; justify-content: center; flex: none; }
+  .tname { flex: 1; min-width: 0; font-weight: var(--ch-weight-bold); color: var(--label-grey-high); }
+  .tname.yet { font-weight: var(--ch-weight-regular); color: var(--label-grey-medium); }
+  .score { font-variant-numeric: tabular-nums; font-weight: var(--ch-weight-bold); font-size: var(--ch-font-title-md); color: var(--label-grey-high); }
+  .score em { font-style: normal; font-weight: var(--ch-weight-regular); font-size: var(--ch-font-label-sm); color: var(--label-grey-medium); margin-left: var(--sp-4); }
+  .mstate { padding: var(--sp-12) var(--sp-16); background: var(--fill-grey-muted); color: var(--label-grey-high); }
+  .mact { display: flex; justify-content: flex-end; gap: var(--sp-4); padding: var(--sp-4) var(--sp-12); }
+  .msum .score { font-size: var(--ch-font-title-lg); }
+  .msum .tname { font-size: var(--ch-font-body-lg); }
+
+  /* ── tournament card ── */
+  .tourc { display: flex; gap: var(--sp-12); align-items: flex-start; }
+  .tourc .logo { width: 56px; height: 56px; border-radius: var(--radius-sm); background: var(--fill-secondary-muted); color: var(--icon-secondary-high); display: flex; align-items: center; justify-content: center; flex: none; }
+  .tourc .b { flex: 1; min-width: 0; }
+  .tourc h3 { color: var(--label-grey-high); }
+  .tourc .lines { margin-top: var(--sp-8); display: flex; flex-direction: column; gap: var(--sp-4); color: var(--label-grey-medium); }
+  .tourc .lines .r { display: flex; align-items: center; gap: var(--sp-8); }
+  .tourc .lines [data-icon] { display: inline-flex; color: var(--icon-grey-medium); }
+
+  /* ── stat-tile cards ── */
+  .twin { display: grid; grid-template-columns: 1fr 1fr; padding: 0; }
+  .twin > div { padding: var(--sp-16); }
+  .twin > div:first-child { border-right: 1px solid var(--fill-grey-low); }
+  .stat-n { font-variant-numeric: tabular-nums; font-weight: var(--ch-weight-bold); font-size: var(--ch-font-headline-md); color: var(--label-grey-high); }
+  .stat-l { color: var(--label-grey-medium); margin-top: var(--sp-4); }
+  .stat1 { text-align: left; }
+  .stat1 .big { font-variant-numeric: tabular-nums; font-weight: var(--ch-weight-bold); font-size: var(--ch-font-headline-lg); color: var(--label-grey-high); }
+
+  /* ── info-list card (officials subtype) ── */
+  .info h3 { color: var(--label-grey-high); }
+  .info .rows { margin-top: var(--sp-12); display: flex; flex-direction: column; gap: var(--sp-12); }
+  .orow { display: flex; align-items: center; gap: var(--sp-12); }
+  .oav { width: 36px; height: 36px; border-radius: var(--radius-full); background: var(--fill-grey-medium); color: var(--icon-grey-high); display: flex; align-items: center; justify-content: center; flex: none; }
+  .orow .role { color: var(--label-grey-medium); }
+  .orow .nm { font-weight: var(--ch-weight-medium); color: var(--label-grey-high); }
+
+  /* ── featured-guide cards (bg picked by context; NO border/shadow) ── */
+  .fg { border-radius: var(--radius-md); padding: var(--sp-16); }
+  .fg h4 { color: var(--label-grey-high); }
+  .fg p { color: var(--label-grey-medium); margin-top: var(--sp-4); }
+  .fg .tlink { padding-left: 0; }
+  .fg-grey { background: var(--fill-grey-muted); }
+  .fg-teal { background: var(--fill-secondary-muted); }
+  .fg-red { background: var(--fill-primary-muted); }
+
+  /* ── community category tiles ── */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: var(--sp-16); }
+  .tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-12); text-align: center; min-height: 132px; padding: var(--sp-24) var(--sp-16); }
+  .tile .g { width: 48px; height: 48px; border-radius: var(--radius-full); background: var(--fill-secondary-muted); color: var(--icon-secondary-high); display: flex; align-items: center; justify-content: center; }
+  .tile .lb { font-weight: var(--ch-weight-medium); color: var(--label-grey-high); }
+  .tile .ct { color: var(--label-grey-medium); }
+
+  /* ── looking-for classified card · only non-hero card at radius-lg ── */
+  .lf { border-radius: var(--radius-lg); }
+  .lf .top { display: flex; gap: var(--sp-12); align-items: flex-start; }
+  .lf .av { width: 40px; height: 40px; border-radius: var(--radius-full); background: var(--fill-secondary-muted); color: var(--icon-secondary-high); display: flex; align-items: center; justify-content: center; flex: none; }
+  .lf h3 { color: var(--label-grey-high); }
+  .lf p { color: var(--label-grey-medium); margin-top: var(--sp-8); }
+  .lf .foot { display: flex; align-items: center; justify-content: space-between; margin-top: var(--sp-12); }
+  .lf .time { color: var(--label-grey-medium); }
+  .lf .acts { display: flex; gap: var(--sp-4); }
+
+  /* ── store product scroller ── */
+  .scroller { display: flex; gap: var(--sp-16); overflow-x: auto; padding-bottom: var(--sp-12); scroll-snap-type: x mandatory; }
+  .prod { flex: 0 0 196px; scroll-snap-align: start; background: transparent; border: 0; box-shadow: none; padding: 0; border-radius: var(--radius-md); cursor: pointer; text-align: left; }
+  .prod .img { aspect-ratio: 3 / 4; border-radius: var(--radius-md); background: var(--fill-secondary-muted); color: var(--icon-secondary-high); display: flex; align-items: center; justify-content: center; transition: transform var(--duration-fast) var(--ease-standard); }
+  .prod:hover .img { transform: translateY(-3px); }
+  .prod .brand { color: var(--label-grey-medium); margin-top: var(--sp-8); text-transform: uppercase; letter-spacing: 0.04em; }
+  .prod .nm { font-weight: var(--ch-weight-bold); color: var(--label-grey-high); margin-top: var(--sp-2); }
+  .prod .price { display: flex; align-items: baseline; gap: var(--sp-8); margin-top: var(--sp-8); flex-wrap: wrap; }
+  .prod .cur { font-variant-numeric: tabular-nums; font-weight: var(--ch-weight-bold); color: var(--label-grey-high); }
+  .prod .was { font-variant-numeric: tabular-nums; color: var(--label-grey-medium); text-decoration: line-through; }
+  .prod .off { font-weight: var(--ch-weight-bold); color: var(--label-primary-high); }
+
+  /* ── squad tiles ── */
+  .squad { display: flex; gap: var(--sp-12); overflow-x: auto; padding-bottom: var(--sp-12); }
+  .sq { flex: 0 0 112px; position: relative; text-align: center; background: transparent; border: 0; box-shadow: none; padding: 0; cursor: pointer; }
+  .sq .ph { aspect-ratio: 1 / 1; border-radius: var(--radius-md); background: var(--fill-primary-prominent); color: var(--label-static-white-high); display: flex; align-items: center; justify-content: center; font-weight: var(--ch-weight-bold); font-size: var(--ch-font-title-lg); font-variant-numeric: tabular-nums; }
+  .sq .nm { margin-top: var(--sp-8); font-weight: var(--ch-weight-medium); color: var(--label-grey-high); }
+  .sq .rl { color: var(--label-grey-medium); }
+  .sq .pin { position: absolute; top: var(--sp-8); right: var(--sp-8); width: 24px; height: 24px; border-radius: var(--radius-full); background: var(--fill-secondary-prominent); color: var(--label-static-white-high); display: flex; align-items: center; justify-content: center; box-shadow: var(--elevation-2); }
+
+  /* ── commentary feed ── */
+  .feed { padding: 0; }
+  .fi { display: flex; gap: var(--sp-12); padding: var(--sp-12) var(--sp-16); align-items: flex-start; }
+  .fi + .fi, .fos + .fi, .fi + .fos { border-top: 1px solid var(--fill-grey-low); }
+  .ov { font-variant-numeric: tabular-nums; color: var(--label-grey-medium); min-width: 34px; padding-top: var(--sp-2); }
+  .rb { width: 28px; height: 28px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: var(--ch-weight-bold); font-variant-numeric: tabular-nums; flex: none; }
+  .rb-w { background: var(--fill-primary-prominent); color: var(--label-static-white-high); }
+  .rb-6 { background: var(--fill-secondary-prominent); color: var(--label-static-white-high); }
+  .rb-4 { background: var(--fill-secondary-muted); color: var(--label-secondary-high); }
+  .rb-r { background: var(--fill-grey-muted); color: var(--label-grey-high); }
+  .rb-0 { background: var(--fill-grey-low); color: var(--label-grey-medium); }
+  .fi .tx { flex: 1; min-width: 0; }
+  .fi .tx .h { font-weight: var(--ch-weight-medium); color: var(--label-grey-high); }
+  .fi .tx .s { color: var(--label-grey-medium); margin-top: var(--sp-2); }
+  .fav { width: 40px; height: 40px; border-radius: var(--radius-full); background: var(--fill-secondary-muted); color: var(--icon-secondary-high); display: flex; align-items: center; justify-content: center; flex: none; }
+  .fav.grey { background: var(--fill-grey-muted); color: var(--icon-grey-high); }
+  .fos { background: var(--fill-grey-muted); padding: var(--sp-12) var(--sp-16); }
+  .fos .top { display: flex; align-items: center; justify-content: space-between; }
+  .fos .lb { color: var(--label-grey-medium); text-transform: uppercase; letter-spacing: 0.04em; font-weight: var(--ch-weight-medium); }
+  .fos .rr { font-variant-numeric: tabular-nums; color: var(--label-grey-high); font-weight: var(--ch-weight-bold); }
+  .fos .sub { color: var(--label-grey-medium); margin-top: var(--sp-4); }
+  .chip-next { display: inline-flex; align-items: center; padding: 0 var(--sp-8); height: 20px; border-radius: var(--radius-xs); background: var(--fill-secondary-muted); color: var(--brand-secondary-60); text-transform: uppercase; letter-spacing: 0.04em; margin-right: var(--sp-8); }
+
+  /* ── empty-state card ── */
+  .empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--sp-12); padding: var(--sp-32) var(--sp-24); }
+  .empty .ic { width: 56px; height: 56px; border-radius: var(--radius-full); background: var(--fill-grey-muted); color: var(--icon-grey-high); display: flex; align-items: center; justify-content: center; }
+  .empty h3 { color: var(--label-grey-high); font-weight: 600; }
+  .empty p { color: var(--label-grey-medium); max-width: 320px; }
+  .empty .btn { margin-top: var(--sp-4); }
+
+  /* ── responsive ── */
+  @media (max-width: 900px) {
+    .grid-field, .grid-3, .grid-2, .prim { grid-template-columns: 1fr; }
+    .hero { grid-template-columns: 1fr; padding: var(--sp-24); }
+    .hstats { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ masthead ══ -->
+  <header class="masthead">
+    <div>
+      <img src="../assets/logos/official/horizontal-logo.svg" alt="CricHeroes">
+      <div class="eyebrow ch-overline">Design system · component gallery</div>
+      <h1 class="ch-headline-large-emphasized">Card patterns</h1>
+      <p class="ch-body-large">The 15 first-class cards, every one inheriting a single token-pure primitive. Sample data from grassroots leagues across Mumbai.</p>
+    </div>
+    <div class="tagchips">
+      <span class="tagchip ch-label-small">15 patterns</span>
+      <span class="tagchip ch-label-small">radius-md base</span>
+      <span class="tagchip ch-label-small">elevation-2 at rest</span>
+    </div>
+  </header>
+
+  <!-- ══ hero card ══ -->
+  <section class="sec" aria-labelledby="s-hero">
+    <div class="sec-head"><span class="eyebrow ch-overline">Container</span><h2 id="s-hero" class="ch-headline-small">The identity surface</h2></div>
+    <div class="cell">
+      <p class="cap ch-label-medium"><b>Hero card</b> full-width red surface · logo tile, title-meta-actions, stat cluster · teal action, never a white pill</p>
+      <header class="hero">
+        <div class="badge"><span data-icon="trophy" data-icon-size="32" aria-hidden="true"></span></div>
+        <div>
+          <div class="eyebrow ch-overline">Season 2026</div>
+          <h2 class="ch-headline-medium-emphasized">Mohali Premier League</h2>
+          <div class="hmeta ch-body-medium">T20 · 12 teams · Mohali, Punjab</div>
+          <div class="acts">
+            <a class="btn btn-primary ch-button-label-lg" href="#"><span data-icon="plus" data-icon-size="18" aria-hidden="true"></span>Follow</a>
+            <button class="btn btn-onred btn-icon" type="button" aria-label="Share this tournament"><span data-icon="share" aria-hidden="true"></span></button>
+          </div>
+        </div>
+        <div class="hstats">
+          <div class="hstat"><div class="n ch-display-numeric">42</div><div class="l ch-label-small">Matches</div></div>
+          <div class="hstat"><div class="n ch-display-numeric">12</div><div class="l ch-label-small">Teams</div></div>
+          <div class="hstat"><div class="n ch-display-numeric">168</div><div class="l ch-label-small">Players</div></div>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <!-- ══ base primitive anatomy ══ -->
+  <section class="sec" aria-labelledby="s-prim">
+    <div class="sec-head"><span class="eyebrow ch-overline">Foundation</span><h2 id="s-prim" class="ch-headline-small">The base primitive</h2></div>
+    <div class="card prim">
+      <div class="demo">
+        <div class="card sample">
+          <div class="ch-title-small-emphasized">Card · base</div>
+          <div class="k ch-body-small">Every card starts here</div>
+        </div>
+      </div>
+      <div class="spec">
+        <div class="row ch-body-medium"><span class="k">background</span><code>var(--bg-primary)</code></div>
+        <div class="row ch-body-medium"><span class="k">border</span><code>1px solid var(--fill-grey-low)</code></div>
+        <div class="row ch-body-medium"><span class="k">border-radius</span><code>var(--radius-md)</code></div>
+        <div class="row ch-body-medium"><span class="k">box-shadow</span><code>var(--elevation-2)</code></div>
+        <div class="row ch-body-medium"><span class="k">padding</span><code>var(--sp-16)</code></div>
+        <p class="note ch-body-small">Interactive cards lift to <code>--elevation-3</code> on hover; selection is shown by colour, not depth.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ match centre ══ -->
+  <section class="sec" aria-labelledby="s-match">
+    <div class="sec-head"><span class="eyebrow ch-overline">Collection</span><h2 id="s-match" class="ch-headline-small">Match centre</h2><span class="n ch-label-small">4 cards</span></div>
+    <div class="grid-field">
+
+      <div class="cell">
+        <p class="cap ch-label-medium"><b>Match summary card</b> always-expanded header at the top of every match page</p>
+        <article class="card msum">
+          <div class="mhead">
+            <div class="t"><div class="tour ch-body-medium">Mohali Premier League<span>, Final</span></div><div class="mmeta ch-body-small">Today · 20 ov · DY Patil Stadium, Mumbai</div></div>
+            <span class="pill pill-live ch-label-small"><span data-icon="live" data-icon-size="14" aria-hidden="true"></span>Live</span>
+          </div>
+          <div class="divide"></div>
+          <div class="teams">
+            <div class="trow"><span class="tlogo" aria-hidden="true"><span data-icon="team" data-icon-size="18"></span></span><span class="tname">Mohali Strikers</span><span class="score ch-display-numeric">178/4 <em>(20 ov)</em></span></div>
+            <div class="trow"><span class="tlogo" aria-hidden="true"><span data-icon="team" data-icon-size="18"></span></span><span class="tname">Royal Chargers</span><span class="score ch-display-numeric">92/3 <em>(11.2 ov)</em></span></div>
+          </div>
+          <div class="mstate ch-body-small">Chargers need 87 runs off 52 balls.</div>
+          <div class="mact"><a class="tlink ch-label-medium" href="#">Scorecard</a><a class="tlink ch-label-medium" href="#">Commentary</a><a class="tlink ch-label-medium" href="#">Insights</a></div>
+        </article>
+      </div>
+
+      <div class="stack">
+        <div class="cell">
+          <p class="cap ch-label-medium"><b>Match card · live</b></p>
+          <article class="card mcard">
+            <div class="mhead"><div class="t"><div class="tour ch-body-small">Sunday League<span>, Quarter-final</span></div><div class="mmeta ch-label-small">3 Sept · 20 ov · Oval Maidan</div></div><span class="pill pill-live ch-label-small"><span data-icon="live" data-icon-size="14" aria-hidden="true"></span>Live</span></div>
+            <div class="divide"></div>
+            <div class="teams"><div class="trow"><span class="tname ch-body-medium">Andheri Strikers</span><span class="score ch-display-numeric">154/8 <em>(18.4 ov)</em></span></div><div class="trow"><span class="tname yet ch-body-medium">Bandra Blasters</span></div></div>
+            <div class="mstate ch-label-medium">Strikers need 12 runs off 8 balls.</div>
+            <div class="mact"><a class="tlink ch-label-medium" href="#">Scorecard</a><a class="tlink ch-label-medium" href="#">Insights</a></div>
+          </article>
+        </div>
+        <div class="cell">
+          <p class="cap ch-label-medium"><b>Match card · upcoming</b></p>
+          <article class="card mcard">
+            <div class="mhead"><div class="t"><div class="tour ch-body-small">Corporate Cup</div><div class="mmeta ch-label-small">5 Sept, 8:00 pm · 10 ov · Shivaji Park</div></div><span class="pill pill-up ch-label-small">Upcoming</span></div>
+            <div class="divide"></div>
+            <div class="teams"><div class="trow"><span class="tname yet ch-body-medium">Infra Titans</span></div><div class="trow"><span class="tname yet ch-body-medium">Ledger Lions</span></div></div>
+            <div class="mstate ch-label-medium">Starts in 2 hours.</div>
+            <div class="mact"><a class="tlink ch-label-medium" href="#">Squads</a><a class="tlink ch-label-medium" href="#">Remind me</a></div>
+          </article>
+        </div>
+        <div class="cell">
+          <p class="cap ch-label-medium"><b>Match card · result</b></p>
+          <article class="card mcard">
+            <div class="mhead"><div class="t"><div class="tour ch-body-small">Sunday League<span>, Semi-final</span></div><div class="mmeta ch-label-small">1 Sept · 20 ov · Cross Maidan</div></div><span class="pill pill-res ch-label-small">Result</span></div>
+            <div class="divide"></div>
+            <div class="teams"><div class="trow"><span class="tname ch-body-medium">Marine Mavericks</span><span class="score ch-display-numeric">187/6 <em>(20 ov)</em></span></div><div class="trow"><span class="tname ch-body-medium">Andheri Strikers</span><span class="score ch-display-numeric">155 <em>(18.2 ov)</em></span></div></div>
+            <div class="mstate ch-label-medium">Mavericks won by 32 runs.</div>
+            <div class="mact"><a class="tlink ch-label-medium" href="#">Scorecard</a></div>
+          </article>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ stats & context ══ -->
+  <section class="sec" aria-labelledby="s-stats">
+    <div class="sec-head"><span class="eyebrow ch-overline">Sidebar</span><h2 id="s-stats" class="ch-headline-small">Stats and context</h2></div>
+    <div class="grid-3">
+
+      <div class="cell">
+        <p class="cap ch-label-medium"><b>Stat-tile card</b> split-2</p>
+        <article class="card twin">
+          <div><div class="stat-n ch-display-numeric">8.36</div><div class="stat-l ch-label-medium">Current run rate</div></div>
+          <div><div class="stat-n ch-display-numeric">167</div><div class="stat-l ch-label-medium">Projected score</div></div>
+        </article>
+      </div>
+
+      <div class="cell">
+        <p class="cap ch-label-medium"><b>Info-list card</b> officials subtype</p>
+        <article class="card info">
+          <h3 class="ch-title-small-emphasized">Match officials</h3>
+          <div class="rows">
+            <div class="orow"><span class="oav" aria-hidden="true"><span data-icon="user" data-icon-size="18"></span></span><div><div class="role ch-label-small">Umpire</div><div class="nm ch-body-medium">A Deshmukh</div></div></div>
+            <div class="orow"><span class="oav" aria-hidden="true"><span data-icon="user" data-icon-size="18"></span></span><div><div class="role ch-label-small">Umpire</div><div class="nm ch-body-medium">R Kulkarni</div></div></div>
+            <div class="orow"><span class="oav" aria-hidden="true"><span data-icon="user" data-icon-size="18"></span></span><div><div class="role ch-label-small">Match referee</div><div class="nm ch-body-medium">S Menon</div></div></div>
+            <div class="orow"><span class="oav" aria-hidden="true"><span data-icon="user" data-icon-size="18"></span></span><div><div class="role ch-label-small">Scorer</div><div class="nm ch-body-medium">P Joshi</div></div></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="cell">
+        <p class="cap ch-label-medium"><b>Featured-guide card</b> the "no peach" one · fill by context</p>
+        <div class="stack" style="gap: var(--sp-12)">
+          <div class="fg fg-grey">
+            <h4 class="ch-title-small-emphasized">How to score a match</h4>
+            <p class="ch-body-small">Set up ball-by-ball scoring in five minutes.</p>
+            <a class="tlink ch-label-medium" href="#">Read guide<span data-icon="chevron" data-icon-size="16" aria-hidden="true"></span></a>
+          </div>
+          <div class="fg fg-teal">
+            <h4 class="ch-title-small-emphasized">Invite your squad</h4>
+            <p class="ch-body-small">Add players and share the team code.</p>
+            <a class="tlink ch-label-medium" href="#">Get started<span data-icon="chevron" data-icon-size="16" aria-hidden="true"></span></a>
+          </div>
+          <div class="fg fg-red">
+            <h4 class="ch-title-small-emphasized">Verify your mobile number</h4>
+            <p class="ch-body-small">Confirm it to appear on the leaderboards.</p>
+            <a class="tlink ch-label-medium" href="#">Verify now<span data-icon="chevron" data-icon-size="16" aria-hidden="true"></span></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ discovery ══ -->
+  <section class="sec" aria-labelledby="s-disc">
+    <div class="sec-head"><span class="eyebrow ch-overline">Discovery</span><h2 id="s-disc" class="ch-headline-small">Explore the community</h2></div>
+
+    <div class="cell" style="margin-bottom: var(--sp-20)">
+      <p class="cap ch-label-medium"><b>Community category card</b> centred glyph + label · tappable</p>
+      <div class="tiles">
+        <a class="card card--link tile" href="#" aria-label="Tournaments, 1,204 near you"><span class="g" aria-hidden="true"><span data-icon="trophy" data-icon-size="24"></span></span><div class="lb ch-label-large">Tournaments</div><div class="ct ch-label-small">1,204 near you</div></a>
+        <a class="card card--link tile" href="#" aria-label="Clubs, 860 near you"><span class="g" aria-hidden="true"><span data-icon="team" data-icon-size="24"></span></span><div class="lb ch-label-large">Clubs</div><div class="ct ch-label-small">860 near you</div></a>
+        <a class="card card--link tile" href="#" aria-label="Players, 32,400 near you"><span class="g" aria-hidden="true"><span data-icon="player" data-icon-size="24"></span></span><div class="lb ch-label-large">Players</div><div class="ct ch-label-small">32.4k near you</div></a>
+        <a class="card card--link tile" href="#" aria-label="Grounds, 148 near you"><span class="g" aria-hidden="true"><span data-icon="location" data-icon-size="24"></span></span><div class="lb ch-label-large">Grounds</div><div class="ct ch-label-small">148 near you</div></a>
+        <a class="card card--link tile" href="#" aria-label="Leaderboards"><span class="g" aria-hidden="true"><span data-icon="stats" data-icon-size="24"></span></span><div class="lb ch-label-large">Leaderboards</div><div class="ct ch-label-small">Batting, bowling</div></a>
+        <a class="card card--link tile" href="#" aria-label="Academies, 76 near you"><span class="g" aria-hidden="true"><span data-icon="star" data-icon-size="24"></span></span><div class="lb ch-label-large">Academies</div><div class="ct ch-label-small">76 near you</div></a>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="cell">
+        <p class="cap ch-label-medium"><b>Tournament card</b> logo tile, title, dates, location</p>
+        <a class="card card--link tourc" href="#" aria-label="Andheri Premier League, ongoing tournament in Andheri, Mumbai">
+          <span class="logo" aria-hidden="true"><span data-icon="trophy" data-icon-size="28"></span></span>
+          <div class="b">
+            <h3 class="ch-title-small-emphasized">Andheri Premier League</h3>
+            <div class="lines">
+              <div class="r ch-body-small"><span data-icon="calendar" data-icon-size="16" aria-hidden="true"></span>3–19 Sept 2026</div>
+              <div class="r ch-body-small"><span data-icon="location" data-icon-size="16" aria-hidden="true"></span>Andheri, Mumbai</div>
+            </div>
+          </div>
+          <span class="pill pill-up ch-label-small">Ongoing</span>
+        </a>
+      </div>
+
+      <div class="cell">
+        <p class="cap ch-label-medium"><b>Looking-for classified card</b> the only non-hero card at radius-lg</p>
+        <article class="card lf">
+          <div class="top">
+            <span class="av" aria-hidden="true"><span data-icon="player" data-icon-size="22"></span></span>
+            <div><h3 class="ch-title-small-emphasized">Andheri Strikers are looking for a fast bowler</h3></div>
+          </div>
+          <p class="ch-body-small">Weekend T20 side based in Andheri. Nets on Saturdays at Oval Maidan. Right-arm pace preferred, all levels welcome.</p>
+          <div class="foot">
+            <span class="time ch-label-small">Posted 2 hours ago</span>
+            <div class="acts">
+              <a class="tlink ch-label-medium" href="#">Message</a>
+              <button class="btn btn-tonal btn-icon" type="button" aria-label="Share this post"><span data-icon="share" data-icon-size="18" aria-hidden="true"></span></button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ store & squad ══ -->
+  <section class="sec" aria-labelledby="s-store">
+    <div class="sec-head"><span class="eyebrow ch-overline">Commerce and team</span><h2 id="s-store" class="ch-headline-small">Shop and squad</h2></div>
+
+    <div class="cell" style="margin-bottom: var(--sp-24)">
+      <p class="cap ch-label-medium"><b>Store product card</b> 3:4 image, brand, name, price · red discount · horizontal scroll</p>
+      <div class="scroller">
+        <a class="prod focusable" href="#" aria-label="SG Cobra Xtreme bat, 4,499 rupees, 25 percent off"><div class="img" aria-hidden="true"><span data-icon="bat" data-icon-size="40"></span></div><div class="brand ch-label-small">SG</div><div class="nm ch-body-small">Cobra Xtreme bat</div><div class="price"><span class="cur ch-body-medium">&#8377;4,499</span><span class="was ch-label-small">&#8377;5,999</span><span class="off ch-label-small">25% off</span></div></a>
+        <a class="prod focusable" href="#" aria-label="SS Menace leather ball, 1,299 rupees, 13 percent off"><div class="img" aria-hidden="true"><span data-icon="ball" data-icon-size="40"></span></div><div class="brand ch-label-small">SS</div><div class="nm ch-body-small">Menace leather ball</div><div class="price"><span class="cur ch-body-medium">&#8377;1,299</span><span class="was ch-label-small">&#8377;1,499</span><span class="off ch-label-small">13% off</span></div></a>
+        <a class="prod focusable" href="#" aria-label="CricHeroes team jersey, 899 rupees"><div class="img" aria-hidden="true"><span data-icon="player" data-icon-size="40"></span></div><div class="brand ch-label-small">CricHeroes</div><div class="nm ch-body-small">Team jersey</div><div class="price"><span class="cur ch-body-medium">&#8377;899</span></div></a>
+        <a class="prod focusable" href="#" aria-label="DSC batting gloves, 1,799 rupees, 18 percent off"><div class="img" aria-hidden="true"><span data-icon="target" data-icon-size="40"></span></div><div class="brand ch-label-small">DSC</div><div class="nm ch-body-small">Batting gloves</div><div class="price"><span class="cur ch-body-medium">&#8377;1,799</span><span class="was ch-label-small">&#8377;2,199</span><span class="off ch-label-small">18% off</span></div></a>
+        <a class="prod focusable" href="#" aria-label="Kookaburra kit bag, 2,499 rupees"><div class="img" aria-hidden="true"><span data-icon="team" data-icon-size="40"></span></div><div class="brand ch-label-small">Kookaburra</div><div class="nm ch-body-small">Pro kit bag</div><div class="price"><span class="cur ch-body-medium">&#8377;2,499</span></div></a>
+      </div>
+    </div>
+
+    <div class="cell">
+      <p class="cap ch-label-medium"><b>Squad tile</b> photo, name, (C) / (WK), teal pin when in the playing 11</p>
+      <div class="squad">
+        <button class="sq" type="button" aria-label="V Patel, captain, selected"><div class="ph" aria-hidden="true">VP</div><span class="pin" aria-hidden="true"><span data-icon="check" data-icon-size="14"></span></span><div class="nm ch-label-small">V Patel</div><div class="rl ch-label-small">(C)</div></button>
+        <button class="sq" type="button" aria-label="R Sharma, wicketkeeper, selected"><div class="ph" aria-hidden="true">RS</div><span class="pin" aria-hidden="true"><span data-icon="check" data-icon-size="14"></span></span><div class="nm ch-label-small">R Sharma</div><div class="rl ch-label-small">(WK)</div></button>
+        <button class="sq" type="button" aria-label="A Khan, selected"><div class="ph" aria-hidden="true">AK</div><span class="pin" aria-hidden="true"><span data-icon="check" data-icon-size="14"></span></span><div class="nm ch-label-small">A Khan</div><div class="rl ch-label-small">All-rounder</div></button>
+        <button class="sq" type="button" aria-label="S Iyer, selected"><div class="ph" aria-hidden="true">SI</div><span class="pin" aria-hidden="true"><span data-icon="check" data-icon-size="14"></span></span><div class="nm ch-label-small">S Iyer</div><div class="rl ch-label-small">Batter</div></button>
+        <button class="sq" type="button" aria-label="M Shah, not selected"><div class="ph" aria-hidden="true">MS</div><div class="nm ch-label-small">M Shah</div><div class="rl ch-label-small">Bowler</div></button>
+        <button class="sq" type="button" aria-label="K Nair, not selected"><div class="ph" aria-hidden="true">KN</div><div class="nm ch-label-small">K Nair</div><div class="rl ch-label-small">Batter</div></button>
+        <button class="sq" type="button" aria-label="D Jadhav, not selected"><div class="ph" aria-hidden="true">DJ</div><div class="nm ch-label-small">D Jadhav</div><div class="rl ch-label-small">Bowler</div></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ commentary & states ══ -->
+  <section class="sec" aria-labelledby="s-feed">
+    <div class="sec-head"><span class="eyebrow ch-overline">Feed and utility</span><h2 id="s-feed" class="ch-headline-small">Commentary and states</h2></div>
+    <div class="grid-field">
+
+      <div class="cell">
+        <p class="cap ch-label-medium"><b>Feed item</b> one component, five variants · badge colour follows the chip palette</p>
+        <article class="card feed">
+          <div class="fi"><span class="ov ch-label-medium">19.4</span><span class="rb rb-w ch-label-medium">W</span><div class="tx"><div class="h ch-body-medium">R Sharma run out</div><div class="s ch-body-small">154/8 · run out (V Patel to keeper)</div></div></div>
+          <div class="fos"><div class="top"><span class="lb ch-label-small">End of over 19</span><span class="rr ch-label-medium">8 runs · 1 wicket</span></div><div class="sub ch-body-small">A Khan 62* · S Iyer 8* · V Patel 2/28</div></div>
+          <div class="fi"><span class="ov ch-label-medium">19.3</span><span class="rb rb-6 ch-label-medium">6</span><div class="tx"><div class="h ch-body-medium">A Khan goes big over long-on</div><div class="s ch-body-small">Fifty stand for the sixth wicket</div></div></div>
+          <div class="fi"><span class="ov ch-label-medium" aria-hidden="true"></span><span class="fav" aria-hidden="true"><span data-icon="player" data-icon-size="20"></span></span><div class="tx"><div class="h ch-body-medium"><span class="chip-next ch-label-small">Next</span>S Iyer is in</div><div class="s ch-body-small">Right-handed · 210 runs this season</div></div></div>
+          <div class="fi"><span class="ov ch-label-medium" aria-hidden="true"></span><span class="fav grey" aria-hidden="true"><span data-icon="ball" data-icon-size="20"></span></span><div class="tx"><div class="h ch-body-medium">V Patel into the attack</div><div class="s ch-body-small">2 overs · 1/12 so far</div></div></div>
+          <div class="fi"><span class="ov ch-label-medium" aria-hidden="true"></span><span class="fav" aria-hidden="true"><span data-icon="star" data-icon-size="20"></span></span><div class="tx"><div class="h ch-body-medium">Fifty for A Khan!</div><div class="s ch-body-small">51 off 34 balls · 6 fours, 1 six</div></div></div>
+        </article>
+      </div>
+
+      <div class="stack">
+        <div class="cell">
+          <p class="cap ch-label-medium"><b>Stat-tile card</b> single</p>
+          <article class="card stat1">
+            <div class="big ch-display-numeric">8.36</div>
+            <div class="stat-l ch-label-medium">Current run rate</div>
+            <div class="stat-l ch-body-small">Projected 167 at 20 overs</div>
+          </article>
+        </div>
+        <div class="cell">
+          <p class="cap ch-label-medium"><b>Empty-state card</b> icon, headline, one helper line</p>
+          <article class="card empty">
+            <span class="ic" aria-hidden="true"><span data-icon="calendar" data-icon-size="28"></span></span>
+            <h3 class="ch-body-large">No matches yet</h3>
+            <p class="ch-body-small">When you create or join a match, it turns up here with live scores and ball-by-ball commentary.</p>
+            <button class="btn btn-tonal ch-button-label-md" type="button"><span data-icon="plus" data-icon-size="18" aria-hidden="true"></span>Create a match</button>
+          </article>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+<script src="../assets/icons.js"></script>
+<script>if (window.CH && CH.icons) CH.icons.hydrate(document);</script>
+</body>
+</html>

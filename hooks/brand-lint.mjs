@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// CricHeroes brand-lint — tiered token-compliance checks.
+// CricHeroes brand-lint: tiered token-compliance checks.
 // Two modes:
 //   hook : reads PostToolUse JSON on stdin, lints the edited file.
 //          BLOCK (hard) violations -> stderr + exit 2 (Claude must fix).
@@ -21,7 +21,7 @@ const EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{26FF}\u{1F1E6}-\u{1F1FF}]/u;
 const SAAS_GRADIENT = /(linear|radial)-gradient[^;]*#(6366f1|7c3aed|8b5cf6|818cf8|a855f7|4f46e5)/i;
 // Removed / renamed tokens from the pre-reconciliation skill. Using them = broken.
 const DEAD_TOKEN = /--(ch-(red|teal|black|white|grey\d?)|r-(pill|\d+)|space-\d+|shadow-\d+|t-(display|title|headline|body|callout|subhead|footnote|caption)|font-sans|label-[123]\b|ch-font-scorecard|ch-teal-deep|w-(regular|medium|semibold|bold))/;
-// Hex allowed outside :root — sanctioned store-badge glyph colours + pure black/white.
+// Hex allowed outside :root: sanctioned store-badge glyph colours + pure black/white.
 const SANCTIONED_HEX = /^#(4285f4|34a853|fbbc05|ea4335|1ac9fe|0073f7|fff|ffffff|000|000000)$/i;
 
 // On-scale value sets (px).
@@ -50,50 +50,59 @@ function rootFlagsByLine(src) {
 // each finding: [line, message, severity] where severity is 'hard' | 'soft'
 function lint(file, src) {
   const out = [];
-  const inRoot = rootFlagsByLine(src);
+  // The :root-aware rules (raw hex, off-scale) only make sense in CSS context.
+  // In .jsx/.tsx/.js, braces are code (not CSS blocks) and would desync the :root
+  // tracker, so skip those rules there. In markup, blank out <script> bodies
+  // (preserving line numbers) so their JS braces and hex do not interfere.
+  const isCss = /\.(css|scss|sass|less)$/i.test(file);
+  const isMarkup = /\.(html?|vue|svelte)$/i.test(file);
+  const cssContext = isCss || isMarkup;
+  const scanSrc = isMarkup
+    ? src.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, (m) => m.replace(/[^\n]/g, ' '))
+    : src;
+  const inRoot = cssContext ? rootFlagsByLine(scanSrc) : [];
+  const scanLines = scanSrc.split('\n');
   src.split('\n').forEach((line, i) => {
     const n = i + 1;
     const root = inRoot[i] === true;
-    const code = line.replace(/\/\/.*$/, ''); // drop trailing line comment (jsx/js)
+    const code = line.replace(/\/\/.*$/, '');              // universal rules: raw line
+    const cssCode = cssContext ? (scanLines[i] || '') : ''; // css-context rules: script-stripped
 
-    // --- BLOCK tier ---
-    if (EMOJI.test(line)) out.push([n, 'emoji in product UI (· ✓ → are fine)', 'hard']);
-    if (SAAS_GRADIENT.test(code)) out.push([n, 'off-brand SaaS purple/indigo gradient — use brand colours', 'hard']);
-
+    // --- BLOCK tier (all lintable file types) ---
+    if (EMOJI.test(line)) out.push([n, 'emoji in product UI (dot, tick, arrow glyphs are fine)', 'hard']);
+    if (SAAS_GRADIENT.test(code)) out.push([n, 'off-brand SaaS purple/indigo gradient: use brand colours', 'hard']);
     const dead = code.match(DEAD_TOKEN);
-    if (dead) out.push([n, `removed/renamed token "${dead[0]}" — use the official token (see colors_and_type.css)`, 'hard']);
-
+    if (dead) out.push([n, `removed/renamed token "${dead[0]}": use the official token (see colors_and_type.css)`, 'hard']);
     // red as a PRIMARY / CTA button fill (primary must be teal). The destructive
     // button uses --btn-bg-secondary-* and is allowed; this catches raw red or a
     // direct --brand-primary/--rgb-primary fill on a primary/cta selector.
     if (/(background|background-color)\s*:\s*(#e21c28|var\(--brand-primary\b|rgb\(\s*var\(--rgb-primary\b)/i.test(code) &&
         /(btn|button|cta|\.primary)/i.test(code)) {
-      out.push([n, 'red as a primary/CTA button fill — primary actions use teal (--btn-bg-primary-prominent)', 'hard']);
+      out.push([n, 'red as a primary/CTA button fill: primary actions use teal (--btn-bg-primary-prominent)', 'hard']);
     }
-    // gradient applied on a button or card (gradients are hero-only)
     if (/background[^;]*gradient\(/i.test(code) && /(btn|button|\.card|\.fcard)/i.test(code)) {
-      out.push([n, 'gradient on button/card — gradients are hero-only', 'hard']);
-    }
-    // raw hex in a colour value outside :root (token-compliance contract)
-    if (!root) {
-      const hex = code.match(/:\s*(#[0-9a-fA-F]{3,8})\b/);
-      if (hex && !SANCTIONED_HEX.test(hex[1]) && !/^\s*--/.test(code)) {
-        out.push([n, `raw hex ${hex[1]} outside :root — use a token (rgb(var(--rgb-*) / a) or a semantic token)`, 'hard']);
-      }
+      out.push([n, 'gradient on button/card: gradients are hero-only', 'hard']);
     }
 
-    // --- WARN tier (fuzzy; advisory until proven) ---
-    if (!root) {
-      if (/:\s*(rgba|hsla)\(/i.test(code)) out.push([n, 'raw rgba()/hsla() — prefer rgb(var(--rgb-*) / a) to preserve the opacity model', 'soft']);
-      const fs = code.match(/font-size\s*:\s*(\d+)px/i);
-      if (fs && !TYPE_PX.has(+fs[1])) out.push([n, `off-scale font-size ${fs[1]}px — use a type role / --ch-font-* (12px floor)`, 'soft']);
-      const br = code.match(/border-radius\s*:\s*(\d+)px/i);
-      if (br && !RADIUS_PX.has(+br[1]) && +br[1] < 999) out.push([n, `off-scale radius ${br[1]}px — use --radius-*`, 'soft']);
-      const sp = code.match(/(?:padding|margin|gap)\s*:\s*(\d+)px\s*;/i);
-      if (sp && !SP_PX.has(+sp[1])) out.push([n, `off-grid spacing ${sp[1]}px — use --sp-* (4pt grid)`, 'soft']);
+    // --- CSS-context rules (CSS + markup only; :root-aware) ---
+    if (cssContext && !root) {
+      const hex = cssCode.match(/:\s*(#[0-9a-fA-F]{3,8})\b/);
+      if (hex && !SANCTIONED_HEX.test(hex[1]) && !/^\s*--/.test(cssCode)) {
+        out.push([n, `raw hex ${hex[1]} outside :root: use a token (rgb(var(--rgb-*) / a) or a semantic token)`, 'hard']);
+      }
+      if (/:\s*(rgba|hsla)\(/i.test(cssCode)) out.push([n, 'raw rgba()/hsla(): prefer rgb(var(--rgb-*) / a) to preserve the opacity model', 'soft']);
+      if (/color\s*:\s*var\(--label-(primary|secondary)-medium\b/i.test(cssCode)) out.push([n, 'coloured -medium label as text may fail WCAG AA: use -high (large/bold) or --brand-secondary-60 for small text', 'soft']);
+      const fs = cssCode.match(/font-size\s*:\s*(\d+)px/i);
+      if (fs && !TYPE_PX.has(+fs[1])) out.push([n, `off-scale font-size ${fs[1]}px: use a type role / --ch-font-* (12px floor)`, 'soft']);
+      const br = cssCode.match(/border-radius\s*:\s*(\d+)px/i);
+      if (br && !RADIUS_PX.has(+br[1]) && +br[1] < 999) out.push([n, `off-scale radius ${br[1]}px: use --radius-*`, 'soft']);
+      const sp = cssCode.match(/(?:padding|margin|gap)\s*:\s*(\d+)px\s*;/i);
+      if (sp && !SP_PX.has(+sp[1])) out.push([n, `off-grid spacing ${sp[1]}px: use --sp-* (4pt grid)`, 'soft']);
     }
+
+    // --- brand name (all file types) ---
     const m = code.match(/\b(Cricheroes|cricHeroes|CRICHEROES|Crick?heroes)\b/);
-    if (m && m[0] !== 'CricHeroes') out.push([n, `"${m[0]}" -> write CricHeroes (one word, two capitals)`, 'soft']);
+    if (m && m[0] !== 'CricHeroes') out.push([n, `"${m[0]}" should be CricHeroes (one word, two capitals)`, 'soft']);
   });
   return out;
 }
@@ -129,7 +138,7 @@ if (file && LINTABLE.test(file)) {
       console.error('[CricHeroes brand-lint] ' + file);
       findings.forEach(([ln, msg, sev]) => console.error(`  ${sev === 'hard' ? 'BLOCK' : 'warn '} L${ln}: ${msg}`));
       if (hard.length) {
-        console.error(`\n${hard.length} block-level CricHeroes violation(s) — fix before continuing.`);
+        console.error(`\n${hard.length} block-level CricHeroes violation(s): fix before continuing.`);
         process.exit(2);
       }
     }

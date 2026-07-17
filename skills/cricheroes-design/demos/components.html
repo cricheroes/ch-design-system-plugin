@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CricHeroes design system: interactive components</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  :root { --page: 1120px; }
+  body { background: var(--bg-secondary); }
+  .wrap { max-width: var(--page); margin: 0 auto; padding: var(--sp-24) var(--sp-20) var(--sp-80); }
+
+  /* ── page chrome ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between; gap: var(--sp-16);
+    padding: var(--sp-12) var(--sp-20);
+    background: rgb(var(--rgb-white) / 0.86);
+    backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid var(--fill-grey-low);
+  }
+  .topbar img { height: 26px; display: block; }
+  .topbar .tag { color: var(--label-grey-medium); }
+
+  /* ── hero ── */
+  .hero { padding: var(--sp-40) 0 var(--sp-16); }
+  .eyebrow { color: var(--brand-secondary-60); }
+  .hero p.lede { max-width: 62ch; color: var(--label-grey-medium); margin-top: var(--sp-12); }
+  .jump { display: flex; flex-wrap: wrap; gap: var(--sp-16); margin-top: var(--sp-20); }
+  .jump a { color: var(--brand-secondary-60); font-weight: 500; font-size: var(--ch-font-label-md); }
+  .jump a:hover { color: var(--label-secondary-high); text-decoration: underline; }
+
+  .rule {
+    display: flex; gap: var(--sp-16); align-items: flex-start;
+    margin: var(--sp-24) 0 var(--sp-40); padding: var(--sp-20);
+    border-radius: var(--radius-md); background: var(--bg-primary);
+    box-shadow: var(--elevation-2); border-left: 3px solid var(--brand-primary);
+  }
+  .rule span[data-icon] { color: var(--icon-primary-high); flex: none; }
+  .rule .k { color: var(--label-grey-medium); margin-top: var(--sp-4); }
+
+  /* ── section scaffold ── */
+  section { margin-top: var(--sp-48); scroll-margin-top: 72px; }
+  .sec-head { margin-bottom: var(--sp-20); }
+  .sec-num { color: var(--brand-secondary-60); letter-spacing: 0.08em; }
+  .sec-head h2 { margin-top: var(--sp-2); }
+  .sec-head .sub { color: var(--label-grey-medium); max-width: 70ch; margin-top: var(--sp-8); }
+
+  .panel { background: var(--bg-primary); border-radius: var(--radius-lg); box-shadow: var(--elevation-2); padding: var(--sp-32); }
+  .tok { display: block; color: var(--label-grey-medium); font-size: var(--ch-font-label-sm); letter-spacing: 0.01em; margin-top: var(--sp-4); }
+  .cell-label { color: var(--label-grey-high); }
+  .note { color: var(--label-grey-medium); margin-top: var(--sp-16); }
+
+  .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-32); }
+  @media (max-width: 760px) { .cols-2 { grid-template-columns: 1fr; gap: var(--sp-24); } }
+
+  /* ═══ 01 · BUTTONS ═══ */
+  .dsb {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-8);
+    border: 0; cursor: pointer; border-radius: var(--radius-sm); font-family: var(--font-primary);
+    white-space: nowrap; transition: background var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+  .dsb:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .dsb:disabled { cursor: not-allowed; }
+  .dsb span[data-icon] { display: inline-flex; }
+  /* sizes */
+  .dsb-sm { height: 32px; padding: 0 var(--sp-12); }
+  .dsb-md { height: 48px; padding: 0 var(--sp-16); }
+  .dsb-lg { height: 56px; padding: 0 var(--sp-20); gap: var(--sp-12); }
+  .dsb-icon { padding: 0; }
+  .dsb-icon.dsb-sm { width: 32px; } .dsb-icon.dsb-md { width: 48px; } .dsb-icon.dsb-lg { width: 56px; }
+  /* filled · primary (teal) */
+  .dsb-filled-primary { background: var(--btn-bg-primary-prominent); color: var(--btn-label-primary-prominent); }
+  .dsb-filled-primary:hover { background: var(--brand-secondary-60); }
+  .dsb-filled-primary:active { box-shadow: var(--elevation-1); }
+  .dsb-filled-primary:disabled { background: var(--btn-bg-primary-disable); color: var(--btn-label-primary-disable); }
+  /* filled · tonal (grey) */
+  .dsb-filled-tonal { background: var(--btn-bg-grey-prominent); color: var(--btn-label-grey-prominent); }
+  .dsb-filled-tonal:hover { background: var(--fill-grey-high); }
+  .dsb-filled-tonal:active { box-shadow: var(--elevation-1); }
+  .dsb-filled-tonal:disabled { background: var(--btn-bg-grey-disable); color: var(--btn-label-grey-disable); }
+  /* filled · warning / destructive (red) */
+  .dsb-filled-destructive { background: var(--btn-bg-secondary-prominent); color: var(--btn-label-secondary-prominent); }
+  .dsb-filled-destructive:hover { background: var(--brand-primary-70); }
+  .dsb-filled-destructive:active { box-shadow: var(--elevation-1); }
+  .dsb-filled-destructive:disabled { background: var(--btn-bg-secondary-disable); color: var(--btn-label-secondary-disable); }
+  /* text · primary (teal) */
+  .dsb-text-primary { background: transparent; color: var(--btn-label-primary-text-prominent); }
+  .dsb-text-primary:hover { background: var(--fill-secondary-muted); }
+  .dsb-text-primary:disabled { color: var(--btn-label-primary-text-disable); background: transparent; }
+  /* text · warning (red) */
+  .dsb-text-warning { background: transparent; color: var(--btn-label-secondary-text-prominent); }
+  .dsb-text-warning:hover { background: var(--fill-primary-muted); }
+  .dsb-text-warning:disabled { color: var(--btn-label-secondary-text-disable); background: transparent; }
+  /* text · tertiary (black) */
+  .dsb-text-tertiary { background: transparent; color: var(--btn-label-black-text-prominent); }
+  .dsb-text-tertiary:hover { background: var(--fill-grey-muted); }
+  .dsb-text-tertiary:disabled { color: var(--btn-label-black-text-disable); background: transparent; }
+  /* icon-only · primary (teal fill) */
+  .dsb-icon-primary { background: var(--fill-secondary-prominent); color: var(--icon-static-white); }
+  .dsb-icon-primary:hover { background: var(--brand-secondary-60); }
+  .dsb-icon-primary:active { box-shadow: var(--elevation-1); }
+  /* icon-only · secondary (grey tonal) */
+  .dsb-icon-secondary { background: var(--fill-grey-muted); color: var(--icon-grey-prominent); }
+  .dsb-icon-secondary:hover { background: var(--fill-grey-high); }
+  .dsb-icon-secondary:active { box-shadow: var(--elevation-1); }
+  .show-focus { box-shadow: var(--focus-ring); }
+
+  .matrix { overflow-x: auto; }
+  .mrow { display: grid; grid-template-columns: 220px 1fr; gap: var(--sp-24); align-items: center;
+    padding: var(--sp-16) 0; border-bottom: 1px solid var(--fill-grey-low); }
+  .mrow:last-child { border-bottom: 0; }
+  .mset { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-16); }
+  .states { display: flex; flex-wrap: wrap; gap: var(--sp-24); margin-top: var(--sp-24);
+    padding-top: var(--sp-24); border-top: 1px solid var(--fill-grey-low); }
+  .states .st { display: flex; flex-direction: column; gap: var(--sp-8); align-items: flex-start; }
+
+  /* ═══ 02 · CHIPS ═══ */
+  .chip {
+    display: inline-flex; align-items: center; gap: var(--sp-8); height: 32px;
+    padding: 0 var(--sp-12); border-radius: var(--radius-full); font-family: var(--font-primary);
+  }
+  .chip span[data-icon] { display: inline-flex; margin-left: calc(-1 * var(--sp-2)); }
+  .chip-status-live,
+  .chip-status-ongoing   { background: var(--fill-primary-muted);   color: var(--label-primary-high); }
+  .chip-status-upcoming  { background: var(--fill-secondary-low);   color: var(--label-secondary-high); }
+  .chip-status-cancelled { background: var(--fill-primary-muted);   color: var(--label-primary-medium); }
+  .chip-status-completed { background: var(--fill-grey-low);        color: var(--label-grey-medium); }
+  .chip-status-abandoned { background: var(--fill-grey-muted);      color: var(--label-grey-medium); }
+  /* assist / category: rectangle */
+  .chip-assist { background: var(--fill-grey-muted); color: var(--label-grey-high); border-radius: var(--radius-sm); cursor: pointer; }
+  .chip-assist span[data-icon] { color: var(--icon-grey-high); }
+  .chip-assist:hover { background: var(--fill-grey-low); }
+  .chip-assist:focus-visible { outline: none; box-shadow: var(--focus-ring-chip); }
+
+  .rank-list { display: flex; flex-direction: column; }
+  .rank-row { display: grid; grid-template-columns: 40px 132px 1fr; gap: var(--sp-16); align-items: center;
+    padding: var(--sp-16) 0; border-bottom: 1px solid var(--fill-grey-low); }
+  .rank-row:last-child { border-bottom: 0; }
+  .rank-n { color: var(--label-grey-low); font-variant-numeric: tabular-nums; text-align: right; }
+  .rank-why { color: var(--label-grey-medium); }
+  @media (max-width: 640px) { .rank-row { grid-template-columns: 32px 1fr; }
+    .rank-row .rank-why { grid-column: 1 / -1; padding-left: calc(32px + var(--sp-16)); } }
+  .assist-row { display: flex; flex-wrap: wrap; gap: var(--sp-12); }
+
+  /* ═══ 03 · INPUTS + SEARCH ═══ */
+  .field { display: flex; flex-direction: column; gap: var(--sp-8); margin-bottom: var(--sp-24); }
+  .field:last-child { margin-bottom: 0; }
+  .field-label { text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600;
+    font-size: var(--ch-font-label-sm); color: var(--label-grey-medium); }
+  .ch-cmp-input {
+    height: 48px; border-radius: var(--radius-sm); background: var(--bg-primary);
+    border: 1px solid var(--fill-grey-high); padding: 0 var(--sp-12);
+    color: var(--label-grey-high); font-family: var(--font-primary); font-size: var(--ch-font-body-md);
+    transition: border-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
+  }
+  .ch-cmp-input::placeholder { color: var(--label-grey-medium); }
+  .ch-cmp-input:focus, .ch-cmp-input.is-focus { outline: none;
+    border-color: var(--fill-secondary-prominent); box-shadow: 0 0 0 3px rgb(var(--rgb-secondary) / 0.18); }
+  .ch-cmp-input.is-error { border-color: var(--fill-primary-prominent); }
+  .ch-cmp-input:disabled { background: var(--fill-grey-muted); color: var(--label-grey-medium); cursor: not-allowed; }
+  .field-help { font-size: var(--ch-font-label-sm); color: var(--label-grey-medium); }
+  .field-help.is-error { color: var(--label-primary-high); }
+
+  .ch-cmp-search {
+    display: flex; align-items: center; gap: var(--sp-8); height: 48px;
+    border-radius: var(--radius-full); background: var(--fill-grey-muted);
+    border: 1px solid transparent; padding: 0 var(--sp-16);
+    transition: background var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
+  }
+  .ch-cmp-search.is-focus, .ch-cmp-search:focus-within {
+    background: var(--bg-primary); border-color: var(--fill-secondary-prominent);
+    box-shadow: 0 0 0 3px rgb(var(--rgb-secondary) / 0.18);
+  }
+  .ch-cmp-search .lead { color: var(--label-grey-medium); display: inline-flex; flex: none; }
+  .ch-cmp-search input { flex: 1; border: 0; background: transparent; outline: none; min-width: 0;
+    font-family: var(--font-primary); font-size: var(--ch-font-body-md); color: var(--label-grey-high); }
+  .ch-cmp-search .clear { width: 20px; height: 20px; border-radius: var(--radius-full); flex: none;
+    background: var(--fill-grey-high); color: var(--label-static-white-high); border: 0; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; }
+  .ch-cmp-search .clear:hover { background: var(--fill-grey-prominent); }
+
+  /* ═══ 04 · TABS ═══ */
+  .ch-cmp-tabs { display: flex; gap: var(--sp-4); border-bottom: 1px solid var(--fill-grey-low); overflow-x: auto; }
+  .ch-cmp-tabs button { border: 0; background: transparent; cursor: pointer; padding: var(--sp-12) var(--sp-16);
+    color: var(--label-grey-medium); border-bottom: 2px solid transparent; margin-bottom: -1px;
+    font-family: var(--font-primary); font-size: var(--ch-font-label-md); font-weight: 500; white-space: nowrap; }
+  .ch-cmp-tabs button:hover { color: var(--label-grey-high); }
+  .ch-cmp-tabs button[aria-selected="true"] { color: var(--label-secondary-high);
+    border-bottom-color: var(--fill-secondary-prominent); font-weight: 700; }
+  .ch-cmp-tabs button:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-xs); }
+
+  .ch-cmp-seg { display: inline-flex; background: var(--fill-grey-muted); border-radius: var(--radius-full);
+    padding: var(--sp-4); gap: var(--sp-4); }
+  .ch-cmp-seg button { border: 0; background: transparent; cursor: pointer; padding: var(--sp-8) var(--sp-16);
+    border-radius: var(--radius-full); color: var(--label-grey-medium); font-family: var(--font-primary);
+    font-size: var(--ch-font-label-md); font-weight: 500; }
+  .ch-cmp-seg button[aria-selected="true"] { background: var(--bg-primary); box-shadow: var(--elevation-2);
+    color: var(--label-grey-high); font-weight: 600; }
+  .ch-cmp-seg button:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+  /* ═══ 05 · NAVBAR ═══ */
+  .ch-cmp-navbar { display: flex; align-items: center; gap: var(--sp-24); height: var(--nav-height);
+    background: var(--bg-primary); border-bottom: 1px solid var(--fill-grey-low); padding: 0 var(--sp-24); }
+  .ch-cmp-navbar .brand img { height: 44px; display: block; }
+  .ch-cmp-navbar .nav-links { display: flex; gap: var(--sp-20); }
+  .ch-cmp-navbar .nav-links a { display: inline-flex; align-items: center; gap: var(--sp-4);
+    color: var(--label-grey-high); font-weight: 700; font-size: var(--ch-font-label-md); }
+  .ch-cmp-navbar .nav-links a span[data-icon] { display: inline-flex; color: currentColor; }
+  .ch-cmp-navbar .nav-links a:hover,
+  .ch-cmp-navbar .nav-links a[aria-current="page"] { color: var(--label-secondary-high); }
+  .ch-cmp-navbar .spacer { flex: 1 1 auto; }
+  .ch-cmp-navbar .nav-search { width: 36px; height: 36px; border-radius: var(--radius-full); border: 0;
+    background: transparent; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+    color: var(--icon-grey-prominent); }
+  .ch-cmp-navbar .nav-search:hover { background: var(--fill-grey-muted); }
+  .ch-cmp-navbar .nav-search:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .ch-cmp-navbar .avatar { width: 36px; height: 36px; border-radius: var(--radius-full);
+    background: var(--fill-secondary-muted); color: var(--label-secondary-high); font-weight: 700;
+    font-size: var(--ch-font-label-md); display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 3px var(--fill-grey-low); }
+  @media (max-width: 640px) { .ch-cmp-navbar .nav-links { display: none; } }
+
+  /* ═══ 06 · OVERLAYS ═══ */
+  .dialog-stage { position: relative; border-radius: var(--radius-md); overflow: hidden;
+    min-height: 300px; display: flex; align-items: center; justify-content: center; padding: var(--sp-24);
+    background: var(--bg-secondary); }
+  .dialog-scrim { position: absolute; inset: 0; background: rgb(var(--rgb-black) / 0.40); }
+  .ch-cmp-dialog { position: relative; width: 100%; max-width: 440px; background: var(--bg-primary);
+    border-radius: var(--radius-md); box-shadow: var(--elevation-5); padding: var(--sp-24); }
+  .ch-cmp-dialog .dlg-close { position: absolute; top: var(--sp-12); right: var(--sp-12); width: 32px; height: 32px;
+    border-radius: var(--radius-full); border: 0; background: transparent; cursor: pointer;
+    color: var(--icon-grey-prominent); display: inline-flex; align-items: center; justify-content: center; }
+  .ch-cmp-dialog .dlg-close:hover { background: var(--fill-grey-muted); }
+  .ch-cmp-dialog h3 { font-size: var(--ch-font-title-md); font-weight: 700; color: var(--label-grey-high); padding-right: var(--sp-32); }
+  .ch-cmp-dialog p { font-size: var(--ch-font-body-sm); color: var(--label-grey-medium); line-height: 1.6; margin-top: var(--sp-8); }
+  .ch-cmp-dialog p .num { font-variant-numeric: tabular-nums; color: var(--label-grey-high); }
+  .dlg-actions { display: flex; justify-content: flex-end; gap: var(--sp-8); margin-top: var(--sp-24); }
+
+  .tri { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-20); margin-top: var(--sp-20); align-items: start; }
+  @media (max-width: 900px) { .tri { grid-template-columns: 1fr; } }
+  .demo-cell { background: var(--bg-secondary); border-radius: var(--radius-md); padding: var(--sp-24);
+    display: flex; flex-direction: column; gap: var(--sp-16); }
+  .demo-cell .cell-label { margin-bottom: var(--sp-4); }
+
+  .ch-cmp-menu { width: 220px; max-width: 100%; background: var(--bg-primary); border-radius: var(--radius-md);
+    box-shadow: var(--elevation-4); padding: var(--sp-4); }
+  .ch-cmp-menu button { display: flex; width: 100%; align-items: center; gap: var(--sp-12);
+    padding: var(--sp-8) var(--sp-12); border: 0; background: transparent; border-radius: var(--radius-sm);
+    cursor: pointer; text-align: left; color: var(--label-grey-high); font-family: var(--font-primary);
+    font-size: var(--ch-font-body-md); }
+  .ch-cmp-menu button .ic { color: var(--icon-grey-high); display: inline-flex; flex: none; }
+  .ch-cmp-menu button:hover { background: var(--fill-grey-muted); }
+  .ch-cmp-menu button:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .ch-cmp-menu button[aria-current="true"] { background: var(--fill-secondary-muted);
+    color: var(--label-secondary-high); font-weight: 600; }
+  .ch-cmp-menu button[aria-current="true"] .ic { color: var(--icon-secondary-high); }
+  .ch-cmp-menu button:disabled { color: var(--label-grey-medium); cursor: not-allowed; }
+  .ch-cmp-menu button:disabled .ic { color: var(--icon-grey-medium); }
+  .ch-cmp-menu button.destructive { color: var(--label-primary-high); }
+  .ch-cmp-menu button.destructive .ic { color: var(--icon-primary-high); }
+  .ch-cmp-menu button.destructive:hover { background: var(--fill-primary-muted); }
+  .menu-div { height: 1px; background: var(--fill-grey-low); margin: var(--sp-4) 0; }
+
+  .ttip-demo { align-items: center; padding-top: var(--sp-32); }
+  .ch-cmp-tooltip { position: relative; align-self: center; background: var(--brand-black);
+    color: var(--label-static-white-high); font-size: var(--ch-font-label-sm); font-weight: 500;
+    padding: var(--sp-8) var(--sp-12); border-radius: var(--radius-xs); box-shadow: var(--elevation-3); }
+  .ch-cmp-tooltip::after { content: ""; position: absolute; bottom: -3px; left: 50%;
+    transform: translateX(-50%) rotate(45deg); width: 8px; height: 8px; background: var(--brand-black); }
+
+  .snack-stack { display: flex; flex-direction: column; gap: var(--sp-12); }
+  .ch-cmp-snackbar { display: flex; align-items: center; gap: var(--sp-16); padding: var(--sp-12) var(--sp-16);
+    border-radius: var(--radius-sm); box-shadow: var(--elevation-4); color: var(--label-static-white-high); }
+  .ch-cmp-snackbar .msg { flex: 1; font-size: var(--ch-font-body-sm); }
+  .ch-cmp-snackbar .msg span[data-icon] { vertical-align: -2px; margin-right: var(--sp-4); display: inline-flex; }
+  .ch-cmp-snackbar .snack-action { border: 0; background: transparent; cursor: pointer; font-family: var(--font-primary);
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--ch-font-label-sm); }
+  .snack-default { background: var(--brand-black); }
+  .snack-default .snack-action { color: rgb(var(--rgb-secondary-30)); }
+  .snack-success { background: var(--fill-secondary-prominent); }
+  .snack-error { background: var(--fill-primary-prominent); }
+  .snack-success .snack-action, .snack-error .snack-action { color: var(--label-static-white-high); }
+
+  /* ═══ 07 · BADGES ═══ */
+  .badge-row { display: flex; flex-wrap: wrap; gap: var(--sp-32); }
+  .id-line { display: inline-flex; align-items: center; gap: var(--sp-8); }
+  .id-line img { height: 16px; display: block; }
+  .ch-badge-verified { width: 18px; height: 18px; border-radius: var(--radius-full);
+    background: var(--fill-secondary-prominent); color: var(--icon-static-white);
+    display: inline-flex; align-items: center; justify-content: center; flex: none; }
+
+  /* ═══ 08 · LOADERS ═══ */
+  .loader-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-24); }
+  @media (max-width: 760px) { .loader-grid { grid-template-columns: 1fr; } }
+  .loader-cell { background: var(--bg-secondary); border-radius: var(--radius-md); padding: var(--sp-24);
+    display: flex; flex-direction: column; gap: var(--sp-16); }
+  .loader-cell .row { display: flex; align-items: center; gap: var(--sp-20); }
+
+  .ch-cmp-spinner { border-radius: var(--radius-full); border: 3px solid var(--fill-grey-muted);
+    border-top-color: var(--fill-secondary-prominent); animation: ch-cmp-spin 0.8s linear infinite; }
+  .ch-cmp-spinner.sm { width: 20px; height: 20px; }
+  .ch-cmp-spinner.md { width: 32px; height: 32px; }
+  .ch-cmp-spinner.lg { width: 48px; height: 48px; }
+
+  .ch-cmp-progress { height: 6px; border-radius: var(--radius-full); background: var(--fill-grey-muted); overflow: hidden; }
+  .ch-cmp-progress > .det { display: block; height: 100%; background: var(--fill-secondary-prominent); border-radius: var(--radius-full); }
+  .ch-cmp-progress > .indet { display: block; height: 100%; width: 35%; background: var(--fill-secondary-prominent);
+    border-radius: var(--radius-full); animation: ch-cmp-progress 1.5s ease-in-out infinite; }
+
+  .ch-cmp-dots { display: inline-flex; gap: var(--sp-8); }
+  .ch-cmp-dots span { width: 8px; height: 8px; border-radius: var(--radius-full);
+    background: var(--fill-secondary-prominent); animation: ch-cmp-dot 1.2s ease-in-out infinite; }
+  .ch-cmp-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .ch-cmp-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  .skel { display: flex; align-items: center; gap: var(--sp-16); width: 100%; }
+  .ch-cmp-skel { background: linear-gradient(90deg, var(--fill-grey-muted), var(--fill-grey-low), var(--fill-grey-muted));
+    background-size: 200% 100%; animation: ch-cmp-shimmer 1.6s ease-in-out infinite; border-radius: var(--radius-xs); }
+  .skel-avatar { width: 44px; height: 44px; border-radius: var(--radius-full); flex: none; }
+  .skel-lines { flex: 1; display: flex; flex-direction: column; gap: var(--sp-8); }
+  .skel-line { height: 12px; }
+  .skel-line.short { width: 55%; }
+
+  @keyframes ch-cmp-spin     { to { transform: rotate(360deg); } }
+  @keyframes ch-cmp-progress { 0% { margin-left: -35%; } 50% { margin-left: 50%; } 100% { margin-left: 100%; } }
+  @keyframes ch-cmp-dot      { 0%,80%,100% { opacity: 0.3; transform: scale(0.7); } 40% { opacity: 1; transform: scale(1); } }
+  @keyframes ch-cmp-shimmer  { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <img src="../assets/logos/official/horizontal-logo.svg" alt="CricHeroes">
+  <span class="ch-label-small tag">Component library</span>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow ch-overline">Interactive primitives</div>
+    <h1 class="ch-display-medium-emphasized">Components</h1>
+    <p class="lede ch-body-large">The interactive building blocks every CricHeroes screen relies on: buttons, chips, fields, tabs, the navbar, overlays, badges and loaders. Every colour reaches through a token; red is identity, teal is action.</p>
+    <nav class="jump" aria-label="Jump to section">
+      <a href="#buttons">Buttons</a>
+      <a href="#chips">Chips</a>
+      <a href="#inputs">Inputs &amp; search</a>
+      <a href="#tabs">Tabs</a>
+      <a href="#navbar">Navbar</a>
+      <a href="#overlays">Overlays</a>
+      <a href="#badges">Badges</a>
+      <a href="#loaders">Loaders</a>
+    </nav>
+  </div>
+
+  <div class="rule">
+    <span data-icon="ball" aria-hidden="true"></span>
+    <div>
+      <div class="ch-title-small-emphasized">One rule runs through all of it: red = identity, teal = action.</div>
+      <p class="k ch-body-small">Teal fills every primary button, link, active tab and focus ring. Red is reserved for the logo, live moments and destructive actions, never a forward-action CTA. One primary CTA per view.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 01 · BUTTONS ═══════════════ -->
+  <section id="buttons">
+    <div class="sec-head">
+      <div class="sec-num ch-overline">01 · Buttons</div>
+      <h2 class="ch-headline-small">Eight variants, three sizes</h2>
+      <p class="sub ch-body-medium">Colour is chosen by job, not by look: teal leads the primary action, grey is the quieter sibling, red is destructive only. Each variant is shown at Small 32, Medium 48 and Large 56.</p>
+    </div>
+    <div class="panel">
+      <div class="matrix">
+
+        <div class="mrow">
+          <div class="mlabel"><div class="cell-label ch-label-medium">Filled · Primary</div><span class="tok">--btn-bg-primary-prominent · teal</span></div>
+          <div class="mset">
+            <button class="dsb dsb-sm dsb-filled-primary ch-button-label-sm">Start match</button>
+            <button class="dsb dsb-md dsb-filled-primary ch-button-label-md">Start match</button>
+            <button class="dsb dsb-lg dsb-filled-primary ch-button-label-lg">Start match</button>
+          </div>
+        </div>
+
+        <div class="mrow">
+          <div class="mlabel"><div class="cell-label ch-label-medium">Filled · Tonal</div><span class="tok">--btn-bg-grey-prominent · secondary action</span></div>
+          <div class="mset">
+            <button class="dsb dsb-sm dsb-filled-tonal ch-button-label-sm">Share</button>
+            <button class="dsb dsb-md dsb-filled-tonal ch-button-label-md">Share</button>
+            <button class="dsb dsb-lg dsb-filled-tonal ch-button-label-lg">Share</button>
+          </div>
+        </div>
+
+        <div class="mrow">
+          <div class="mlabel"><div class="cell-label ch-label-medium">Filled · Destructive</div><span class="tok">--btn-bg-secondary-prominent · red, irreversible only</span></div>
+          <div class="mset">
+            <button class="dsb dsb-sm dsb-filled-destructive ch-button-label-sm">End match</button>
+            <button class="dsb dsb-md dsb-filled-destructive ch-button-label-md">End match</button>
+            <button class="dsb dsb-lg dsb-filled-destructive ch-button-label-lg">End match</button>
+          </div>
+        </div>
+
+        <div class="mrow">
+          <div class="mlabel"><div class="cell-label ch-label-medium">Text · Primary</div><span class="tok">--btn-label-primary-text-prominent · teal label</span></div>
+          <div class="mset">
+            <button class="dsb dsb-sm dsb-text-primary ch-button-label-sm">See all overs</button>
+            <button class="dsb dsb-md dsb-text-primary ch-button-label-md">See all overs</button>
+            <button class="dsb dsb-lg dsb-text-primary ch-button-label-lg">See all overs</button>
+          </div>
+        </div>
+
+        <div class="mrow">
+          <div class="mlabel"><div class="cell-label ch-label-medium">Text · Warning</div><span class="tok">--btn-label-secondary-text-prominent · red label</span></div>
+          <div class="mset">
+            <button class="dsb dsb-sm dsb-text-warning ch-button-label-sm">Remove player</button>
+            <button class="dsb dsb-md dsb-text-warning ch-button-label-md">Remove player</button>
+            <button class="dsb dsb-lg dsb-text-warning ch-button-label-lg">Remove player</button>
+          </div>
+        </div>
+
+        <div class="mrow">
+          <div class="mlabel"><div class="cell-label ch-label-medium">Text · Tertiary</div><span class="tok">--btn-label-black-text-prominent · neutral label</span></div>
+          <div class="mset">
+            <button class="dsb dsb-sm dsb-text-tertiary ch-button-label-sm">Cancel</button>
+            <button class="dsb dsb-md dsb-text-tertiary ch-button-label-md">Cancel</button>
+            <button class="dsb dsb-lg dsb-text-tertiary ch-button-label-lg">Cancel</button>
+          </div>
+        </div>
+
+        <div class="mrow">
+          <div class="mlabel"><div class="cell-label ch-label-medium">Icon-only · Primary</div><span class="tok">--fill-secondary-prominent · teal fill</span></div>
+          <div class="mset">
+            <button class="dsb dsb-icon dsb-sm dsb-icon-primary" aria-label="Add to shortlist"><span data-icon="plus" data-icon-size="16" aria-hidden="true"></span></button>
+            <button class="dsb dsb-icon dsb-md dsb-icon-primary" aria-label="Add to shortlist"><span data-icon="plus" data-icon-size="20" aria-hidden="true"></span></button>
+            <button class="dsb dsb-icon dsb-lg dsb-icon-primary" aria-label="Add to shortlist"><span data-icon="plus" data-icon-size="24" aria-hidden="true"></span></button>
+          </div>
+        </div>
+
+        <div class="mrow">
+          <div class="mlabel"><div class="cell-label ch-label-medium">Icon-only · Secondary</div><span class="tok">--fill-grey-muted · grey tonal</span></div>
+          <div class="mset">
+            <button class="dsb dsb-icon dsb-sm dsb-icon-secondary" aria-label="Filter matches"><span data-icon="filter" data-icon-size="16" aria-hidden="true"></span></button>
+            <button class="dsb dsb-icon dsb-md dsb-icon-secondary" aria-label="Filter matches"><span data-icon="filter" data-icon-size="20" aria-hidden="true"></span></button>
+            <button class="dsb dsb-icon dsb-lg dsb-icon-secondary" aria-label="Filter matches"><span data-icon="filter" data-icon-size="24" aria-hidden="true"></span></button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="states">
+        <div class="st"><button class="dsb dsb-md dsb-filled-primary ch-button-label-md">Default</button><span class="tok">rest state</span></div>
+        <div class="st"><button class="dsb dsb-md dsb-filled-primary ch-button-label-md show-focus">Focused</button><span class="tok">box-shadow: --focus-ring</span></div>
+        <div class="st"><button class="dsb dsb-md dsb-filled-primary ch-button-label-md" disabled>Disabled</button><span class="tok">--btn-bg-primary-disable</span></div>
+        <div class="st"><button class="dsb dsb-md dsb-filled-tonal ch-button-label-md" disabled>Disabled</button><span class="tok">--btn-bg-grey-disable</span></div>
+      </div>
+      <p class="note ch-body-small">Hover deepens teal to <strong>--brand-secondary-60</strong> and settles pressed buttons to <strong>--elevation-1</strong> (interact to see). Small 32 is dense-chrome only; Medium 48 is the product default and clears the 44 px touch floor; Large 56 is a marketing-hero CTA.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 02 · CHIPS ═══════════════ -->
+  <section id="chips">
+    <div class="sec-head">
+      <div class="sec-num ch-overline">02 · Chips</div>
+      <h2 class="ch-headline-small">Assist chips and the status hierarchy</h2>
+      <p class="sub ch-body-medium">Status chips are one cohesive tonal family, ranked by how much attention the state deserves. No solid fills, no glyphs, no pulsing dot: the label text is the differentiator, so Live and Ongoing are intentionally identical.</p>
+    </div>
+    <div class="cols-2">
+      <div class="panel">
+        <div class="cell-label ch-label-medium" style="margin-bottom: var(--sp-8)">Status hierarchy</div>
+        <div class="rank-list">
+          <div class="rank-row">
+            <div class="rank-n ch-title-medium">1</div>
+            <div><span class="chip chip-status-live ch-button-label-sm">Live</span></div>
+            <div class="rank-why ch-body-small">Real-time match. Tonal red carries the urgency. <span class="tok">--fill-primary-muted · --label-primary-high</span></div>
+          </div>
+          <div class="rank-row">
+            <div class="rank-n ch-title-medium">2</div>
+            <div><span class="chip chip-status-ongoing ch-button-label-sm">Ongoing</span></div>
+            <div class="rank-why ch-body-small">Tournament running now. Identical to Live; context differentiates. <span class="tok">--fill-primary-muted · --label-primary-high</span></div>
+          </div>
+          <div class="rank-row">
+            <div class="rank-n ch-title-medium">3</div>
+            <div><span class="chip chip-status-upcoming ch-button-label-sm">Upcoming</span></div>
+            <div class="rank-why ch-body-small">Forward-looking, so it moves to the teal family. <span class="tok">--fill-secondary-low · --label-secondary-high</span></div>
+          </div>
+          <div class="rank-row">
+            <div class="rank-n ch-title-medium">4</div>
+            <div><span class="chip chip-status-cancelled ch-button-label-sm">Cancelled</span></div>
+            <div class="rank-why ch-body-small">A deliberate exception, ranked above Completed. Red, but softer. <span class="tok">--fill-primary-muted · --label-primary-medium</span></div>
+          </div>
+          <div class="rank-row">
+            <div class="rank-n ch-title-medium">5</div>
+            <div><span class="chip chip-status-completed ch-button-label-sm">Completed</span></div>
+            <div class="rank-why ch-body-small">Expected end state. Calm, archival grey. <span class="tok">--fill-grey-low · --label-grey-medium</span></div>
+          </div>
+          <div class="rank-row">
+            <div class="rank-n ch-title-medium">6</div>
+            <div><span class="chip chip-status-abandoned ch-button-label-sm">Abandoned</span></div>
+            <div class="rank-why ch-body-small">Never concluded (rain, light). Faded so it scans past. <span class="tok">--fill-grey-muted · --label-grey-medium</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="cell-label ch-label-medium" style="margin-bottom: var(--sp-16)">Assist chips</div>
+        <p class="sub ch-body-small" style="color: var(--label-grey-medium); margin-bottom: var(--sp-20)">Informational metadata and category labels. Rectangular (--radius-sm), tonal grey, sentence case, with an optional leading glyph. Interactive, so cursor and focus are designed.</p>
+        <div class="assist-row">
+          <button class="chip chip-assist ch-button-label-sm"><span data-icon="location" data-icon-size="16" aria-hidden="true"></span>Near me</button>
+          <button class="chip chip-assist ch-button-label-sm"><span data-icon="calendar" data-icon-size="16" aria-hidden="true"></span>This week</button>
+          <button class="chip chip-assist ch-button-label-sm"><span data-icon="trophy" data-icon-size="16" aria-hidden="true"></span>Knockout</button>
+          <button class="chip chip-assist ch-button-label-sm">T20</button>
+          <button class="chip chip-assist ch-button-label-sm">Leather ball</button>
+          <button class="chip chip-assist ch-button-label-sm">Andheri Sports Complex</button>
+        </div>
+        <p class="note ch-body-small">Radius is the tell: status chips are full pills, assist and category chips are 8 px rectangles.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 03 · INPUTS + SEARCH ═══════════════ -->
+  <section id="inputs">
+    <div class="sec-head">
+      <div class="sec-num ch-overline">03 · Text entry</div>
+      <h2 class="ch-headline-small">Input field and search bar</h2>
+      <p class="sub ch-body-medium">The 48 px input carries rest, focus, error and disabled states; the search bar is a full pill that lifts to white on focus. Both use a teal focus treatment, never red.</p>
+    </div>
+    <div class="cols-2">
+      <div class="panel">
+        <div class="cell-label ch-label-medium" style="margin-bottom: var(--sp-20)">Input field</div>
+        <div class="field">
+          <label class="field-label" for="in-team">Team name</label>
+          <input class="ch-cmp-input" id="in-team" type="text" placeholder="e.g. Mohali Strikers">
+          <span class="field-help">Shown on the scorecard and standings.</span>
+        </div>
+        <div class="field">
+          <label class="field-label" for="in-focus">Captain (focus)</label>
+          <input class="ch-cmp-input is-focus" id="in-focus" type="text" value="R Sharma">
+          <span class="field-help">--fill-secondary-prominent border + teal ring at 18%.</span>
+        </div>
+        <div class="field">
+          <label class="field-label" for="in-error">Add player (error)</label>
+          <input class="ch-cmp-input is-error" id="in-error" type="text" value="V Patel" aria-invalid="true" aria-describedby="err-1">
+          <span class="field-help is-error" id="err-1">V Patel is already in the playing XI.</span>
+        </div>
+        <div class="field">
+          <label class="field-label" for="in-dis">Match ID (disabled)</label>
+          <input class="ch-cmp-input" id="in-dis" type="text" value="CH-48213" disabled>
+          <span class="field-help">Assigned automatically once scoring begins.</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="cell-label ch-label-medium" style="margin-bottom: var(--sp-20)">Search bar</div>
+        <div class="field">
+          <span class="field-label">Rest</span>
+          <div class="ch-cmp-search">
+            <span class="lead" data-icon="search" data-icon-size="20" aria-hidden="true"></span>
+            <input type="search" placeholder="Search players, teams, tournaments" aria-label="Search">
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label">Focus-within, with value</span>
+          <div class="ch-cmp-search is-focus">
+            <span class="lead" data-icon="search" data-icon-size="20" aria-hidden="true"></span>
+            <input type="search" value="Royal Chargers" aria-label="Search">
+            <button class="clear" type="button" aria-label="Clear search"><span data-icon="close" data-icon-size="14" aria-hidden="true"></span></button>
+          </div>
+        </div>
+        <p class="note ch-body-small">The magnifier is --label-grey-medium; the trailing clear button appears only once the field has a value.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 04 · TABS ═══════════════ -->
+  <section id="tabs">
+    <div class="sec-head">
+      <div class="sec-num ch-overline">04 · Tabs</div>
+      <h2 class="ch-headline-small">Underline and segmented</h2>
+      <p class="sub ch-body-medium">Underline tabs are in-page primary navigation; the segmented control is a compact view toggle. Both mark the active choice in teal, but they signal it differently.</p>
+    </div>
+    <div class="panel">
+      <div class="cell-label ch-label-medium" style="margin-bottom: var(--sp-8)">Underline tabs</div>
+      <span class="tok" style="margin-bottom: var(--sp-16)">Active: --label-secondary-high + 2 px --fill-secondary-prominent underline + weight 700</span>
+      <div class="ch-cmp-tabs" role="tablist" aria-label="Match sections">
+        <button role="tab" aria-selected="false">Summary</button>
+        <button role="tab" aria-selected="true">Scorecard</button>
+        <button role="tab" aria-selected="false">Commentary</button>
+        <button role="tab" aria-selected="false">Squad</button>
+        <button role="tab" aria-selected="false">Stats</button>
+      </div>
+
+      <div class="cell-label ch-label-medium" style="margin: var(--sp-32) 0 var(--sp-8)">Segmented control</div>
+      <span class="tok" style="margin-bottom: var(--sp-16)">Active: --bg-primary + --elevation-2 + --label-grey-high + weight 600</span>
+      <div>
+        <div class="ch-cmp-seg" role="tablist" aria-label="Innings filter">
+          <button role="tab" aria-selected="true">Batting</button>
+          <button role="tab" aria-selected="false">Bowling</button>
+          <button role="tab" aria-selected="false">Fielding</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 05 · NAVBAR ═══════════════ -->
+  <section id="navbar">
+    <div class="sec-head">
+      <div class="sec-num ch-overline">05 · Navigation</div>
+      <h2 class="ch-headline-small">Top navigation bar</h2>
+      <p class="sub ch-body-medium">A 72 px white surface (--nav-height) with a single hairline bottom border, no accent bars. Full logo with tagline left, links centre, search and profile right. Links go teal on hover and active.</p>
+    </div>
+    <div class="panel" style="padding: 0; overflow: hidden">
+      <nav class="ch-cmp-navbar" aria-label="Primary">
+        <span class="brand"><img src="../assets/logos/official/horizontal-logo-full.svg" alt="CricHeroes"></span>
+        <div class="nav-links">
+          <a href="#navbar"><span data-icon="home" data-icon-size="18" aria-hidden="true"></span>Home</a>
+          <a href="#navbar" aria-current="page">Matches</a>
+          <a href="#navbar">Tournaments<span data-icon="down" data-icon-size="16" aria-hidden="true"></span></a>
+          <a href="#navbar">Teams</a>
+        </div>
+        <span class="spacer"></span>
+        <button class="nav-search" type="button" aria-label="Search"><span data-icon="search" data-icon-size="20" aria-hidden="true"></span></button>
+        <span class="avatar" title="V Patel">VP</span>
+      </nav>
+    </div>
+    <p class="note ch-body-small">Below 640 px the centre links collapse behind a menu trigger; the bar height and chrome stay fixed.</p>
+  </section>
+
+  <!-- ═══════════════ 06 · OVERLAYS ═══════════════ -->
+  <section id="overlays">
+    <div class="sec-head">
+      <div class="sec-num ch-overline">06 · Overlays</div>
+      <h2 class="ch-headline-small">Dialog, menu, tooltip, snackbar</h2>
+      <p class="sub ch-body-medium">Transient surfaces, shown here in their open state. The dialog sits on a 40% black scrim; the menu, tooltip and snackbars float on their own elevation.</p>
+    </div>
+    <div class="panel">
+      <div class="dialog-stage">
+        <div class="dialog-scrim" aria-hidden="true"></div>
+        <div class="ch-cmp-dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+          <button class="dlg-close" type="button" aria-label="Close dialog"><span data-icon="close" data-icon-size="20" aria-hidden="true"></span></button>
+          <h3 id="dlg-title">End this match?</h3>
+          <p>Mohali Strikers are <span class="num">142/4</span> in <span class="num">16.2</span> overs. Ending now records the result as a no-contest and cannot be undone.</p>
+          <div class="dlg-actions">
+            <button class="dsb dsb-md dsb-filled-tonal ch-button-label-md">Keep scoring</button>
+            <button class="dsb dsb-md dsb-filled-destructive ch-button-label-md">End match</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tri">
+        <div class="demo-cell">
+          <div class="cell-label ch-label-medium">Menu</div>
+          <div class="ch-cmp-menu" role="menu" aria-label="Andheri Strikers actions">
+            <button role="menuitem"><span class="ic" data-icon="user" data-icon-size="20" aria-hidden="true"></span>View profile</button>
+            <button role="menuitem"><span class="ic" data-icon="stats" data-icon-size="20" aria-hidden="true"></span>Team stats</button>
+            <button role="menuitem" aria-current="true"><span class="ic" data-icon="star" data-icon-size="20" aria-hidden="true"></span>In favourites</button>
+            <button role="menuitem" disabled><span class="ic" data-icon="lock" data-icon-size="20" aria-hidden="true"></span>Export data</button>
+            <div class="menu-div" role="separator"></div>
+            <button role="menuitem" class="destructive"><span class="ic" data-icon="close" data-icon-size="20" aria-hidden="true"></span>Remove from my teams</button>
+          </div>
+          <span class="tok">Selected = --fill-secondary-muted · destructive = --label-primary-high</span>
+        </div>
+
+        <div class="demo-cell ttip-demo">
+          <div class="cell-label ch-label-medium" style="align-self: flex-start">Tooltip</div>
+          <div class="ch-cmp-tooltip" role="tooltip" id="tt-share">Share match</div>
+          <button class="dsb dsb-icon dsb-md dsb-icon-secondary" aria-labelledby="tt-share"><span data-icon="share" data-icon-size="20" aria-hidden="true"></span></button>
+          <span class="tok" style="align-self: flex-start">--brand-black surface · white label · 4 px arrow</span>
+        </div>
+
+        <div class="demo-cell">
+          <div class="cell-label ch-label-medium">Snackbar / toast</div>
+          <div class="snack-stack">
+            <div class="ch-cmp-snackbar snack-default" role="status">
+              <span class="msg">Match saved to your feed.</span>
+              <button class="snack-action" type="button">Undo</button>
+            </div>
+            <div class="ch-cmp-snackbar snack-success" role="status">
+              <span class="msg"><span data-icon="check" data-icon-size="16" aria-hidden="true"></span>Scorecard published.</span>
+            </div>
+            <div class="ch-cmp-snackbar snack-error" role="alert">
+              <span class="msg">Couldn't sync the score.</span>
+              <button class="snack-action" type="button">Retry</button>
+            </div>
+          </div>
+          <span class="tok">Action label uses bright teal --rgb-secondary-30 on dark so it reads interactive without red.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 07 · BADGES ═══════════════ -->
+  <section id="badges">
+    <div class="sec-head">
+      <div class="sec-num ch-overline">07 · Badges</div>
+      <h2 class="ch-headline-small">PRO and verified</h2>
+      <p class="sub ch-body-medium">Small identity markers that ride beside a name. The PRO badge ships as a fixed asset; the verified tick is a teal disc with a check glyph. Neither is baked into avatars or squad tiles yet, that slot is deferred.</p>
+    </div>
+    <div class="panel">
+      <div class="badge-row">
+        <div>
+          <div class="id-line"><span class="ch-title-small-emphasized">R Sharma</span><img src="../assets/badge-pro.svg" alt="PRO member"></div>
+          <span class="tok">PRO subscriber · assets/badge-pro.svg</span>
+        </div>
+        <div>
+          <div class="id-line"><span class="ch-title-small-emphasized">Andheri Strikers</span><span class="ch-badge-verified" role="img" aria-label="Verified club"><span data-icon="check" data-icon-size="12" aria-hidden="true"></span></span></div>
+          <span class="tok">Verified club · --fill-secondary-prominent + --icon-static-white</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 08 · LOADERS ═══════════════ -->
+  <section id="loaders">
+    <div class="sec-head">
+      <div class="sec-num ch-overline">08 · Loading</div>
+      <h2 class="ch-headline-small">Spinner, progress, dots, skeleton</h2>
+      <p class="sub ch-body-medium">All four loaders are teal and respect prefers-reduced-motion (the token stylesheet freezes the animation). Reach for the skeleton when you know the shape of what's coming.</p>
+    </div>
+    <div class="loader-grid">
+      <div class="loader-cell">
+        <div class="cell-label ch-label-medium">Circular spinner</div>
+        <div class="row">
+          <span class="ch-cmp-spinner sm" role="status" aria-label="Loading"></span>
+          <span class="ch-cmp-spinner md" role="status" aria-label="Loading"></span>
+          <span class="ch-cmp-spinner lg" role="status" aria-label="Loading"></span>
+        </div>
+        <span class="tok">20 / 32 / 48 · --fill-secondary-prominent top border</span>
+      </div>
+
+      <div class="loader-cell">
+        <div class="cell-label ch-label-medium">Linear progress</div>
+        <div class="ch-cmp-progress" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" aria-label="Upload">
+          <span class="det" style="width: 70%"></span>
+        </div>
+        <div class="ch-cmp-progress" role="progressbar" aria-label="Loading" aria-valuetext="Loading">
+          <span class="indet"></span>
+        </div>
+        <span class="tok">Determinate 70% and indeterminate · 6 px track</span>
+      </div>
+
+      <div class="loader-cell">
+        <div class="cell-label ch-label-medium">Bouncing dots</div>
+        <div class="ch-cmp-dots" role="status" aria-label="Loading"><span></span><span></span><span></span></div>
+        <span class="tok">8 px circles · staggered ch-cmp-dot</span>
+      </div>
+
+      <div class="loader-cell">
+        <div class="cell-label ch-label-medium">Skeleton shimmer</div>
+        <div class="skel" aria-hidden="true">
+          <div class="ch-cmp-skel skel-avatar"></div>
+          <div class="skel-lines">
+            <div class="ch-cmp-skel skel-line"></div>
+            <div class="ch-cmp-skel skel-line short"></div>
+          </div>
+        </div>
+        <span class="tok">Match-card placeholder · --fill-grey-muted to --fill-grey-low</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="../assets/icons.js"></script>
+<script>if (window.CH && CH.icons) CH.icons.hydrate(document);</script>
+</body>
+</html>
