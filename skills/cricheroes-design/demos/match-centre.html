@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CricHeroes: live match centre</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: var(--bg-secondary); }
+  .shell { max-width: 680px; margin: 0 auto; padding-bottom: var(--sp-40); background: var(--bg-secondary); }
+
+  /* red identity banner (locked hero card) */
+  .banner { background: var(--brand-primary); color: var(--label-static-white-high); padding: var(--sp-16) var(--sp-20) var(--sp-24); position: relative; overflow: hidden; }
+  .banner .bar { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-16); }
+  .banner .bar .left { display: flex; align-items: center; gap: var(--sp-12); }
+  .banner .bar .comp { color: var(--label-static-white-medium); }
+  .banner .icon-btn { color: var(--icon-static-white); background: rgb(var(--rgb-white) / 0.16); width: 36px; height: 36px; border-radius: var(--radius-full); display: inline-flex; align-items: center; justify-content: center; border: 0; cursor: pointer; }
+
+  .chip { display: inline-flex; align-items: center; gap: var(--sp-8); height: 28px; padding: 0 var(--sp-12); border-radius: var(--radius-full); }
+  .chip .dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
+  .chip-live-onwhite { background: rgb(var(--rgb-white) / 0.18); color: var(--label-static-white-high); }
+
+  .score { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--sp-16); margin-top: var(--sp-20); }
+  .team .name { color: var(--label-static-white-medium); }
+  .runs { font-size: var(--ch-font-display-sm); }
+  .runs .wkt { font-size: var(--ch-font-title-md); color: var(--label-static-white-medium); }
+  .meta { color: var(--label-static-white-medium); margin-top: var(--sp-4); }
+  .target { text-align: right; }
+
+  .body { padding: 0 var(--sp-20); margin-top: calc(var(--sp-20) * -1); position: relative; }
+
+  /* segmented tabs */
+  .tabs { display: flex; background: var(--bg-primary); border-radius: var(--radius-sm); padding: var(--sp-4); box-shadow: var(--elevation-2); }
+  .tabs button { flex: 1; border: 0; background: transparent; height: 36px; border-radius: var(--radius-xs); cursor: pointer; color: var(--label-grey-medium); }
+  .tabs button.active { background: var(--fill-secondary-medium); color: var(--label-secondary-high); }
+  .tabs button:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+  .card { background: var(--bg-primary); border-radius: var(--radius-md); box-shadow: var(--elevation-2); padding: var(--sp-16); margin-top: var(--sp-16); }
+  .card > h2 { margin-bottom: var(--sp-12); }
+  .sec-title { display: flex; align-items: center; justify-content: space-between; }
+  .sec-title a { color: var(--label-secondary-high); }
+
+  /* this over */
+  .over { display: flex; gap: var(--sp-8); }
+  .ball { width: 34px; height: 34px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; background: var(--fill-grey-muted); color: var(--label-grey-high); font-variant-numeric: tabular-nums; }
+  .ball.boundary { background: var(--fill-secondary-medium); color: var(--label-secondary-high); }
+  .ball.wicket { background: var(--brand-primary); color: var(--label-static-white-high); }
+  .over-note { margin-top: var(--sp-12); color: var(--label-grey-medium); }
+  .over-note b { color: var(--label-grey-high); }
+
+  /* mini table */
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: right; padding: var(--sp-8) var(--sp-4); }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { color: var(--label-grey-medium); border-bottom: 1px solid var(--fill-grey-low); font-weight: var(--ch-weight-medium); }
+  tbody td { border-bottom: 1px solid var(--fill-grey-low); }
+  tbody tr:last-child td { border-bottom: 0; }
+  .num { font-variant-numeric: tabular-nums; color: var(--label-grey-high); }
+  .striker { color: var(--label-secondary-high); }
+
+  .actions { display: flex; gap: var(--sp-12); margin-top: var(--sp-16); }
+  .btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-8); border: 0; cursor: pointer; height: 48px; border-radius: var(--radius-sm); transition: filter var(--duration-fast) var(--ease-standard); }
+  .btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .btn-primary { background: var(--btn-bg-primary-prominent); color: var(--btn-label-primary-prominent); }
+  .btn-primary:hover { filter: brightness(0.94); }
+  .btn-soft { background: var(--fill-secondary-medium); color: var(--label-secondary-high); }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="banner">
+    <div class="bar">
+      <div class="left">
+        <button class="icon-btn" aria-label="Back"><span data-icon="chevron" aria-hidden="true"></span></button>
+        <div>
+          <div class="ch-title-medium-emphasized">MST vs RCH</div>
+          <div class="comp ch-label-small">Mohali Premier League · Final</div>
+        </div>
+      </div>
+      <span class="chip chip-live-onwhite ch-label-small-emphasized"><span class="dot"></span>Live</span>
+    </div>
+
+    <div class="score">
+      <div class="team">
+        <div class="name ch-label-medium">Royal Chargers batting</div>
+        <div class="runs ch-display-numeric">168<span class="wkt">/7</span></div>
+        <div class="meta ch-label-small">18.3 ov · CRR 9.14</div>
+      </div>
+      <div class="target">
+        <div class="name ch-label-small">Target</div>
+        <div class="runs ch-display-numeric" style="font-size:var(--ch-font-title-lg)">183</div>
+        <div class="meta ch-label-small">Need 15 in 9</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="tabs" role="tablist">
+      <button class="active" role="tab" aria-selected="true">Live</button>
+      <button role="tab">Scorecard</button>
+      <button role="tab">Squad</button>
+      <button role="tab">Stats</button>
+    </div>
+
+    <div class="card">
+      <div class="sec-title"><h2 class="ch-title-small-emphasized">This over</h2><span class="ch-label-small" style="color:var(--label-grey-medium)">18.1 to 18.6</span></div>
+      <div class="over">
+        <span class="ball boundary ch-label-medium-emphasized">4</span>
+        <span class="ball ch-label-medium">·</span>
+        <span class="ball ch-label-medium">1</span>
+        <span class="ball wicket ch-label-medium-emphasized">W</span>
+        <span class="ball boundary ch-label-medium-emphasized">6</span>
+        <span class="ball ch-label-medium">2</span>
+      </div>
+      <p class="over-note ch-body-small">R Sharma to V Patel · <b>13 runs</b> · 1 wicket</p>
+    </div>
+
+    <div class="card">
+      <h2 class="ch-title-small-emphasized">Batsmen</h2>
+      <table>
+        <thead><tr><th>Batter</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr></thead>
+        <tbody>
+          <tr><td class="striker ch-body-small-emphasized">V Patel *</td><td class="num">42</td><td class="num">28</td><td class="num">3</td><td class="num">2</td><td class="num">150.0</td></tr>
+          <tr><td class="ch-body-small">K Iyer</td><td class="num">18</td><td class="num">14</td><td class="num">2</td><td class="num">0</td><td class="num">128.5</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2 class="ch-title-small-emphasized">Bowler</h2>
+      <table>
+        <thead><tr><th>Bowler</th><th>O</th><th>R</th><th>W</th><th>Econ</th></tr></thead>
+        <tbody>
+          <tr><td class="ch-body-small-emphasized">R Sharma</td><td class="num">3.3</td><td class="num">28</td><td class="num">2</td><td class="num">8.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary ch-button-label-md"><span data-icon="stats" aria-hidden="true"></span>Commentary</button>
+      <button class="btn btn-soft ch-button-label-md"><span data-icon="share" aria-hidden="true"></span>Share match</button>
+    </div>
+  </div>
+
+</div>
+<script src="../assets/icons.js"></script>
+<script>if (window.CH && CH.icons) CH.icons.hydrate(document);</script>
+</body>
+</html>

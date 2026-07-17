@@ -1,0 +1,45 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Fielder 1" stroke-linejoin="round" stroke-linecap="round">
+  <path id="Ground" d="M14 80.4 L86 80.4" stroke="#0B0B0B" stroke-width="0.6"/>
+
+  <!-- LEAD ARM (white skin) + open hand + wristband -->
+  <path d="M61.88 41.01 L71.01 45.50 L77.59 50.19 A1.50 1.50 0 0 1 79.41 47.81 L72.99 42.50 L64.12 36.99 Z" fill="#FEFFFF" stroke="#0B0B0B" stroke-width="0.6"/>
+  <path d="M78.4 47.8 Q81.3 48.2 81.6 50.5 Q81.6 52.4 80.2 53.2 Q80.4 51.8 79.6 51.4 Q79.9 52.8 79.0 53.4 Q78.9 51.8 78.1 51.6 Q78.2 53.0 77.2 53.0 Q76.4 52.2 76.7 50.6 Q77.0 49.2 78.0 48.6 Z" fill="#FEFFFF" stroke="#0B0B0B" stroke-width="0.6"/>
+  <path d="M74.6 47.3 L76.6 48.6 M75.6 45.9 L77.6 47.2" stroke="#0B0B0B" stroke-width="0.5"/>
+
+  <!-- TROUSERS (white) wide split stance -->
+  <path d="M52.27 52.32 L45.08 65.25 L29.77 77.36 A2.05 2.05 0 0 1 32.23 80.64 L48.92 68.75 L57.73 55.68 Z" fill="#FEFFFF" stroke="#0B0B0B" stroke-width="0.6"/>
+  <path d="M58.06 55.27 L64.01 67.26 L61.99 78.88 A2.05 2.05 0 0 1 66.01 79.72 L69.19 66.74 L63.94 52.73 Z" fill="#FEFFFF" stroke="#0B0B0B" stroke-width="0.6"/>
+  <path d="M53.4 52.6 L62.8 52.6 L61.6 57.4 C60 59 56 59 54.4 57.4 Z" fill="#FEFFFF" stroke="#0B0B0B" stroke-width="0.6"/>
+
+  <!-- SHOES (black) -->
+  <path d="M27.4 77.2 Q25.4 79.6 28.2 80.4 L33.6 80.2 Q35.4 79.6 34.4 77.8 Q31 76.2 27.4 77.2 Z" fill="#0B0B0B"/>
+  <path d="M60.2 78.0 Q59.4 79.8 61.4 80.4 L67.2 80.4 Q69.4 79.8 67.8 77.6 Q63.6 76.4 60.2 78.0 Z" fill="#0B0B0B"/>
+
+  <!-- TORSO + short sleeves (black) -->
+  <path id="Torso" d="M57 33.6 C54 34.2 52 36 51.4 38.6 C49 38.4 46.2 39.8 45.2 42.4 A2.3 2.3 0 0 0 48.1 44.0 C49.3 41.8 50.7 40.2 52.4 39.2 C52.9 44.4 53.8 49.4 55 54.4 L62.4 54.4 C63.4 50.2 64.4 46 65.2 42 C66.6 43.6 68.4 44.6 70.2 44 A2.3 2.3 0 0 0 70.8 40.0 C68.6 38.8 66.4 38.2 64.6 38.4 C63.9 36.0 62.0 34.2 60.8 33.6 C59.9 34.3 57.9 34.2 57 33.6 Z" fill="#0B0B0B"/>
+  <!-- polo collar (white) -->
+  <path d="M57.2 34 L60.1 37.9 L63 33.9" fill="none" stroke="#FEFFFF" stroke-width="0.9"/>
+
+  <!-- THROWING ARM (white skin) + wristband -->
+  <path d="M52.66 36.73 L34.45 40.77 L38.98 28.47 A1.55 1.55 0 0 1 36.02 27.53 L31.55 43.23 L53.34 41.27 Z" fill="#FEFFFF" stroke="#0B0B0B" stroke-width="0.6"/>
+  <path d="M35.3 29.2 L39.3 30.2 M35.0 30.7 L39.0 31.7" stroke="#0B0B0B" stroke-width="0.5"/>
+
+  <!-- BALL -->
+  <circle cx="38.4" cy="24.6" r="3" fill="#FEFFFF" stroke="#0B0B0B" stroke-width="0.6"/>
+  <path d="M36.2 22.5 Q38.4 24.6 36.6 27" stroke="#0B0B0B" stroke-width="0.5" fill="none"/>
+
+  <!-- NECK -->
+  <path d="M57.6 30 L61.8 30 L61.8 34 C60 34.8 58.4 34.6 57.6 33.6 Z" fill="#FEFFFF" stroke="#0B0B0B" stroke-width="0.6"/>
+
+  <!-- PROFILE FACE -->
+  <path id="Face" d="M58.4 20.4 C61 19.8 63.6 20.6 64.3 23 L64.1 24.2 L66.3 25.6 L64.2 26.7 L64.6 27.9 L63.5 28.5 L64.1 29.6 C63.0 30.8 60.8 31.1 59.0 30.5 C56.4 29.7 54.9 27.4 54.9 24.8 C54.9 22.3 56.2 20.8 58.4 20.4 Z" fill="#FEFFFF" stroke="#0B0B0B" stroke-width="0.6"/>
+  <path d="M62.4 24.4 L63.3 24.2" stroke="#0B0B0B" stroke-width="0.5"/>
+  <path d="M63.4 28.5 L64.0 28.4" stroke="#0B0B0B" stroke-width="0.45"/>
+
+  <!-- CAP -->
+  <path id="Cap" d="M54.7 24.4 C53.5 20.2 56.1 17.8 59.5 17.8 C62.9 17.8 65.1 20.0 64.8 23.3 C67.8 22.5 70.6 22.7 72.4 23.1 C70.8 24.9 66.8 25.1 64.6 24.5 L64.7 23.7 C63.4 23.1 56.4 23.3 55.3 24.1 Z" fill="#0B0B0B"/>
+  <path d="M55.6 23.8 L64.2 23.6" stroke="#FEFFFF" stroke-width="0.7"/>
+  <path d="M55.2 25 C54.4 26.2 54.7 27.8 55.7 28.4 L56.7 27.2 C56.2 26.4 55.7 25.6 55.6 25 Z" fill="#0B0B0B"/>
+</g>
+</svg>
