@@ -94,6 +94,28 @@ Scan the target's CSS, markup and copy; report findings by severity as
 - Full contract: the token-compliance checks in AI-CONTEXT section 16: zero raw hex outside `:root`, zero raw `rgba()`, on-scale font-size / spacing / radius, and the 12px type floor.
 - The `/cricheroes-audit` command also runs the `design-system` and `accessibility` skills alongside this one, for structural and WCAG 2.2 AA coverage.
 
+## Figma (when a Figma MCP connector is available)
+
+If the session has Figma tools (the claude.ai Figma connector, Figma's Dev Mode
+MCP server, or any `figma`-named MCP tool set), use them whenever the task
+touches Figma files; do not ask the user to paste screenshots of their own file.
+
+- Audit a Figma file: read its variables, styles and components, and diff them
+  against the canon in `colors_and_type.css`. Report drift in the standard
+  audit format (`severity · where · what's wrong · the token to use`): a colour
+  variable whose value differs from the token, a style not on the type scale,
+  spacing off the 4pt grid, red used outside identity/live/wicket/destructive.
+- Manage tokens: when asked to create or update Figma variables, mirror the
+  three-tier contract (Tier 1 foundations, Tier 2 semantic, Tier 3 component)
+  with the exact official token names and values. Never invent a token on the
+  Figma side; if a needed value is missing from the system, flag it for the
+  design team instead of adding it silently.
+- Handoff checks: compare a Figma frame against the component specs in
+  `reference/AI-CONTEXT.md` (buttons, chips, cards, tables) before it is built,
+  and flag mismatches early.
+- The source of truth is this skill's CSS, not Figma: when the two disagree,
+  report the difference; changing the canon is the design team's call.
+
 ## Known gaps
 
 - Standalone logomark SVG is still missing (needed for favicon, apple-touch, PWA icons, and the collapsed sidenav); extract it from `horizontal-logo.svg`.
