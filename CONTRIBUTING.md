@@ -32,7 +32,7 @@ until the version is bumped:
    `.claude-plugin/marketplace.json` and keep them equal. Claude Code only refreshes
    its cache on a version change.
 3. Push. For Claude Code users, refresh with `claude plugin marketplace update
-   cricheroes-design-system`, then reinstall `cricheroes-design-system@cricheroes-design-system`.
+   cricheroes`, then update `design-system@cricheroes`.
 
 ## Style
 

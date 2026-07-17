@@ -16,7 +16,7 @@ The full working guide (tokens, design mode, audit checklist) lives in
 
 ```
 /plugin marketplace add cricheroes/design-system
-/plugin install cricheroes-design-system@cricheroes-design-system
+/plugin install design-system@cricheroes
 ```
 
 You get the `cricheroes-design` skill, the `/cricheroes-design` and
